@@ -1,7 +1,11 @@
 russia:
   iso_code: RU
-  name: Russia
+  name: Россия
 
-england:
- iso_code: GB-ENG
- name: England
+slovenia:
+ iso_code: SI
+ name: Slovenia
+
+turkey:
+ iso_code: TR
+ name: Turkey
