@@ -31,5 +31,6 @@ end
 group :production do
   gem 'hiredis'
   gem 'redis'
+  gem 'rollbar'
   gem 'sidekiq'
 end
