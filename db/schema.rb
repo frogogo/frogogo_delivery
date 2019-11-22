@@ -18,9 +18,11 @@ ActiveRecord::Schema.define(version: 2019_11_19_230824) do
   create_table "countries", force: :cascade do |t|
     t.string "name", null: false
     t.string "iso_code", null: false
+    t.string "language_code", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["iso_code"], name: "index_countries_on_iso_code", unique: true
+    t.index ["language_code"], name: "index_countries_on_language_code", unique: true
     t.index ["name"], name: "index_countries_on_name", unique: true
   end
 
