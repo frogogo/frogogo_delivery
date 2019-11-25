@@ -17,6 +17,8 @@
 #
 
 class Country < ApplicationRecord
+  has_many :subdivisions, dependent: :destroy
+
   validates :iso_code, presence: true, uniqueness: true
   validates :language_code, presence: true, uniqueness: true
   validates :name, presence: true, uniqueness: true

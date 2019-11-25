@@ -1,0 +1,15 @@
+istanbul:
+  iso_code: TR-34
+  local_code: 34
+  name: İstanbul
+  country: turkey
+ljubljana:
+  iso_code: SI-061
+  local_code: 61
+  name: Ljubljana
+  country: slovenia
+moscow:
+  iso_code: RU-MOW
+  local_code: 45
+  name: Москва
+  country: russia
