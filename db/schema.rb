@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_25_112441) do
+ActiveRecord::Schema.define(version: 2019_12_02_062827) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,13 @@ ActiveRecord::Schema.define(version: 2019_11_25_112441) do
     t.index ["name", "subdivision_id"], name: "index_localities_on_name_and_subdivision_id", unique: true
     t.index ["postal_code"], name: "index_localities_on_postal_code", unique: true
     t.index ["subdivision_id"], name: "index_localities_on_subdivision_id"
+  end
+
+  create_table "providers", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_providers_on_name", unique: true
   end
 
   create_table "subdivisions", force: :cascade do |t|
