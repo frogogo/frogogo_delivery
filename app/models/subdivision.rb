@@ -25,6 +25,8 @@
 class Subdivision < ApplicationRecord
   belongs_to :country
 
+  has_many :localities, dependent: :destroy
+
   validates :iso_code, presence: true
   validates :local_code, presence: true
   validates :name, presence: true
