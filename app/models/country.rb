@@ -17,6 +17,7 @@
 #
 
 class Country < ApplicationRecord
+  has_many :delivery_zones, dependent: :destroy
   has_many :subdivisions, dependent: :destroy
   has_many :localities, through: :subdivisions
 

@@ -17,3 +17,12 @@ Locality.create!(name: 'Москва', local_code: '45000000', postal_code: '101
 Provider.create!(name: 'Boxberry')
 Provider.create!(name: 'Post')
 Provider.create!(name: 'ShopLogistics')
+
+# Create delivery_zones
+DeliveryZone.create!(fee: 399, free_delivery_gold_threshold: 1000, free_delivery_threshold: 1500, country: russia)
+DeliveryZone.create!(fee: 499, free_delivery_gold_threshold: 1500, free_delivery_threshold: 2000, country: russia)
+DeliveryZone.create!(fee: 599, free_delivery_gold_threshold: 2000, free_delivery_threshold: 2500, country: russia)
+DeliveryZone.create!(fee: 699, free_delivery_gold_threshold: 2000, free_delivery_threshold: 2500, country: russia)
+DeliveryZone.create!(fee: 799, free_delivery_gold_threshold: 3500, free_delivery_threshold: 4500, country: russia)
+DeliveryZone.create!(fee: 999, free_delivery_gold_threshold: 3500, free_delivery_threshold: 4500, country: russia)
+DeliveryZone.create!(default: true, fee: 7, free_delivery_gold_threshold: 100, free_delivery_threshold: 150, country: turkey)

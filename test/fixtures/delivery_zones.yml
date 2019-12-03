@@ -1,0 +1,35 @@
+delivery_zone1:
+  fee: 399
+  free_delivery_gold_threshold: 1000
+  free_delivery_threshold: 1500
+  country: russia
+delivery_zone2:
+  fee: 499
+  free_delivery_gold_threshold: 1500
+  free_delivery_threshold: 2000
+  country: russia
+delivery_zone3:
+  fee: 599
+  free_delivery_gold_threshold: 2000
+  free_delivery_threshold: 2500
+  country: russia
+delivery_zone4:
+  fee: 699
+  free_delivery_gold_threshold: 2000
+  free_delivery_threshold: 2500
+  country: russia
+delivery_zone5:
+  fee: 799
+  free_delivery_gold_threshold: 3500
+  free_delivery_threshold: 4500
+  country: russia
+delivery_zone6:
+  fee: 999
+  free_delivery_gold_threshold: 3500
+  free_delivery_threshold: 4500
+  country: russia
+turkey_delivery_zone:
+  fee: 7
+  free_delivery_gold_threshold: 100
+  free_delivery_threshold: 150
+  country: tureky

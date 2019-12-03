@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_02_062827) do
+ActiveRecord::Schema.define(version: 2019_12_03_025840) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,17 @@ ActiveRecord::Schema.define(version: 2019_12_02_062827) do
     t.index ["iso_code"], name: "index_countries_on_iso_code", unique: true
     t.index ["language_code"], name: "index_countries_on_language_code", unique: true
     t.index ["name"], name: "index_countries_on_name", unique: true
+  end
+
+  create_table "delivery_zones", force: :cascade do |t|
+    t.bigint "country_id"
+    t.boolean "default", default: false
+    t.float "fee", null: false
+    t.float "free_delivery_gold_threshold", null: false
+    t.float "free_delivery_threshold", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["country_id"], name: "index_delivery_zones_on_country_id"
   end
 
   create_table "localities", force: :cascade do |t|
@@ -59,6 +70,7 @@ ActiveRecord::Schema.define(version: 2019_12_02_062827) do
     t.index ["name", "country_id"], name: "index_subdivisions_on_name_and_country_id", unique: true
   end
 
+  add_foreign_key "delivery_zones", "countries"
   add_foreign_key "localities", "subdivisions"
   add_foreign_key "subdivisions", "countries"
 end
