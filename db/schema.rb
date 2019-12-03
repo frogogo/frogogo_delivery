@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_03_025840) do
+ActiveRecord::Schema.define(version: 2019_12_03_032315) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,8 @@ ActiveRecord::Schema.define(version: 2019_12_03_025840) do
     t.string "postal_code"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "delivery_zone_id"
+    t.index ["delivery_zone_id"], name: "index_localities_on_delivery_zone_id"
     t.index ["local_code", "subdivision_id"], name: "index_localities_on_local_code_and_subdivision_id", unique: true
     t.index ["name", "subdivision_id"], name: "index_localities_on_name_and_subdivision_id", unique: true
     t.index ["postal_code"], name: "index_localities_on_postal_code", unique: true
@@ -64,13 +66,17 @@ ActiveRecord::Schema.define(version: 2019_12_03_025840) do
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "delivery_zone_id"
     t.index ["country_id"], name: "index_subdivisions_on_country_id"
+    t.index ["delivery_zone_id"], name: "index_subdivisions_on_delivery_zone_id"
     t.index ["iso_code"], name: "index_subdivisions_on_iso_code", unique: true
     t.index ["local_code", "country_id"], name: "index_subdivisions_on_local_code_and_country_id", unique: true
     t.index ["name", "country_id"], name: "index_subdivisions_on_name_and_country_id", unique: true
   end
 
   add_foreign_key "delivery_zones", "countries"
+  add_foreign_key "localities", "delivery_zones"
   add_foreign_key "localities", "subdivisions"
   add_foreign_key "subdivisions", "countries"
+  add_foreign_key "subdivisions", "delivery_zones"
 end

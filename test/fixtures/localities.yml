@@ -12,4 +12,5 @@ moscow:
   name: Москва
   local_code: 45000000
   postal_code: 101000
+  delivery_zone: delivery_zone1
   subdivision: moscow
