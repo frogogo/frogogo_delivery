@@ -13,7 +13,6 @@
 #
 #  index_countries_on_iso_code       (iso_code) UNIQUE
 #  index_countries_on_language_code  (language_code) UNIQUE
-#  index_countries_on_name           (name) UNIQUE
 #
 
 class Country < ApplicationRecord
