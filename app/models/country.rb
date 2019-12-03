@@ -17,6 +17,8 @@
 #
 
 class Country < ApplicationRecord
+  DEFAULT_SUBDIVISION_NAME = 'Default'
+
   has_many :delivery_zones, dependent: :destroy
   has_many :subdivisions, dependent: :destroy
   has_many :localities, through: :subdivisions
@@ -27,5 +29,9 @@ class Country < ApplicationRecord
 
   def default_delivery_zone
     delivery_zones.find_by(default: true)
+  end
+
+  def default_subdivision
+    subdivisions.find_by(name: DEFAULT_SUBDIVISION_NAME)
   end
 end
