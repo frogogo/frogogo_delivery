@@ -24,4 +24,8 @@ class Country < ApplicationRecord
   validates :iso_code, presence: true, uniqueness: true
   validates :language_code, presence: true, uniqueness: true
   validates :name, presence: true, uniqueness: true
+
+  def default_delivery_zone
+    delivery_zones.find_by(default: true)
+  end
 end
