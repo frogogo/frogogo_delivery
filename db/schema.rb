@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_03_094618) do
+ActiveRecord::Schema.define(version: 2019_12_03_095132) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,12 +27,13 @@ ActiveRecord::Schema.define(version: 2019_12_03_094618) do
 
   create_table "delivery_zones", force: :cascade do |t|
     t.bigint "country_id"
-    t.boolean "default", default: false
     t.float "fee", null: false
     t.float "free_delivery_gold_threshold", null: false
     t.float "free_delivery_threshold", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "zone", null: false
+    t.index ["country_id", "zone"], name: "index_delivery_zones_on_country_id_and_zone", unique: true
     t.index ["country_id"], name: "index_delivery_zones_on_country_id"
   end
 

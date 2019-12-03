@@ -26,10 +26,6 @@ class Country < ApplicationRecord
   validates :language_code, presence: true, uniqueness: true
   validates :name, presence: true, uniqueness: true
 
-  def default_delivery_zone
-    delivery_zones.find_by(default: true)
-  end
-
   def default_subdivision
     subdivisions.find_by(name: DEFAULT_SUBDIVISION_NAME)
   end
