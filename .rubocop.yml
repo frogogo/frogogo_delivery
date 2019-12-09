@@ -1,18 +1,29 @@
+---
+require: rubocop-rails
 AllCops:
-  TargetRubyVersion: 2.6
   Exclude:
     - bin/*
     - db/**/*
-Layout/IndentHeredoc:
+  TargetRubyVersion: 2.6
+  TargetRailsVersion: 6
+Layout/HeredocIndentation:
   Enabled: false
 Layout/MultilineMethodCallIndentation:
   Enabled: false
-Lint/UnderscorePrefixedVariableName:
-  Enabled: false
 Metrics/AbcSize:
+  Enabled: false
+Metrics/BlockLength:
+  Enabled: false
+Metrics/ClassLength:
+  Enabled: false
+Metrics/MethodLength:
   Enabled: false
 Metrics/LineLength:
   Max: 100
+Rails/SkipsModelValidations:
+  Enabled: false
+Rails/UnknownEnv:
+  Enabled: false
 Style/AsciiComments:
   Enabled: false
 Style/ClassAndModuleChildren:
