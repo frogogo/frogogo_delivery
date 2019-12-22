@@ -1,6 +1,6 @@
 class RU::BoxberryAdapter < DeliveryServiceAdapter
   BASE_URI = 'https://api.boxberry.ru/json.php'
-  FETCH_DICTIONARY_REQUEST_BODY = {
+  FETCH_LOCALITIES_REQUEST_BODY = {
     token: Rails.application.credentials.dig(:ru, :boxberry, :api_token),
     method: 'ListCitiesFull'
   }
@@ -13,8 +13,8 @@ class RU::BoxberryAdapter < DeliveryServiceAdapter
     request_data
   end
 
-  def fetch_dictionary
-    @request_body = FETCH_DICTIONARY_REQUEST_BODY
+  def fetch_localities_list
+    @request_body = FETCH_LOCALITIES_REQUEST_BODY
 
     request_data
   end

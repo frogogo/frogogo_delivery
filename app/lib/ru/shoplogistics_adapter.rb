@@ -1,7 +1,7 @@
 class RU::ShoplogisticsAdapter < DeliveryServiceAdapter
   BASE_URI = 'https://client-shop-logistics.ru/index.php?route=deliveries/api'
   HEADERS_PARAMS = { 'Content-Type' => 'application/x-www-form-urlencoded; charset=utf-8' }
-  FETCH_DICTIONARY_REQUEST_BODY = {
+  FETCH_LOCALITIES_LIST_REQUEST_BODY = {
     function: 'get_dictionary',
     api_id: Rails.application.credentials.dig(:ru, :shoplogistics, :api_token),
     dictionary_type: 'city'
@@ -20,8 +20,8 @@ class RU::ShoplogisticsAdapter < DeliveryServiceAdapter
     num: '1'
   }
 
-  def fetch_dictionary
-    @request_body = FETCH_DICTIONARY_REQUEST_BODY
+  def fetch_localities_list
+    @request_body = FETCH_LOCALITIES_LIST_REQUEST_BODY
 
     request_data
   end

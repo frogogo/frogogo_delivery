@@ -5,7 +5,7 @@ class DeliveryServiceAdapter
     @locality = locality
   end
 
-  def fetch_dictionary
+  def fetch_localities_list
     raise NotImplementedError
   end
 
