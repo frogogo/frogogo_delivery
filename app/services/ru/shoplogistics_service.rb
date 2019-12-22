@@ -1,4 +1,4 @@
-class RU::ShoplogisticsService
+class RU::ShoplogisticsService < DeliveryService
   BASE_URI = 'https://client-shop-logistics.ru/index.php?route=deliveries/api'
   HEADERS_PARAMS = { 'Content-Type' => 'application/x-www-form-urlencoded; charset=utf-8' }
   FETCH_DELIVERY_INFO_REQUEST_BODY2 = {
@@ -15,15 +15,7 @@ class RU::ShoplogisticsService
     num: '1'
   }
 
-  attr_reader :locality, :request_body
-
-  def initialize(locality: nil)
-    @locality = locality
-  end
-
   def fetch_delivery_info
-    return if locality.blank?
-
     @request_body = FETCH_DELIVERY_INFO_REQUEST_BODY2.merge(to_city: locality)
 
     request_data
