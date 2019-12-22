@@ -1,7 +1,7 @@
 class RU::ShoplogisticsService
   BASE_URI = 'https://client-shop-logistics.ru/index.php?route=deliveries/api'
   HEADERS_PARAMS = { 'Content-Type' => 'application/x-www-form-urlencoded; charset=utf-8' }
-  FETCH_DELIVERY_INFO_REQUEST_BODY = {
+  FETCH_DELIVERY_INFO_REQUEST_BODY2 = {
     function: 'get_deliveries_tarifs',
     api_id: Rails.application.credentials.dig(:ru, :shoplogistics, :api_token),
     from_city: 'Москва',
@@ -24,7 +24,7 @@ class RU::ShoplogisticsService
   def fetch_delivery_info
     return if locality.blank?
 
-    @request_body = FETCH_DELIVERY_INFO_REQUEST_BODY.merge(to_city: locality)
+    @request_body = FETCH_DELIVERY_INFO_REQUEST_BODY2.merge(to_city: locality)
 
     request_data
   end
@@ -35,12 +35,15 @@ class RU::ShoplogisticsService
     HTTParty.post(
       BASE_URI,
       headers: HEADERS_PARAMS,
-      body: { xml: encoded_request_body },
-      debug_output: $stdout
+      body: { xml: encoded_request_body }
     )
   end
 
   def encoded_request_body
-    URI.escape(Base64.encode64(request_body.to_xml(root: :request, skip_instruct: true)))
+    URI.escape(Base64.strict_encode64(xml_body))
+  end
+
+  def xml_body
+    request_body.to_xml(root: :request, dasherize: false, skip_instruct: true)
   end
 end
