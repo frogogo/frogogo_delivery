@@ -1,5 +1,9 @@
 class RU::BoxberryAdapter < DeliveryAdapter
   BASE_URI = 'https://api.boxberry.ru/json.php'
+  FETCH_DELIVERY_INFO_REQUEST_BODY = {
+    token: Rails.application.credentials.dig(:ru, :boxberry, :api_token),
+    method: 'ListPoints'
+  }
   FETCH_LOCALITIES_REQUEST_BODY = {
     token: Rails.application.credentials.dig(:ru, :boxberry, :api_token),
     method: 'ListCitiesFull'
@@ -8,7 +12,7 @@ class RU::BoxberryAdapter < DeliveryAdapter
   def fetch_delivery_info
     super
 
-    @request_body = FETCH_DICTIONARY_REQUEST_BODY
+    @request_body = FETCH_DELIVERY_INFO_REQUEST_BODY.merge(citycode: locality)
 
     request_data
   end
