@@ -1,4 +1,4 @@
-class DeliveryServiceAdapter
+class DeliveryAdapter
   attr_reader :locality, :request_body
 
   def initialize(locality: nil)

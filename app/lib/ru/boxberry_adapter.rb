@@ -1,4 +1,4 @@
-class RU::BoxberryAdapter < DeliveryServiceAdapter
+class RU::BoxberryAdapter < DeliveryAdapter
   BASE_URI = 'https://api.boxberry.ru/json.php'
   FETCH_LOCALITIES_REQUEST_BODY = {
     token: Rails.application.credentials.dig(:ru, :boxberry, :api_token),

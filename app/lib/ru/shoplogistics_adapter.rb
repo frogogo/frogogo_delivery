@@ -1,4 +1,4 @@
-class RU::ShoplogisticsAdapter < DeliveryServiceAdapter
+class RU::ShoplogisticsAdapter < DeliveryAdapter
   BASE_URI = 'https://client-shop-logistics.ru/index.php?route=deliveries/api'
   HEADERS_PARAMS = { 'Content-Type' => 'application/x-www-form-urlencoded; charset=utf-8' }
   FETCH_LOCALITIES_LIST_REQUEST_BODY = {
