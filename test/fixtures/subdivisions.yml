@@ -1,3 +1,8 @@
+tr_default_sub:
+  iso_code: 00
+  local_code: 00
+  name: Default
+  country: turkey
 istanbul:
   iso_code: TR-34
   local_code: 34

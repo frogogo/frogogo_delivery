@@ -29,5 +29,7 @@ class Locality < ApplicationRecord
   belongs_to :delivery_zone, optional: true
   belongs_to :subdivision
 
+  has_many :delivery_methods, as: :deliverable, dependent: :destroy
+
   validates :name, presence: true
 end

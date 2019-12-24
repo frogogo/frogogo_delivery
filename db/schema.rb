@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_03_095132) do
+ActiveRecord::Schema.define(version: 2019_12_03_102643) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,21 @@ ActiveRecord::Schema.define(version: 2019_12_03_095132) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["iso_code"], name: "index_countries_on_iso_code", unique: true
     t.index ["language_code"], name: "index_countries_on_language_code", unique: true
+  end
+
+  create_table "delivery_methods", force: :cascade do |t|
+    t.bigint "provider_id"
+    t.string "deliverable_type"
+    t.bigint "deliverable_id"
+    t.string "name", null: false
+    t.integer "method", default: 0
+    t.boolean "inactive", default: false
+    t.string "date_interval"
+    t.string "time_intervals", array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["deliverable_type", "deliverable_id"], name: "index_delivery_methods_on_deliverable_type_and_deliverable_id"
+    t.index ["provider_id"], name: "index_delivery_methods_on_provider_id"
   end
 
   create_table "delivery_zones", force: :cascade do |t|
@@ -74,6 +89,7 @@ ActiveRecord::Schema.define(version: 2019_12_03_095132) do
     t.index ["name", "country_id"], name: "index_subdivisions_on_name_and_country_id", unique: true
   end
 
+  add_foreign_key "delivery_methods", "providers"
   add_foreign_key "delivery_zones", "countries"
   add_foreign_key "localities", "delivery_zones"
   add_foreign_key "localities", "subdivisions"
