@@ -2,3 +2,7 @@ shoplogistics:
   name: ShopLogistics
 boxberry:
   name: Boxberry
+russian_post:
+  name: Russian Post
+turkey_post:
+  name: Turkey Post

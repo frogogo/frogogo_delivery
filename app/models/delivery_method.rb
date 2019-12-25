@@ -30,6 +30,7 @@ class DeliveryMethod < ApplicationRecord
   enum method: { post: 0, courier: 1, pickup: 2 }
 
   belongs_to :deliverable, polymorphic: true
+  belongs_to :provider
 
   validates :name, presence: true
 end
