@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_03_102643) do
+ActiveRecord::Schema.define(version: 2019_12_25_095957) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,7 +29,6 @@ ActiveRecord::Schema.define(version: 2019_12_03_102643) do
     t.bigint "provider_id"
     t.string "deliverable_type"
     t.bigint "deliverable_id"
-    t.string "name", null: false
     t.integer "method", default: 0
     t.boolean "inactive", default: false
     t.string "date_interval"

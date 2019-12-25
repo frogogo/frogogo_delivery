@@ -6,8 +6,7 @@
 #  date_interval    :string
 #  deliverable_type :string
 #  inactive         :boolean          default(FALSE)
-#  method           :integer          default(0)
-#  name             :string           not null
+#  method           :integer          default("post")
 #  time_intervals   :string           is an Array
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
