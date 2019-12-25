@@ -30,6 +30,4 @@ class DeliveryMethod < ApplicationRecord
 
   belongs_to :deliverable, polymorphic: true
   belongs_to :provider
-
-  validates :name, presence: true
 end

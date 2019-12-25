@@ -1,10 +1,8 @@
 russian_post:
-  name: Почта России
   method: 0
   deliverable: moscow (Locality)
   provider: russian_post
 turkey_post:
-  name: Turkey post
   method: 0
   deliverable: tr_default_sub (Subdivision)
   provider: turkey_post
