@@ -1,6 +1,4 @@
 class DeliveryMethodsResolver
-  TURKEY_POST_NAME = 'Turkey Post'
-
   attr_reader :country, :locality, :result
 
   def initialize(search_params)
@@ -50,7 +48,7 @@ class DeliveryMethodsResolver
         subdivisions: { name: subdivision_name, country: country }
       )
     when :tr
-      DeliveryMethod.joins(:provider).where(providers: { name: TURKEY_POST_NAME }).limit(1)
+      country.default_subdivision
     end
   end
 
