@@ -5,11 +5,7 @@ class DeliveryAdapter
     @locality = locality
   end
 
-  def localities_list
-    raise NotImplementedError
-  end
-
-  def delivery_info
+  def validate_locality!
     raise ArgumentError if locality.blank? || locality.class != Locality
   end
 end

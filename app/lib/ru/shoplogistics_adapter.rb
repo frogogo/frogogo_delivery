@@ -3,12 +3,10 @@ class RU::ShoplogisticsAdapter < DeliveryAdapter
   HEADERS_PARAMS = { 'Content-Type' => 'application/x-www-form-urlencoded; charset=utf-8' }
   LOCALITIES_LIST_REQUEST_BODY = {
     function: 'get_dictionary',
-    api_id: Rails.application.credentials.dig(:ru, :shoplogistics, :api_token),
     dictionary_type: 'city'
   }
   DELIVERY_INFO_REQUEST_BODY = {
     function: 'get_deliveries_tarifs',
-    api_id: Rails.application.credentials.dig(:ru, :shoplogistics, :api_token),
     from_city: 'Москва',
     to_city: '',
     weight: '1',
@@ -20,21 +18,29 @@ class RU::ShoplogisticsAdapter < DeliveryAdapter
     num: '1'
   }
 
-  def localities_list
-    @request_body = LOCALITIES_LIST_REQUEST_BODY
-
-    request_data
-  end
-
   def delivery_info
-    super
+    validate_locality!
 
     @request_body = DELIVERY_INFO_REQUEST_BODY.merge(to_city: locality.name)
 
     request_data
   end
 
+  def localities_list
+    @request_body = LOCALITIES_LIST_REQUEST_BODY
+
+    request_data
+  end
+
   private
+
+  def api_token
+    Rails.application.credentials.dig(:ru, :shoplogistics, :api_token)
+  end
+
+  def encoded_request_body
+    URI.escape(Base64.strict_encode64(xml_body))
+  end
 
   def request_data
     HTTParty.post(
@@ -44,11 +50,7 @@ class RU::ShoplogisticsAdapter < DeliveryAdapter
     )
   end
 
-  def encoded_request_body
-    URI.escape(Base64.strict_encode64(xml_body))
-  end
-
   def xml_body
-    request_body.to_xml(root: :request, dasherize: false, skip_instruct: true)
+    request_body.merge(api_id: api_token).to_xml(root: :request, dasherize: false, skip_instruct: true)
   end
 end

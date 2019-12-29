@@ -1,34 +1,34 @@
 class RU::BoxberryAdapter < DeliveryAdapter
   BASE_URI = 'https://api.boxberry.ru/json.php'
-  DELIVERY_INFO_REQUEST_BODY = {
-    token: Rails.application.credentials.dig(:ru, :boxberry, :api_token),
-    method: 'ListPoints'
-  }
-  LOCALITIES_REQUEST_BODY = {
-    token: Rails.application.credentials.dig(:ru, :boxberry, :api_token),
-    method: 'ListCitiesFull'
-  }
+  LIST_POINTS = 'ListPoints'
+  LIST_CITIES = 'ListCities'
 
-  def delivery_info
-    super
+  attr_reader :city_code
 
-    @request_body = DELIVERY_INFO_REQUEST_BODY.merge(citycode: locality.name)
+  def localities_list
+    @request_body = { method: LIST_CITIES }
 
     request_data
   end
 
-  def localities_list
-    @request_body = LOCALITIES_REQUEST_BODY
+  def pickup_delivery_info
+    validate_locality!
+
+    @request_body = { method: LIST_POINTS, citycode: city_code }
 
     request_data
   end
 
   private
 
+  def api_token
+    Rails.application.credentials.dig(:ru, :boxberry, :api_token)
+  end
+
   def request_data
     HTTParty.get(
       BASE_URI,
-      query: request_body
+      query: request_body.merge(token: api_token)
     )
   end
 end
