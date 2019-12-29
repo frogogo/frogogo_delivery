@@ -12,7 +12,7 @@
 #  working_hours      :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  delivery_method_id :bigint
+#  delivery_method_id :bigint           not null
 #
 # Indexes
 #

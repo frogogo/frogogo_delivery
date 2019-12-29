@@ -9,7 +9,7 @@
 #  zone                         :integer          not null
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
-#  country_id                   :bigint
+#  country_id                   :bigint           not null
 #
 # Indexes
 #

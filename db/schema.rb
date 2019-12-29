@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_29_104953) do
+ActiveRecord::Schema.define(version: 2019_12_29_121946) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 2019_12_29_104953) do
   end
 
   create_table "delivery_methods", force: :cascade do |t|
-    t.bigint "provider_id"
+    t.bigint "provider_id", null: false
     t.string "deliverable_type"
     t.bigint "deliverable_id"
     t.integer "method", default: 0
@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 2019_12_29_104953) do
   end
 
   create_table "delivery_points", force: :cascade do |t|
-    t.bigint "delivery_method_id"
+    t.bigint "delivery_method_id", null: false
     t.string "address", null: false
     t.string "code"
     t.string "directions"
@@ -55,7 +55,7 @@ ActiveRecord::Schema.define(version: 2019_12_29_104953) do
   end
 
   create_table "delivery_zones", force: :cascade do |t|
-    t.bigint "country_id"
+    t.bigint "country_id", null: false
     t.float "fee", null: false
     t.float "free_delivery_gold_threshold", null: false
     t.float "free_delivery_threshold", null: false
@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(version: 2019_12_29_104953) do
   end
 
   create_table "localities", force: :cascade do |t|
-    t.bigint "subdivision_id"
+    t.bigint "subdivision_id", null: false
     t.string "name", null: false
     t.string "local_code"
     t.string "postal_code"
@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(version: 2019_12_29_104953) do
   end
 
   create_table "subdivisions", force: :cascade do |t|
-    t.bigint "country_id"
+    t.bigint "country_id", null: false
     t.string "iso_code", null: false
     t.string "local_code", null: false
     t.string "name", null: false

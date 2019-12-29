@@ -11,7 +11,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  deliverable_id   :bigint
-#  provider_id      :bigint
+#  provider_id      :bigint           not null
 #
 # Indexes
 #

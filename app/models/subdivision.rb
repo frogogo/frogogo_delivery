@@ -8,7 +8,7 @@
 #  name             :string           not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  country_id       :bigint
+#  country_id       :bigint           not null
 #  delivery_zone_id :bigint
 #
 # Indexes
