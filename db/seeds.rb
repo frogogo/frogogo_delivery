@@ -16,12 +16,12 @@ DeliveryZone.create!(fee: 7, free_delivery_gold_threshold: 100, free_delivery_th
 # istanbul = Subdivision.create!(iso_code: 'TR-34', local_code: '34', name: 'İstanbul', country: turkey)
 # ljubljana = Subdivision.create!(iso_code: 'SI-061', local_code: '61', name: 'Ljubljana', country: slovenia)
 tr_default_sub = Subdivision.create!(iso_code: '00', local_code: '00', name: 'Default', country: turkey, delivery_zone: turkey.delivery_zones.default.first)
-moscow = Subdivision.create!(iso_code: 'RU-MOW', local_code: '45', name: 'Москва', country: russia, delivery_zone: russia.delivery_zones.find_by(zone: 1))
+# moscow = Subdivision.create!(iso_code: 'RU-MOW', local_code: '45', name: 'Москва', country: russia, delivery_zone: russia.delivery_zones.find_by(zone: 1))
 
 # Create localities
 # Locality.create!(name: 'İstanbul', local_code: '212', postal_code: '34000', subdivision: tr_default_sub)
 # Locality.create!(name: 'Ljubljana', local_code: '3861', postal_code: '1000', subdivision: ljubljana)
-Locality.create!(name: 'Москва', local_code: '45000000', postal_code: '101000', delivery_zone: russia.delivery_zones.find_by(zone: 1), subdivision: moscow)
+# Locality.create!(name: 'Москва', local_code: '45000000', postal_code: '101000', delivery_zone: russia.delivery_zones.find_by(zone: 1), subdivision: moscow)
 
 # Create providers
 # Provider.create!(name: 'Russian Post')
