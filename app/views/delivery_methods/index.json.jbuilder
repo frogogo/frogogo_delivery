@@ -5,3 +5,7 @@ end
 json.delivery_points do
   json.array! @delivery_points, partial: '/delivery_points/delivery_point', as: :delivery_point
 end
+
+json.delivery_zone do
+  json.partial! '/delivery_zones/delivery_zone', delivery_zone: @delivery_zone
+end
