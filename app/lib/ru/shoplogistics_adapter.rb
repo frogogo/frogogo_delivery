@@ -1,12 +1,12 @@
 class RU::ShoplogisticsAdapter < DeliveryAdapter
   BASE_URI = 'https://client-shop-logistics.ru/index.php?route=deliveries/api'
   HEADERS_PARAMS = { 'Content-Type' => 'application/x-www-form-urlencoded; charset=utf-8' }
-  FETCH_LOCALITIES_LIST_REQUEST_BODY = {
+  LOCALITIES_LIST_REQUEST_BODY = {
     function: 'get_dictionary',
     api_id: Rails.application.credentials.dig(:ru, :shoplogistics, :api_token),
     dictionary_type: 'city'
   }
-  FETCH_DELIVERY_INFO_REQUEST_BODY = {
+  DELIVERY_INFO_REQUEST_BODY = {
     function: 'get_deliveries_tarifs',
     api_id: Rails.application.credentials.dig(:ru, :shoplogistics, :api_token),
     from_city: 'Москва',
@@ -20,16 +20,16 @@ class RU::ShoplogisticsAdapter < DeliveryAdapter
     num: '1'
   }
 
-  def fetch_localities_list
-    @request_body = FETCH_LOCALITIES_LIST_REQUEST_BODY
+  def localities_list
+    @request_body = LOCALITIES_LIST_REQUEST_BODY
 
     request_data
   end
 
-  def fetch_delivery_info
+  def delivery_info
     super
 
-    @request_body = FETCH_DELIVERY_INFO_REQUEST_BODY.merge(to_city: locality.name)
+    @request_body = DELIVERY_INFO_REQUEST_BODY.merge(to_city: locality.name)
 
     request_data
   end
