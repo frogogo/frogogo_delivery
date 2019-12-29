@@ -30,4 +30,16 @@ class DeliveryMethod < ApplicationRecord
 
   belongs_to :deliverable, polymorphic: true
   belongs_to :provider
+
+  def self.search(search_params)
+    case search_params[:locale]&.to_sym
+    when :ru
+      Locality.joins(:subdivision).find_by(
+        name: search_params[:locality],
+        subdivisions: { name: search_params[:subdivision] }
+      )&.delivery_methods
+    when :tr
+      joins(:provider).where(providers: { name: 'Turkey Post' }).limit(1)
+    end
+  end
 end
