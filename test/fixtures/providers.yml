@@ -1,6 +1,8 @@
 shoplogistics:
+  code: shop-logistics
   name: ShopLogistics
 boxberry:
+  code: boxberry
   name: Boxberry
 russian_post:
   name: Russian Post

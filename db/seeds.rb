@@ -25,8 +25,8 @@ Locality.create!(name: 'Москва', local_code: '45000000', postal_code: '101
 
 # Create providers
 # Provider.create!(name: 'Russian Post')
-Provider.create!(name: 'Boxberry')
-Provider.create!(name: 'ShopLogistics')
+Provider.create!(code: 'boxberry', name: 'Boxberry')
+Provider.create!(code: 'shop-logistics', name: 'ShopLogistics')
 Provider.create!(name: 'Turkey Post')
 
 # Create delivery methods

@@ -3,6 +3,7 @@
 # Table name: providers
 #
 #  id         :bigint           not null, primary key
+#  code       :string
 #  name       :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
