@@ -1,0 +1,199 @@
+---
+ru:
+  delivery_zones:
+    cities:
+      Елизово:
+        delivery_zone: 6
+      Магадан:
+        delivery_zone: 6
+      Москва:
+        delivery_zone: 1
+      Нарьян-Мар:
+        delivery_zone: 6
+      Норильск:
+        delivery_zone: 6
+      Петропавловск-Камчатский:
+        delivery_zone: 6
+      Санкт-Петербург:
+        delivery_zone: 1
+      Южно-Сахалинск:
+        delivery_zone: 6
+      Якутск:
+        delivery_zone: 6
+    regions:
+      Адыгея:
+        delivery_zone: 2
+      Алтай:
+        delivery_zone: 4
+      Алтайский:
+        delivery_zone: 4
+      Амурская:
+        delivery_zone: 5
+      Архангельская:
+        delivery_zone: 3
+      Астраханская:
+        delivery_zone: 2
+      Башкортостан:
+        delivery_zone: 2
+      Белгородская:
+        delivery_zone: 2
+      Брянская:
+        delivery_zone: 2
+      Бурятия:
+        delivery_zone: 5
+      Владимирская:
+        delivery_zone: 2
+      Волгоградская:
+        delivery_zone: 2
+      Вологодская:
+        delivery_zone: 2
+      Воронежская:
+        delivery_zone: 2
+      Дагестан:
+        delivery_zone: 3
+      Еврейская:
+        delivery_zone: 5
+      Забайкальский:
+        delivery_zone: 5
+      Ивановская:
+        delivery_zone: 2
+      Ингушетия:
+        delivery_zone: 3
+      Иркутская:
+        delivery_zone: 5
+      Кабардино-Балкарская:
+        delivery_zone: 3
+      Калининградская:
+        delivery_zone: 2
+      Калмыкия:
+        delivery_zone: 2
+      Калужская:
+        delivery_zone: 2
+      Камчатский:
+        delivery_zone: 5
+      Карачаево-Черкесская:
+        delivery_zone: 2
+      Карелия:
+        delivery_zone: 3
+      Кемеровская:
+        delivery_zone: 4
+      Кемеровская область - Кузбасс:
+        delivery_zone: 4
+      Кировская:
+        delivery_zone: 2
+      Коми:
+        delivery_zone: 3
+      Костромская:
+        delivery_zone: 2
+      Краснодарский:
+        delivery_zone: 2
+      Красноярский:
+        delivery_zone: 4
+      Крым:
+        delivery_zone: 3
+      Курганская:
+        delivery_zone: 3
+      Курская:
+        delivery_zone: 2
+      Ленинградская:
+        delivery_zone: 2
+      Липецкая:
+        delivery_zone: 2
+      Марий Эл:
+        delivery_zone: 2
+      Марий, Эл:
+        delivery_zone: 2
+      Мордовия:
+        delivery_zone: 2
+      Москва:
+        delivery_zone: 1
+      Московская:
+        delivery_zone: 1
+      Мурманская:
+        delivery_zone: 3
+      Нижегородская:
+        delivery_zone: 2
+      Новгородская:
+        delivery_zone: 2
+      Новосибирская:
+        delivery_zone: 4
+      Омская:
+        delivery_zone: 3
+      Оренбургская:
+        delivery_zone: 3
+      Орловская:
+        delivery_zone: 2
+      Пензенская:
+        delivery_zone: 2
+      Пермский:
+        delivery_zone: 3
+      Приморский:
+        delivery_zone: 5
+      Псковская:
+        delivery_zone: 2
+      Ростовская:
+        delivery_zone: 2
+      Рязанская:
+        delivery_zone: 2
+      Самарская:
+        delivery_zone: 2
+      Санкт-Петербург:
+        delivery_zone: 1
+      Саратовская:
+        delivery_zone: 2
+      Саха /Якутия/:
+        delivery_zone: 5
+      Саха, (Якутия):
+        delivery_zone: 5
+      Свердловская:
+        delivery_zone: 3
+      Севастополь:
+        delivery_zone: 3
+      Северная Осетия - Алания:
+        delivery_zone: 3
+      Северная, Осетия-Алания:
+        delivery_zone: 3
+      Смоленская:
+        delivery_zone: 2
+      Ставропольский:
+        delivery_zone: 2
+      Тамбовская:
+        delivery_zone: 2
+      Татарстан:
+        delivery_zone: 2
+      Тверская:
+        delivery_zone: 2
+      Томская:
+        delivery_zone: 4
+      Тульская:
+        delivery_zone: 2
+      Тыва:
+        delivery_zone: 4
+      Тюменская:
+        delivery_zone: 3
+      Удмуртская:
+        delivery_zone: 2
+      Ульяновская:
+        delivery_zone: 2
+      Хабаровский:
+        delivery_zone: 5
+      Хакасия:
+        delivery_zone: 4
+      Ханты-Мансийский Автономный округ - Югра:
+        delivery_zone: 3
+      Ханты-Мансийский, автономный, округ:
+        delivery_zone: 3
+      Челябинская:
+        delivery_zone: 3
+      Чеченская:
+        delivery_zone: 3
+      Чувашская:
+        delivery_zone: 2
+      Чувашская республика:
+        delivery_zone: 2
+      Чукотский:
+        delivery_zone: 5
+      Ямало-Ненецкий:
+        delivery_zone: 5
+      Ярославская:
+        delivery_zone: 2
