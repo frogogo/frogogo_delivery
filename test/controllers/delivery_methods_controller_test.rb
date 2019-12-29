@@ -21,14 +21,14 @@ class DeliveryMethodsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should return no content' do
+  test 'should return not found' do
     get delivery_methods_path(
       headers: {
         Accept: 'application/json'
       }
     )
 
-    assert_response :no_content
+    assert_response :not_found
   end
 
   test 'should return turkey post for turkey locale' do
