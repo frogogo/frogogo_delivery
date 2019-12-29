@@ -12,7 +12,10 @@ class DeliveryMethodsResolver
   def resolve
     return if country.blank?
 
-    search_by_params || fetch_new_data
+    @result = search_by_params
+    return result.delivery_methods if result.present?
+
+    fetch_new_data
   end
 
   private
@@ -20,8 +23,12 @@ class DeliveryMethodsResolver
   attr_reader :locality_name, :subdivision, :subdivision_name
 
   def create_locality_and_subdivision
-    @subdivision = Subdivision.create!(name: subdivision_name, country: country)
-    @locality = Locality.create!(name: locality_name, subdivision: subdivision)
+    @subdivision = Subdivision.find_or_create_by!(
+      name: subdivision_name, country: country, delivery_zone: delivery_zone(subdivision_name, :regions)
+    )
+    @locality = Locality.find_or_create_by!(
+      name: locality_name, subdivision: subdivision, delivery_zone: delivery_zone(locality_name, :cities)
+    )
   end
 
   def fetch_new_data
@@ -29,7 +36,7 @@ class DeliveryMethodsResolver
     when :ru
       create_locality_and_subdivision
 
-      RU::BoxberryService.new(locality).fetch_delivery_info
+      RU::BoxberryService.new(locality: locality).fetch_delivery_info
       # shoplogistics, etc...
       locality.delivery_methods
     end
@@ -41,9 +48,15 @@ class DeliveryMethodsResolver
       Locality.joins(:subdivision).find_by(
         name: locality_name,
         subdivisions: { name: subdivision_name, country: country }
-      )&.delivery_methods
+      )
     when :tr
       DeliveryMethod.joins(:provider).where(providers: { name: TURKEY_POST_NAME }).limit(1)
     end
+  end
+
+  def delivery_zone(name, zone)
+    DeliveryZone.find_by(
+      zone: I18n.t(name, scope: [:delivery_zones, zone], locale: :ru, default: {})[:delivery_zone]
+    )
   end
 end
