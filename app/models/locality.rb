@@ -32,4 +32,10 @@ class Locality < ApplicationRecord
   has_many :delivery_methods, as: :deliverable, dependent: :destroy
 
   validates :name, presence: true
+
+  before_create :set_delivery_zone, if: -> { delivery_zone.blank? }
+
+  def set_delivery_zone
+    self.delivery_zone = subdivision.delivery_zone
+  end
 end
