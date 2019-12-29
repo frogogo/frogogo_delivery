@@ -1,12 +1,12 @@
 class RU::BoxberryService < DeliveryService
-  def delivery_info
-    @fetched_response = RU::BoxberryAdapter.new(locality: locality).fetch_delivery_info
+  def fetch_delivery_info
+    @response = RU::BoxberryAdapter.new(locality: locality).delivery_info
 
     parsed_response
   end
 
-  def localities_list
-    @fetched_response = RU::BoxberryAdapter.new.fetch_localities_list
+  def fetch_localities_list
+    @response = RU::BoxberryAdapter.new.localities_list
 
     parsed_response
   end
@@ -14,6 +14,6 @@ class RU::BoxberryService < DeliveryService
   private
 
   def parsed_response
-    fetched_response.parsed_response
+    response.parsed_response
   end
 end

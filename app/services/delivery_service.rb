@@ -1,15 +1,15 @@
 class DeliveryService
-  attr_reader :locality, :fetched_response
+  attr_reader :locality, :response
 
   def initialize(locality: nil)
     @locality = locality
   end
 
-  def delivery_info
+  def fetch_delivery_info
     raise NotImplementedError
   end
 
-  def localities_list
+  def fetch_localities_list
     raise NotImplementedError
   end
 end

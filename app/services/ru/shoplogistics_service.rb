@@ -1,12 +1,12 @@
 class RU::ShoplogisticsService < DeliveryService
-  def delivery_info
-    @fetched_response = RU::ShoplogisticsAdapter.new(locality: locality).fetch_delivery_info
+  def fetch_delivery_info
+    @response = RU::ShoplogisticsAdapter.new(locality: locality).delivery_info
 
     parsed_response
   end
 
-  def localities_list
-    @fetched_response = RU::ShoplogisticsAdapter.new.fetch_localities_list
+  def fetch_localities_list
+    @response = RU::ShoplogisticsAdapter.new.localities_list
 
     parsed_response
   end
@@ -14,6 +14,6 @@ class RU::ShoplogisticsService < DeliveryService
   private
 
   def parsed_response
-    Hash.from_xml(fetched_response.parsed_response)
+    Hash.from_xml(response.parsed_response)
   end
 end
