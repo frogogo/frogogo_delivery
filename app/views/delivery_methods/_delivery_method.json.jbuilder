@@ -4,6 +4,6 @@ json.cache! delivery_method do
                 :method, :time_intervals
 
   json.provider do
-    json.partial! 'providers/provider', delivery_method.provider
+    json.partial! 'providers/provider', provider: delivery_method.provider
   end
 end
