@@ -8,6 +8,7 @@
 #  directions         :string
 #  latitude           :string
 #  longitude          :string
+#  name               :string
 #  phone_number       :string
 #  working_hours      :string
 #  created_at         :datetime         not null

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_29_123137) do
+ActiveRecord::Schema.define(version: 2019_12_29_232417) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 2019_12_29_123137) do
     t.string "working_hours"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "name"
     t.index ["address", "delivery_method_id"], name: "index_delivery_points_on_address_and_delivery_method_id", unique: true
     t.index ["delivery_method_id"], name: "index_delivery_points_on_delivery_method_id"
   end
