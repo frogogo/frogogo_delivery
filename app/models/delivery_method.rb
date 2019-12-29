@@ -34,14 +34,6 @@ class DeliveryMethod < ApplicationRecord
   has_many :delivery_points, dependent: :destroy
 
   def self.search(search_params)
-    case search_params[:locale]&.to_sym
-    when :ru
-      Locality.joins(:subdivision).find_by(
-        name: search_params[:locality],
-        subdivisions: { name: search_params[:subdivision] }
-      )&.delivery_methods
-    when :tr
-      joins(:provider).where(providers: { name: 'Turkey Post' }).limit(1)
-    end
+    DeliveryMethodsResolver.new(search_params).resolve
   end
 end
