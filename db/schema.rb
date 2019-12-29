@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_25_095957) do
+ActiveRecord::Schema.define(version: 2019_12_29_083237) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,21 @@ ActiveRecord::Schema.define(version: 2019_12_25_095957) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["deliverable_type", "deliverable_id"], name: "index_delivery_methods_on_deliverable_type_and_deliverable_id"
     t.index ["provider_id"], name: "index_delivery_methods_on_provider_id"
+  end
+
+  create_table "delivery_points", force: :cascade do |t|
+    t.bigint "delivery_method_id"
+    t.string "address", null: false
+    t.string "code"
+    t.string "directions"
+    t.string "latitude"
+    t.string "longitude"
+    t.string "phone_number"
+    t.string "working_hours"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["address", "delivery_method_id"], name: "index_delivery_points_on_address_and_delivery_method_id", unique: true
+    t.index ["delivery_method_id"], name: "index_delivery_points_on_delivery_method_id"
   end
 
   create_table "delivery_zones", force: :cascade do |t|
@@ -89,6 +104,7 @@ ActiveRecord::Schema.define(version: 2019_12_25_095957) do
   end
 
   add_foreign_key "delivery_methods", "providers"
+  add_foreign_key "delivery_points", "delivery_methods"
   add_foreign_key "delivery_zones", "countries"
   add_foreign_key "localities", "delivery_zones"
   add_foreign_key "localities", "subdivisions"

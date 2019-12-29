@@ -2,6 +2,10 @@ russian_post:
   method: 0
   deliverable: moscow (Locality)
   provider: russian_post
+shoplogistics1:
+  method: 2
+  deliverable: moscow (Locality)
+  provider: shoplogistics
 turkey_post:
   method: 0
   deliverable: tr_default_sub (Subdivision)

@@ -31,6 +31,8 @@ class DeliveryMethod < ApplicationRecord
   belongs_to :deliverable, polymorphic: true
   belongs_to :provider
 
+  has_many :delivery_points, dependent: :destroy
+
   def self.search(search_params)
     case search_params[:locale]&.to_sym
     when :ru
