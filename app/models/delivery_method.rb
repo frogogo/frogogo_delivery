@@ -34,7 +34,10 @@ class DeliveryMethod < ApplicationRecord
   has_many :delivery_points, dependent: :destroy
 
   def estimate_delivery_date
-    Date.current + date_interval.last&.to_i&.days if date_interval.present?
+    return if date_interval.blank?
+
+    # TODO: calculate delivery date
+    (Date.current + date_interval.last.to_i.days)
   end
 
   def self.search(search_params)
