@@ -12,12 +12,7 @@ class DeliveryMethodsResolver
   def resolve
     return if country.blank?
 
-    @result = search_by_params
-
-    return result if result.present?
-
-    create_locality_and_subdivision
-    # RU::BoxberryService.new(locality).delivery_info
+    search_by_params || fetch_new_data
   end
 
   private
@@ -27,6 +22,17 @@ class DeliveryMethodsResolver
   def create_locality_and_subdivision
     @subdivision = Subdivision.create!(name: subdivision_name, country: country)
     @locality = Locality.create!(name: locality_name, subdivision: subdivision)
+  end
+
+  def fetch_new_data
+    case country.language_code.to_sym
+    when :ru
+      create_locality_and_subdivision
+
+      RU::BoxberryService.new(locality).fetch_delivery_info
+      # shoplogistics, etc...
+      locality.delivery_methods
+    end
   end
 
   def search_by_params
