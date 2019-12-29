@@ -1,6 +1,6 @@
 # Create countries
+# slovenia = Country.create!(iso_code: 'SI', language_code: 'sl', name: 'Slovenia')
 russia = Country.create!(iso_code: 'RU', language_code: 'ru', name: 'Россия')
-slovenia = Country.create!(iso_code: 'SI', language_code: 'sl', name: 'Slovenia')
 turkey = Country.create!(iso_code: 'TR', language_code: 'tr', name: 'Turkey')
 
 # Create delivery_zones
@@ -14,21 +14,21 @@ DeliveryZone.create!(fee: 7, free_delivery_gold_threshold: 100, free_delivery_th
 
 # Create subdivisions
 # istanbul = Subdivision.create!(iso_code: 'TR-34', local_code: '34', name: 'İstanbul', country: turkey)
-tr_default_sub = Subdivision.create!(iso_code: '00', local_code: '00', name: 'Default', country: turkey)
-ljubljana = Subdivision.create!(iso_code: 'SI-061', local_code: '61', name: 'Ljubljana', country: slovenia)
-moscow = Subdivision.create!(iso_code: 'RU-MOW', local_code: '45', name: 'Москва', delivery_zone: russia.delivery_zones.first, country: russia)
+# ljubljana = Subdivision.create!(iso_code: 'SI-061', local_code: '61', name: 'Ljubljana', country: slovenia)
+tr_default_sub = Subdivision.create!(iso_code: '00', local_code: '00', name: 'Default', country: turkey, delivery_zone: turkey.delivery_zones.default.first)
+moscow = Subdivision.create!(iso_code: 'RU-MOW', local_code: '45', name: 'Москва', country: russia, delivery_zone: russia.delivery_zones.find_by(zone: 1))
 
 # Create localities
-Locality.create!(name: 'İstanbul', local_code: '212', postal_code: '34000', subdivision: tr_default_sub)
-Locality.create!(name: 'Ljubljana', local_code: '3861', postal_code: '1000', subdivision: ljubljana)
-Locality.create!(name: 'Москва', local_code: '45000000', postal_code: '101000', delivery_zone: russia.delivery_zones.first, subdivision: moscow)
+# Locality.create!(name: 'İstanbul', local_code: '212', postal_code: '34000', subdivision: tr_default_sub)
+# Locality.create!(name: 'Ljubljana', local_code: '3861', postal_code: '1000', subdivision: ljubljana)
+Locality.create!(name: 'Москва', local_code: '45000000', postal_code: '101000', delivery_zone: russia.delivery_zones.find_by(zone: 1), subdivision: moscow)
 
 # Create providers
+# Provider.create!(name: 'Russian Post')
 Provider.create!(name: 'Boxberry')
-Provider.create!(name: 'Russian Post')
 Provider.create!(name: 'ShopLogistics')
-turkey_post = Provider.create!(name: 'Turkey Post')
+Provider.create!(name: 'Turkey Post')
 
 # Create delivery methods
 # DeliveryMethod.create!(method: :post, deliverable: moscow, provider: russian_post)
-DeliveryMethod.create!(method: :post, deliverable: tr_default_sub, provider: turkey_post)
+DeliveryMethod.create!(method: :post, deliverable: tr_default_sub, provider: Provider.find_by(name: 'Turkey Post'))
