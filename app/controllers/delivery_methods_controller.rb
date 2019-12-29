@@ -1,5 +1,5 @@
 class DeliveryMethodsController < ApplicationController
-  def show
+  def index
     @delivery_methods = DeliveryMethod.search(search_params)
 
     return head :not_found if @delivery_methods.blank?
