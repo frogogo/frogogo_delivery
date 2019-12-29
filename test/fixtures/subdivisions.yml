@@ -3,6 +3,7 @@ tr_default_sub:
   local_code: 00
   name: Default
   country: turkey
+  delivery_zone: turkey_delivery_zone
 istanbul:
   iso_code: TR-34
   local_code: 34
