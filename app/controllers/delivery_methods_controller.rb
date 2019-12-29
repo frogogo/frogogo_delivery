@@ -1,8 +1,9 @@
 class DeliveryMethodsController < ApplicationController
   def index
     @delivery_methods = DeliveryMethod.search(search_params)
-
     return head :not_found if @delivery_methods.blank?
+
+    @delivery_points = DeliveryPoint.where(delivery_method: @delivery_methods)
   end
 
   private
