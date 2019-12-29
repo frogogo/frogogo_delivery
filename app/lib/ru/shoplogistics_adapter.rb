@@ -19,8 +19,6 @@ class RU::ShoplogisticsAdapter < DeliveryAdapter
   }
 
   def delivery_info
-    validate_locality!
-
     @request_body = DELIVERY_INFO_REQUEST_BODY.merge(to_city: locality.name)
 
     request_data

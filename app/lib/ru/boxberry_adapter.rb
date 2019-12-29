@@ -12,8 +12,6 @@ class RU::BoxberryAdapter < DeliveryAdapter
   end
 
   def pickup_delivery_info
-    validate_locality!
-
     @request_body = { method: LIST_POINTS, citycode: city_code }
 
     request_data

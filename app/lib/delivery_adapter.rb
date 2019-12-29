@@ -1,11 +1,9 @@
 class DeliveryAdapter
   attr_reader :locality, :request_body
 
-  def initialize(locality: nil)
-    @locality = locality
-  end
+  def initialize(locality)
+    raise ArgumentError if locality.class != Locality
 
-  def validate_locality!
-    raise ArgumentError if locality.blank? || locality.class != Locality
+    @locality = locality
   end
 end
