@@ -5,6 +5,7 @@ class DeliveryMethodsController < ApplicationController
 
     @delivery_points = DeliveryPoint.where(delivery_method: @delivery_methods)
     @delivery_zone = @delivery_methods.first.deliverable.delivery_zone
+    return head :not_found if @delivery_zone.blank?
   end
 
   private
