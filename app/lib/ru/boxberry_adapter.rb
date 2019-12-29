@@ -12,7 +12,7 @@ class RU::BoxberryAdapter < DeliveryAdapter
   def fetch_delivery_info
     super
 
-    @request_body = FETCH_DELIVERY_INFO_REQUEST_BODY.merge(citycode: locality)
+    @request_body = FETCH_DELIVERY_INFO_REQUEST_BODY.merge(citycode: locality.name)
 
     request_data
   end

@@ -29,7 +29,7 @@ class RU::ShoplogisticsAdapter < DeliveryAdapter
   def fetch_delivery_info
     super
 
-    @request_body = FETCH_DELIVERY_INFO_REQUEST_BODY.merge(to_city: locality)
+    @request_body = FETCH_DELIVERY_INFO_REQUEST_BODY.merge(to_city: locality.name)
 
     request_data
   end

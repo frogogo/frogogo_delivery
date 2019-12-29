@@ -10,6 +10,6 @@ class DeliveryAdapter
   end
 
   def fetch_delivery_info
-    raise ArgumentError if locality.blank?
+    raise ArgumentError if locality.blank? || locality.class != Locality
   end
 end
