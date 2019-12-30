@@ -3,7 +3,7 @@ class RU::BoxberryAdapter < DeliveryAdapter
   LIST_POINTS = 'ListPoints'
   LIST_CITIES = 'ListCitiesFull'
 
-  attr_reader :city_code
+  attr_accessor :city_code
 
   def localities_list
     @request_body = { method: LIST_CITIES }
@@ -12,7 +12,7 @@ class RU::BoxberryAdapter < DeliveryAdapter
   end
 
   def pickup_delivery_info
-    @request_body = { method: LIST_POINTS, citycode: city_code }
+    @request_body = { method: LIST_POINTS, CityCode: city_code }
 
     request_data
   end

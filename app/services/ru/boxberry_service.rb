@@ -1,19 +1,47 @@
 class RU::BoxberryService < DeliveryService
-  def fetch_delivery_info
-    @response = RU::BoxberryAdapter.new(locality: locality).delivery_info
+  def initialize(locality)
+    super
 
-    parsed_response
+    @delivery_service = RU::BoxberryAdapter.new(locality)
   end
 
-  def fetch_localities_list
-    @response = RU::BoxberryAdapter.new.localities_list
+  def fetch_delivery_info
+    @response = delivery_service.localities_list
+    return if city_code.blank?
 
-    parsed_response
+    delivery_service.city_code = city_code
+    @response = delivery_service.pickup_delivery_info
+
+    save_pickup_data
   end
 
   private
 
-  def parsed_response
-    response.parsed_response
+  def city_code
+    @city_code =
+      response.parsed_response.each do |city|
+        if city['Name'] == locality.name && city['Region'] == locality.subdivision.name
+          return city['Code']
+        end
+      end
+  end
+
+  def save_pickup_data
+    @delivery_method = DeliveryMethod.create!(
+      date_interval: response.parsed_response.first['DeliveryPeriod'],
+      method: :pickup, deliverable: locality, provider: Provider.find_by(name: 'Boxberry')
+    )
+    response.parsed_response.each do |pickup|
+      DeliveryPoint.create!(
+        address: pickup['Address'],
+        directions: pickup['TripDescription'],
+        latitude: pickup['GPS'].split(',').first,
+        longitude: pickup['GPS'].split(',').last,
+        name: pickup['Name'],
+        phone_number: pickup['Phone'],
+        working_hours: pickup['WorkShedule'],
+        delivery_method: @delivery_method
+      )
+    end
   end
 end
