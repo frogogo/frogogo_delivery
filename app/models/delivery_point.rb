@@ -5,6 +5,7 @@
 #  id                 :bigint           not null, primary key
 #  address            :string           not null
 #  code               :string
+#  date_interval      :string
 #  directions         :string
 #  latitude           :string
 #  longitude          :string
