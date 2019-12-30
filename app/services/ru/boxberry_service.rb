@@ -1,4 +1,8 @@
 class RU::BoxberryService < DeliveryService
+  BOXBERRY_NAME = 'Boxberry'
+  TIME_INTERVALS = '10:00–18:00'
+  # TODO: SET 10:00–22:00 for Moscow and SPB
+
   def initialize(locality)
     super
 
@@ -11,8 +15,7 @@ class RU::BoxberryService < DeliveryService
 
     delivery_service.city_code = city_code
     @response = delivery_service.pickup_delivery_info
-
-    save_pickup_data
+    save_data
   end
 
   private
@@ -26,11 +29,18 @@ class RU::BoxberryService < DeliveryService
       end
   end
 
-  def save_pickup_data
+  def save_data
     @delivery_method = DeliveryMethod.create!(
       date_interval: response.parsed_response.first['DeliveryPeriod'],
-      method: :pickup, deliverable: locality, provider: Provider.find_by(name: 'Boxberry')
+      method: :pickup, deliverable: locality, provider: Provider.find_by(name: BOXBERRY_NAME)
     )
+
+    @delivery_method = DeliveryMethod.create!(
+      date_interval: response.parsed_response.first['DeliveryPeriod'],
+      method: :courier, time_intervals: [TIME_INTERVALS],
+      deliverable: locality, provider: Provider.find_by(name: BOXBERRY_NAME)
+    )
+
     response.parsed_response.each do |pickup|
       DeliveryPoint.create!(
         address: pickup['Address'],
