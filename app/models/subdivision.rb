@@ -26,6 +26,8 @@
 #
 
 class Subdivision < ApplicationRecord
+  DEFAULT_NAME = 'Default'
+
   belongs_to :delivery_zone, optional: true
   belongs_to :country
 
