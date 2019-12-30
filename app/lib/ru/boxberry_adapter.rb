@@ -1,7 +1,8 @@
 class RU::BoxberryAdapter < DeliveryAdapter
   BASE_URI = 'https://api.boxberry.ru/json.php'
-  LIST_POINTS = 'ListPoints'
+  COURIER_LIST_CITIES = 'CourierListCities'
   LIST_CITIES = 'ListCitiesFull'
+  LIST_POINTS = 'ListPoints'
 
   attr_accessor :city_code
 
