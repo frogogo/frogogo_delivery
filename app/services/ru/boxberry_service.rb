@@ -11,7 +11,6 @@ class RU::BoxberryService < DeliveryService
   end
 
   def fetch_delivery_info
-    @response = delivery_service.localities_list
     return if city_code.blank?
 
     delivery_service.city_code = city_code
@@ -25,7 +24,7 @@ class RU::BoxberryService < DeliveryService
 
   def city_code
     @city_code =
-      response.parsed_response.each do |city|
+      localities_list.each do |city|
         if city['Name'] == locality.name && city['Region'] == locality.subdivision.name
           return city['Code']
         end
@@ -33,20 +32,20 @@ class RU::BoxberryService < DeliveryService
   end
 
   def save_data
-    return if response.parsed_response.first['Address'].blank?
+    return if response.first['Address'].blank?
 
     @delivery_method = DeliveryMethod.create!(
-      date_interval: response.parsed_response.first['DeliveryPeriod'],
+      date_interval: response.first['DeliveryPeriod'],
       method: :pickup, deliverable: locality, provider: provider
     )
 
     DeliveryMethod.create!(
-      date_interval: response.parsed_response.first['DeliveryPeriod'],
+      date_interval: response.first['DeliveryPeriod'],
       method: :courier, time_intervals: [TIME_INTERVALS],
       deliverable: locality, provider: provider
     )
 
-    response.parsed_response.each do |pickup|
+    response.each do |pickup|
       DeliveryPoint.create!(
         address: pickup['Address'],
         directions: pickup['TripDescription'],
