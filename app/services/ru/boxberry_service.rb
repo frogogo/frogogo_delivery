@@ -30,20 +30,20 @@ class RU::BoxberryService < DeliveryService
   end
 
   def save_data
+    return if response.parsed_response.first['Address'].blank?
+
     @delivery_method = DeliveryMethod.create!(
       date_interval: response.parsed_response.first['DeliveryPeriod'],
       method: :pickup, deliverable: locality, provider: Provider.find_by(name: BOXBERRY_NAME)
     )
 
-    response.parsed_response.each do |pickup|
-      if pickup['NalKD'] == 'Yes'
-        DeliveryMethod.create!(
-          date_interval: pickup['DeliveryPeriod'],
-          method: :courier, time_intervals: [TIME_INTERVALS],
-          deliverable: locality, provider: Provider.find_by(name: BOXBERRY_NAME)
-        )
-      end
+    DeliveryMethod.create!(
+      date_interval: response.parsed_response.first['DeliveryPeriod'],
+      method: :courier, time_intervals: [TIME_INTERVALS],
+      deliverable: locality, provider: Provider.find_by(name: BOXBERRY_NAME)
+    )
 
+    response.parsed_response.each do |pickup|
       DeliveryPoint.create!(
         address: pickup['Address'],
         directions: pickup['TripDescription'],
