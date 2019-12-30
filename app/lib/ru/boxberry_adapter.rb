@@ -9,13 +9,13 @@ class RU::BoxberryAdapter < DeliveryAdapter
   def localities_list
     @request_body = { method: LIST_CITIES }
 
-    request_data
+    request_data.parsed_response
   end
 
   def pickup_delivery_info
     @request_body = { method: LIST_POINTS, CityCode: city_code }
 
-    request_data
+    request_data.parsed_response
   end
 
   private
