@@ -7,6 +7,7 @@ class RU::BoxberryService < DeliveryService
     super
 
     @delivery_service = RU::BoxberryAdapter.new(locality)
+    @provider = Provider.find_by(name: BOXBERRY_NAME)
   end
 
   def fetch_delivery_info
@@ -19,6 +20,8 @@ class RU::BoxberryService < DeliveryService
   end
 
   private
+
+  attr_reader :provider
 
   def city_code
     @city_code =
@@ -34,13 +37,13 @@ class RU::BoxberryService < DeliveryService
 
     @delivery_method = DeliveryMethod.create!(
       date_interval: response.parsed_response.first['DeliveryPeriod'],
-      method: :pickup, deliverable: locality, provider: Provider.find_by(name: BOXBERRY_NAME)
+      method: :pickup, deliverable: locality, provider: provider
     )
 
     DeliveryMethod.create!(
       date_interval: response.parsed_response.first['DeliveryPeriod'],
       method: :courier, time_intervals: [TIME_INTERVALS],
-      deliverable: locality, provider: Provider.find_by(name: BOXBERRY_NAME)
+      deliverable: locality, provider: provider
     )
 
     response.parsed_response.each do |pickup|
