@@ -1,12 +1,12 @@
 class RU::ShoplogisticsService < DeliveryService
-  def fetch_delivery_info
-    @response = RU::ShoplogisticsAdapter.new(locality: locality).delivery_info
+  def initialize(locality)
+    super
 
-    parsed_response
+    @delivery_service = RU::ShoplogisticsAdapter.new(locality)
   end
 
-  def fetch_localities_list
-    @response = RU::ShoplogisticsAdapter.new.localities_list
+  def fetch_delivery_info
+    @response = delivery_service.delivery_info
 
     parsed_response
   end
