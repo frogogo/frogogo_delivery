@@ -39,8 +39,4 @@ class DeliveryMethod < ApplicationRecord
     # TODO: calculate delivery date
     (Date.current + date_interval.last.to_i.days)
   end
-
-  def self.search(search_params)
-    DeliveryMethodsResolver.new(search_params).resolve
-  end
 end
