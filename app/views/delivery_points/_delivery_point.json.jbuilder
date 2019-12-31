@@ -3,4 +3,8 @@ json.cache! delivery_point, expires_in: Time.current.end_of_day - Time.current d
                 :address, :code, :date_interval, :directions,
                 :estimate_delivery_date, :latitude,
                 :longitude, :name, :phone_number, :working_hours
+
+  json.provider do
+    json.partial! 'providers/provider', provider: delivery_point.delivery_method.provider
+  end
 end
