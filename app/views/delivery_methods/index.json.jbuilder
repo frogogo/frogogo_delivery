@@ -2,8 +2,10 @@ json.delivery_methods do
   json.array! @delivery_methods, partial: 'delivery_method', as: :delivery_method
 end
 
-json.delivery_points do
-  json.array! @delivery_points, partial: '/delivery_points/delivery_point', as: :delivery_point
+json.cache! @delivery_points, expires_in: Time.current.end_of_day - Time.current do
+  json.delivery_points do
+    json.array! @delivery_points, partial: '/delivery_points/delivery_point', as: :delivery_point
+  end
 end
 
 json.delivery_zone do
