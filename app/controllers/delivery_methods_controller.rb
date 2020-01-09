@@ -11,6 +11,6 @@ class DeliveryMethodsController < ApplicationController
   private
 
   def search_params
-    params.permit(:locale, :locality, :subdivision)
+    params.permit(:locality, :subdivision)
   end
 end

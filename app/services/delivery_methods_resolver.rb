@@ -2,7 +2,7 @@ class DeliveryMethodsResolver
   attr_reader :country, :locality, :result
 
   def initialize(search_params)
-    @country = Country.find_by(language_code: search_params[:locale])
+    @country = Country.find_by(language_code: I18n.locale)
     @locality_name = search_params[:locality]
     @subdivision_name = search_params[:subdivision]
   end
