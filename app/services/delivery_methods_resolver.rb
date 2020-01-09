@@ -8,7 +8,7 @@ class DeliveryMethodsResolver
   end
 
   def resolve
-    return if country.blank?
+    return if country.blank? || locality_name.blank?
 
     @result = search_by_params
     return result.delivery_methods if result.present?
