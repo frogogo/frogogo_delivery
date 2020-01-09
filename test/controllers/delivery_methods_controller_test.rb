@@ -21,10 +21,23 @@ class DeliveryMethodsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should raise argument error' do
+    assert_raises(ArgumentError) do
+      get delivery_methods_path(
+        headers: {
+          Accept: 'application/json'
+        }
+      )
+    end
+  end
+
   test 'should return not found' do
     get delivery_methods_path(
       headers: {
         Accept: 'application/json'
+      },
+      params: {
+        locale: :ru
       }
     )
 
