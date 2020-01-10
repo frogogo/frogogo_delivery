@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_10_150819) do
+ActiveRecord::Schema.define(version: 2020_01_10_162123) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 2020_01_10_150819) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "name"
     t.string "date_interval"
+    t.boolean "inactive", default: false
     t.index ["address", "delivery_method_id"], name: "index_delivery_points_on_address_and_delivery_method_id", unique: true
     t.index ["delivery_method_id"], name: "index_delivery_points_on_delivery_method_id"
   end

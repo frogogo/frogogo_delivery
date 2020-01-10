@@ -7,6 +7,7 @@
 #  code               :string
 #  date_interval      :string
 #  directions         :string
+#  inactive           :boolean          default(FALSE)
 #  latitude           :string
 #  longitude          :string
 #  name               :string
@@ -27,6 +28,7 @@
 #
 
 class DeliveryPoint < ApplicationRecord
+  include Activatable
   include Dateable
 
   belongs_to :delivery_method, touch: true
