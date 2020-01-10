@@ -8,4 +8,11 @@ class ProviderTest < ActiveSupport::TestCase
   test 'valid' do
     assert @provider.valid?
   end
+
+  test 'should update inactive field in delivery methods' do
+    @provider.inactive = !@provider.inactive
+    @provider.save
+
+    assert @provider.delivery_methods.pluck(:inactive).all?(@provider.inactive)
+  end
 end
