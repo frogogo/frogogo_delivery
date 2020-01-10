@@ -16,5 +16,7 @@
 #
 
 class Provider < ApplicationRecord
+  has_many :delivery_methods, dependent: :destroy
+
   validates :name, presence: true, uniqueness: true
 end
