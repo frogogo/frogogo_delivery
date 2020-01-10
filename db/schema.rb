@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_30_131729) do
+ActiveRecord::Schema.define(version: 2020_01_10_150819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 2019_12_30_131729) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "code"
     t.jsonb "localities_list"
+    t.boolean "inactive", default: false
     t.index ["name"], name: "index_providers_on_name", unique: true
   end
 

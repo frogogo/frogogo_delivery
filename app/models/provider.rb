@@ -4,6 +4,7 @@
 #
 #  id              :bigint           not null, primary key
 #  code            :string
+#  inactive        :boolean          default(FALSE)
 #  localities_list :jsonb
 #  name            :string           not null
 #  created_at      :datetime         not null
