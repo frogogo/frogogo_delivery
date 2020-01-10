@@ -8,6 +8,8 @@ AllCops:
   TargetRailsVersion: 6
 Layout/HeredocIndentation:
   Enabled: false
+Layout/LineLength:
+  Max: 100
 Layout/MultilineMethodCallIndentation:
   Enabled: false
 Metrics/AbcSize:
@@ -18,8 +20,6 @@ Metrics/ClassLength:
   Enabled: false
 Metrics/MethodLength:
   Enabled: false
-Metrics/LineLength:
-  Max: 100
 Rails/SkipsModelValidations:
   Enabled: false
 Rails/UnknownEnv:
