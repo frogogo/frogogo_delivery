@@ -11,7 +11,7 @@ class DeliveryMethodsResolver
     return if country.blank? || locality_name.blank?
 
     @result = search_by_params
-    return result.delivery_methods if result.present?
+    return result.delivery_methods.active if result.present?
 
     fetch_new_data
   end
