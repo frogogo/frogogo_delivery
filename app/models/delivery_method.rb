@@ -24,9 +24,8 @@
 #
 
 class DeliveryMethod < ApplicationRecord
+  include Activatable
   include Dateable
-
-  scope :active, -> { where(inactive: false) }
 
   enum method: { post: 0, courier: 1, pickup: 2 }
 
