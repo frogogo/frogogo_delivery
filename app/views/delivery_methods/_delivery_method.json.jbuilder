@@ -1,4 +1,4 @@
-json.cache! delivery_method, expires_in: Time.current.end_of_day - Time.current do
+json.cache! delivery_method, expires_in: delivery_method.expires_in do
   json.extract! delivery_method,
                 :courier_delivery_dates, :estimate_delivery_date,
                 :date_interval, :method, :time_intervals
