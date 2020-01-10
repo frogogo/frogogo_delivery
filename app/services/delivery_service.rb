@@ -1,6 +1,4 @@
 class DeliveryService
-  attr_reader :delivery_service, :locality, :response
-
   def initialize(locality)
     raise ArgumentError if locality.class != Locality
 
@@ -8,10 +6,12 @@ class DeliveryService
   end
 
   def fetch_delivery_info
-    raise NotImplementedError
+    return if provider.inactive?
   end
 
   private
+
+  attr_reader :delivery_service, :locality, :provider, :response
 
   def localities_list
     return provider.localities_list if provider.localities_list.present?

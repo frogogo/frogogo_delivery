@@ -11,6 +11,8 @@ class RU::BoxberryService < DeliveryService
   end
 
   def fetch_delivery_info
+    super
+
     return if city_code.blank?
 
     delivery_service.city_code = city_code
@@ -19,8 +21,6 @@ class RU::BoxberryService < DeliveryService
   end
 
   private
-
-  attr_reader :provider
 
   def city_code
     @city_code =

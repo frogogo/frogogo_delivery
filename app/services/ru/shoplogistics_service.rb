@@ -9,14 +9,14 @@ class RU::ShoplogisticsService < DeliveryService
   end
 
   def fetch_delivery_info
+    super
+
     @response = delivery_service.delivery_info
 
     parsed_response
   end
 
   private
-
-  attr_reader :provider
 
   def parsed_response
     Hash.from_xml(response.parsed_response)
