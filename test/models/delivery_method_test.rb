@@ -8,4 +8,11 @@ class DeliveryMethodTest < ActiveSupport::TestCase
   test 'valid' do
     assert @delivery_method.valid?
   end
+
+  test 'should update inactive field in delivery points' do
+    @delivery_method.inactive = !@delivery_method.inactive
+    @delivery_method.save
+
+    assert @delivery_method.delivery_points.pluck(:inactive).all?(@delivery_method.inactive)
+  end
 end

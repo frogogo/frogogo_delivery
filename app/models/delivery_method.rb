@@ -34,9 +34,18 @@ class DeliveryMethod < ApplicationRecord
 
   has_many :delivery_points, dependent: :destroy
 
+  after_update_commit :update_inactive_field_in_delivery_points, if: :saved_change_to_inactive?
+
   def courier_delivery_dates
     return unless courier?
 
     Hash[(estimate_delivery_date..(estimate_delivery_date + 7.days)).to_a.product(time_intervals)]
+  end
+
+  private
+
+  def update_inactive_field_in_delivery_points
+    delivery_points.update_all(inactive: inactive)
+    delivery_points.touch_all
   end
 end
