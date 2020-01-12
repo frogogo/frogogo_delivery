@@ -54,7 +54,7 @@ class DeliveryMethodsResolver
 
   def delivery_zone(name, zone)
     DeliveryZone.find_by(
-      zone: I18n.t(name, scope: [:delivery_zones, zone], locale: :ru, default: {})[:delivery_zone]
+      zone: I18n.t(name, scope: [:delivery_zones, zone], default: {})[:delivery_zone]
     )
   end
 end
