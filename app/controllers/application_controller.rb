@@ -2,6 +2,9 @@ class ApplicationController < ActionController::API
   include ActionController::Caching
   include ActionController::HttpAuthentication::Token::ControllerMethods
 
+  ACCEPT_LANGUAGE_HEADER = 'HTTP_ACCEPT_LANGUAGE'
+  LANGUAGE_CODE_REGEXP = /^[a-z]{2}/
+
   before_action :authenticate!
   before_action :set_locale!
 
@@ -18,7 +21,7 @@ class ApplicationController < ActionController::API
   end
 
   def set_locale!
-    @locale = request.env['HTTP_ACCEPT_LANGUAGE']&.scan(/^[a-z]{2}/)&.first
+    @locale = request.env[ACCEPT_LANGUAGE_HEADER]&.scan(LANGUAGE_CODE_REGEXP)&.first
 
     raise ArgumentError if locale.blank?
   end
