@@ -9,8 +9,8 @@ class DeliveryMethodsControllerTest < ActionDispatch::IntegrationTest
   test 'should return delivery methods for moscow' do
     get delivery_methods_path,
         headers: {
-          'Accept' => 'application/json',
-          'Accept-Language' => 'ru',
+          'Accept': 'application/json',
+          'Accept-Language': 'ru'
         }.merge(bearer_token),
         params: {
           locality: @moscow.name,
@@ -24,7 +24,7 @@ class DeliveryMethodsControllerTest < ActionDispatch::IntegrationTest
     assert_raises(ArgumentError) do
       get delivery_methods_path,
           headers: {
-            Accept: 'application/json'
+            'Accept': 'application/json'
           }.merge(bearer_token)
     end
   end
@@ -32,8 +32,8 @@ class DeliveryMethodsControllerTest < ActionDispatch::IntegrationTest
   test 'should return not found' do
     get delivery_methods_path,
         headers: {
-          'Accept' => 'application/json',
-          'Accept-Language' => 'ru'
+          'Accept': 'application/json',
+          'Accept-Language': 'ru'
         }.merge(bearer_token)
 
     assert_response :not_found
@@ -42,8 +42,8 @@ class DeliveryMethodsControllerTest < ActionDispatch::IntegrationTest
   test 'should return turkey post for turkey locale' do
     get delivery_methods_path,
         headers: {
-          'Accept' => 'application/json',
-          'Accept-Language' => 'tr'
+          'Accept': 'application/json',
+          'Accept-Language': 'tr'
         }.merge(bearer_token),
         params: {
           locality: @istanbul.name,
