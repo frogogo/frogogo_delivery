@@ -16,9 +16,9 @@ class ApplicationController < ActionController::API
   end
 
   def set_locale!
-    raise ArgumentError if params[:locale].blank?
+    @locale = request.env['HTTP_ACCEPT_LANGUAGE']&.scan(/^[a-z]{2}/)&.first
 
-    @locale = params[:locale].to_sym
+    raise ArgumentError if locale.blank?
   end
 
   def switch_locale(&action)
