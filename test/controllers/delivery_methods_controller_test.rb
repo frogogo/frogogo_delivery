@@ -10,8 +10,8 @@ class DeliveryMethodsControllerTest < ActionDispatch::IntegrationTest
     get delivery_methods_path,
         headers: {
           'Accept' => 'application/json',
-          'Accept-Language' => 'ru'
-        },
+          'Accept-Language' => 'ru',
+        }.merge(bearer_token),
         params: {
           locality: @moscow.name,
           subdivision: @moscow.subdivision.name
@@ -25,7 +25,7 @@ class DeliveryMethodsControllerTest < ActionDispatch::IntegrationTest
       get delivery_methods_path,
           headers: {
             Accept: 'application/json'
-          }
+          }.merge(bearer_token)
     end
   end
 
@@ -34,7 +34,7 @@ class DeliveryMethodsControllerTest < ActionDispatch::IntegrationTest
         headers: {
           'Accept' => 'application/json',
           'Accept-Language' => 'ru'
-        }
+        }.merge(bearer_token)
 
     assert_response :not_found
   end
@@ -44,7 +44,7 @@ class DeliveryMethodsControllerTest < ActionDispatch::IntegrationTest
         headers: {
           'Accept' => 'application/json',
           'Accept-Language' => 'tr'
-        },
+        }.merge(bearer_token),
         params: {
           locality: @istanbul.name,
           subdivision: @istanbul.subdivision.name

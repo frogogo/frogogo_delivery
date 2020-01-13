@@ -1,7 +1,8 @@
 class ApplicationController < ActionController::API
   include ActionController::Caching
+  include ActionController::HttpAuthentication::Token::ControllerMethods
 
-  before_action :authenticate
+  before_action :authenticate!
   before_action :set_locale!
 
   around_action :switch_locale
@@ -10,9 +11,10 @@ class ApplicationController < ActionController::API
 
   attr_reader :locale
 
-  def authenticate
-    # TODO: add authentication
-    true
+  def authenticate!
+    authenticate_with_http_token do |token, _options|
+      raise SecurityError if token != Rails.application.credentials.dig(:api_token)
+    end
   end
 
   def set_locale!
