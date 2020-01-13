@@ -52,7 +52,7 @@ class RU::BoxberryService < DeliveryService
         directions: pickup['TripDescription'],
         latitude: pickup['GPS'].split(',').first,
         longitude: pickup['GPS'].split(',').last,
-        name: pickup['Name'],
+        name: pickup['AddressReduce'],
         phone_number: pickup['Phone'],
         working_hours: pickup['WorkShedule'],
         delivery_method: @delivery_method
