@@ -4,7 +4,11 @@ class ApplicationController < ActionController::API
   before_action :authenticate
   before_action :set_locale!
 
+  around_action :switch_locale
+
   private
+
+  attr_reader :locale
 
   def authenticate
     # TODO: add authentication
@@ -14,6 +18,10 @@ class ApplicationController < ActionController::API
   def set_locale!
     raise ArgumentError if params[:locale].blank?
 
-    I18n.locale = params[:locale].to_sym
+    @locale = params[:locale].to_sym
+  end
+
+  def switch_locale(&action)
+    I18n.with_locale(locale, &action)
   end
 end
