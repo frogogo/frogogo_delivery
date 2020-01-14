@@ -1,8 +1,9 @@
 class RU::BoxberryService < DeliveryService
   BOXBERRY_NAME = 'Boxberry'
-  TIME_INTERVALS = ['10:00–14:00', '14:00–18:00']
-  # For Moscow and Saint Petersburg
+
+  CITIES_WITH_EXTENDED_TIME_INTERVALS = ['Москва, Санкт-Петербург']
   EXTENDED_TIME_INTERVALS = ['10:00–14:00', '14:00–18:00', '18:00-22:00']
+  TIME_INTERVALS = ['10:00–14:00', '14:00–18:00']
 
   # Localities list:
   COURIER_LOCALITIES_LIST = 'courier_localities_list'
@@ -54,8 +55,10 @@ class RU::BoxberryService < DeliveryService
 
       DeliveryMethod.create!(
         date_interval: city['DeliveryPeriod'].to_i,
-        method: :courier, time_intervals: TIME_INTERVALS,
-        deliverable: locality, provider: provider
+        method: :courier,
+        time_intervals: time_intervals,
+        deliverable: locality,
+        provider: provider
       )
       break
     end
@@ -79,5 +82,9 @@ class RU::BoxberryService < DeliveryService
         working_hours: pickup['WorkShedule']
       )
     end
+  end
+
+  def time_intervals
+    CITIES_WITH_EXTENDED_TIME_INTERVALS.includes?(locality.name) ? EXTENDED_TIME_INTERVALS : TIME_INTERVALS
   end
 end
