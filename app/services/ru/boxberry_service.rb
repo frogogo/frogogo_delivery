@@ -1,8 +1,8 @@
 class RU::BoxberryService < DeliveryService
   BOXBERRY_NAME = 'Boxberry'
-
-  # TODO: SET 10:00–22:00, SAT 10:00-20:00 for Moscow and SPB
   TIME_INTERVALS = ['10:00–14:00', '14:00–18:00']
+  # For Moscow and Saint Petersburg
+  EXTENDED_TIME_INTERVALS = ['10:00–14:00', '14:00–18:00', '18:00-22:00']
 
   # Localities list:
   COURIER_LOCALITIES_LIST = 'courier_localities_list'
