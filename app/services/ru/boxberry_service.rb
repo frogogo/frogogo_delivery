@@ -17,7 +17,7 @@ class RU::BoxberryService < DeliveryService
   end
 
   def fetch_delivery_info
-    super
+    return unless super
 
     return if city_code.blank?
 
@@ -28,7 +28,7 @@ class RU::BoxberryService < DeliveryService
   end
 
   def fetch_localities_list
-    super
+    return unless super
 
     localities_list = {}
     localities_list[COURIER_LOCALITIES_LIST] = delivery_service.courier_localities_list
@@ -85,6 +85,6 @@ class RU::BoxberryService < DeliveryService
   end
 
   def time_intervals
-    CITIES_WITH_EXTENDED_TIME_INTERVALS.includes?(locality.name) ? EXTENDED_TIME_INTERVALS : TIME_INTERVALS
+    CITIES_WITH_EXTENDED_TIME_INTERVALS.include?(locality.name) ? EXTENDED_TIME_INTERVALS : TIME_INTERVALS
   end
 end
