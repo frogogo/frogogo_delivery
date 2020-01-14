@@ -6,7 +6,13 @@ class RU::BoxberryAdapter < DeliveryAdapter
 
   attr_accessor :city_code
 
-  def localities_list
+  def courier_localities_list
+    @request_body = { method: COURIER_LIST_CITIES }
+
+    request_data.parsed_response
+  end
+
+  def pickup_localities_list
     @request_body = { method: LIST_CITIES }
 
     request_data.parsed_response

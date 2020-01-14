@@ -1,7 +1,12 @@
 class RU::BoxberryService < DeliveryService
   BOXBERRY_NAME = 'Boxberry'
-  TIME_INTERVALS = '10:00–18:00'
-  # TODO: SET 10:00–22:00 for Moscow and SPB
+
+  # TODO: SET 10:00–22:00, SAT 10:00-20:00 for Moscow and SPB
+  TIME_INTERVALS = ['10:00–14:00', '14:00–18:00']
+
+  # Localities list:
+  COURIER_LOCALITIES_LIST = 'courier_localities_list'
+  PICKUP_LOCALITIES_LIST = 'pickup_localities_list'
 
   def initialize(locality)
     super
@@ -17,14 +22,25 @@ class RU::BoxberryService < DeliveryService
 
     delivery_service.city_code = city_code
     @response = delivery_service.pickup_delivery_info
+
     save_data
+  end
+
+  def fetch_localities_list
+    super
+
+    localities_list = {}
+    localities_list[COURIER_LOCALITIES_LIST] = delivery_service.courier_localities_list
+    localities_list[PICKUP_LOCALITIES_LIST] = delivery_service.pickup_localities_list
+
+    localities_list
   end
 
   private
 
   def city_code
-    @city_code =
-      localities_list.each do |city|
+    @city_code ||=
+      localities_list[PICKUP_LOCALITIES_LIST].each do |city|
         if city['Name'] == locality.name && city['Region'] == locality.subdivision.name
           return city['Code']
         end
@@ -32,6 +48,18 @@ class RU::BoxberryService < DeliveryService
   end
 
   def save_data
+    localities_list[COURIER_LOCALITIES_LIST].each do |city|
+      next unless city['City'] == locality.name && city['Area'] == locality.subdivision.name
+      next unless city['DeliveryPeriod'].present?
+
+      DeliveryMethod.create!(
+        date_interval: city['DeliveryPeriod'].to_i,
+        method: :courier, time_intervals: TIME_INTERVALS,
+        deliverable: locality, provider: provider
+      )
+      break
+    end
+
     return if response.first['Address'].blank?
 
     @delivery_method = DeliveryMethod.create!(
@@ -39,23 +67,16 @@ class RU::BoxberryService < DeliveryService
       method: :pickup, deliverable: locality, provider: provider
     )
 
-    DeliveryMethod.create!(
-      date_interval: response.first['DeliveryPeriod'],
-      method: :courier, time_intervals: [TIME_INTERVALS],
-      deliverable: locality, provider: provider
-    )
-
     response.each do |pickup|
-      DeliveryPoint.create!(
+      @delivery_method.delivery_points.create!(
         address: pickup['Address'],
         date_interval: pickup['DeliveryPeriod'],
-        directions: pickup['TripDescription'],
+        directions: pickup['TripDescription'].strip,
         latitude: pickup['GPS'].split(',').first,
         longitude: pickup['GPS'].split(',').last,
         name: pickup['AddressReduce'],
         phone_number: pickup['Phone'],
-        working_hours: pickup['WorkShedule'],
-        delivery_method: @delivery_method
+        working_hours: pickup['WorkShedule']
       )
     end
   end
