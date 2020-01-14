@@ -39,7 +39,12 @@ class DeliveryMethod < ApplicationRecord
   def courier_delivery_dates
     return unless courier?
 
-    Hash[(estimate_delivery_date..(estimate_delivery_date + 7.days)).to_a.product(time_intervals)]
+    @hash = {}
+    (estimate_delivery_date..(estimate_delivery_date + 7.days)).each do |key|
+      @hash[key] = time_intervals
+    end
+
+    @hash
   end
 
   private
