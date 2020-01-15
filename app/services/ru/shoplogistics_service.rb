@@ -1,4 +1,4 @@
-class RU::ShoplogisticsService < DeliveryService
+class RU::ShopLogisticsService < DeliveryService
   SHOPLOGISTICS_NAME = 'ShopLogistics'
   SUBDIVISION_LIST = ['Москва', 'Санкт-Петербург', 'Московская', 'Ленинградская']
 
@@ -9,7 +9,7 @@ class RU::ShoplogisticsService < DeliveryService
   def initialize(locality)
     super
 
-    @delivery_service = RU::ShoplogisticsAdapter.new(locality)
+    @delivery_service = RU::ShopLogisticsAdapter.new(locality)
     @provider = Provider.find_by(name: SHOPLOGISTICS_NAME)
   end
 

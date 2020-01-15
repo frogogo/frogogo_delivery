@@ -32,9 +32,9 @@ class DeliveryService
 
     case provider.name
     when 'Boxberry'
-      RU::ShoplogisticsService::SUBDIVISION_LIST.include?(subdivision.name)
+      RU::ShopLogisticsService::SUBDIVISION_LIST.include?(subdivision.name)
     when 'ShopLogistics'
-      !RU::ShoplogisticsService::SUBDIVISION_LIST.include?(subdivision.name) &&
+      !RU::ShopLogisticsService::SUBDIVISION_LIST.include?(subdivision.name) &&
         locality.delivery_methods.joins(:provider).courier.where(providers: { name: 'Boxberry' }).any?
     end
   end
