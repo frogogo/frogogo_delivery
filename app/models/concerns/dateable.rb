@@ -11,7 +11,7 @@ module Dateable
     return if date_interval.blank?
 
     Time.use_zone(time_zone) do
-      @estimate_delivery_date = Date.current + date_interval.last.to_i.days
+      @estimate_delivery_date = Date.current + date_interval.scan(/\d+/).last.to_i.days
       # +1 day if Time.current > 4pm
       @estimate_delivery_date += 1.day if Time.current > Time.current.middle_of_day + 4.hours
       if @estimate_delivery_date.on_weekend?
