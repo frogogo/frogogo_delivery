@@ -1,7 +1,7 @@
 class RU::BoxberryService < DeliveryService
   BOXBERRY_NAME = 'Boxberry'
 
-  CITIES_WITH_EXTENDED_TIME_INTERVALS = ['Москва, Санкт-Петербург']
+  CITIES_WITH_EXTENDED_TIME_INTERVALS = ['Москва', 'Санкт-Петербург']
   EXTENDED_TIME_INTERVALS = ['10:00–14:00', '14:00–18:00', '18:00-22:00']
   TIME_INTERVALS = ['10:00–14:00', '14:00–18:00']
 
@@ -82,6 +82,8 @@ class RU::BoxberryService < DeliveryService
         phone_number: pickup['Phone'],
         working_hours: pickup['WorkShedule']
       )
+    rescue ActiveRecord::RecordNotUnique => e
+      Rails.logger.error(e.inspect)
     end
   end
 
