@@ -2,7 +2,7 @@ class RU::ShoplogisticsService < DeliveryService
   SHOPLOGISTICS_NAME = 'ShopLogistics'
   SUBDIVISION_LIST = ['Москва', 'Санкт-Петербург', 'Московская', 'Ленинградская']
 
-  CITIES_WITH_EXTENDED_TIME_INTERVALS = ['Москва, Санкт-Петербург']
+  CITIES_WITH_EXTENDED_TIME_INTERVALS = ['Москва', 'Санкт-Петербург']
   EXTENDED_TIME_INTERVALS = ['9:00–12:00', '12:00–15:00', '15:00–18:00', '18:00-21:00']
   TIME_INTERVALS = ['9:00–12:00', '12:00–15:00', '15:00–18:00']
 
@@ -33,7 +33,6 @@ class RU::ShoplogisticsService < DeliveryService
 
         courier_delivery_method(tarif['srok_dostavki'])
       when '2'
-        # May potentialy crash
         begin
           pickup_delivery_method(tarif['srok_dostavki'])
 
