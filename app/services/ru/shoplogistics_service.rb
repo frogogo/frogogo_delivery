@@ -33,6 +33,8 @@ class RU::ShopLogisticsService < DeliveryService
       when '1'
         courier_delivery_method(tarif['srok_dostavki'])
       when '2'
+        next unless tarif['pickup_places_type_name'] == 'А'
+
         begin
           pickup_delivery_method(tarif['srok_dostavki'])
 
