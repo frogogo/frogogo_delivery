@@ -51,7 +51,7 @@ class RU::BoxberryService < DeliveryService
   def save_data
     localities_list[COURIER_LOCALITIES_LIST].each do |city|
       next unless city['City'] == locality.name && city['Area'] == locality.subdivision.name
-      next unless city['DeliveryPeriod'].present?
+      next if city['DeliveryPeriod'].blank?
 
       DeliveryMethod.create!(
         date_interval: city['DeliveryPeriod'].to_i,
