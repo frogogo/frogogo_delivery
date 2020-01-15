@@ -53,7 +53,7 @@ class RU::BoxberryService < DeliveryService
       next unless city['City'] == locality.name && city['Area'] == locality.subdivision.name
       next if city['DeliveryPeriod'].blank?
 
-      DeliveryMethod.create!(
+      DeliveryMethod.create_or_find_by!(
         date_interval: city['DeliveryPeriod'].to_i,
         inactive: courier_delivery_method_inactive?,
         method: :courier,
@@ -66,7 +66,7 @@ class RU::BoxberryService < DeliveryService
 
     return if response.first['Address'].blank?
 
-    @delivery_method = DeliveryMethod.create!(
+    @delivery_method = DeliveryMethod.create_or_find_by!(
       date_interval: response.first['DeliveryPeriod'],
       method: :pickup, deliverable: locality, provider: provider
     )

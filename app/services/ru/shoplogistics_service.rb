@@ -57,7 +57,7 @@ class RU::ShopLogisticsService < DeliveryService
 
   def courier_delivery_method(date_interval)
     @courier_delivery_method ||=
-      DeliveryMethod.create!(
+      DeliveryMethod.create_or_find_by!(
         date_interval: date_interval,
         inactive: courier_delivery_method_inactive?,
         method: :courier,
@@ -69,7 +69,7 @@ class RU::ShopLogisticsService < DeliveryService
 
   def pickup_delivery_method(date_interval)
     @pickup_delivery_method ||=
-      DeliveryMethod.create!(
+      DeliveryMethod.create_or_find_by!(
         date_interval: date_interval,
         method: :pickup,
         time_intervals: time_intervals,
