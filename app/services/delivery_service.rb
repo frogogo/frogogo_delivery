@@ -6,11 +6,11 @@ class DeliveryService
   end
 
   def fetch_delivery_info
-    return if provider.inactive?
+    !provider.inactive?
   end
 
   def fetch_localities_list
-    return if provider.inactive?
+    !provider.inactive?
   end
 
   private
