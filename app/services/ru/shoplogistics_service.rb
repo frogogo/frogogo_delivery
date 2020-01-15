@@ -27,10 +27,10 @@ class RU::ShopLogisticsService < DeliveryService
 
   def save_data
     response['tarifs']['tarif'].each do |tarif|
+      next unless tarif['is_basic'] == '1'
+
       case tarif['tarifs_type']
       when '1'
-        next unless tarif['is_basic'] == '1'
-
         courier_delivery_method(tarif['srok_dostavki'])
       when '2'
         begin
