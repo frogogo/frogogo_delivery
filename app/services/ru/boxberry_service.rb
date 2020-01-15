@@ -55,6 +55,7 @@ class RU::BoxberryService < DeliveryService
 
       DeliveryMethod.create!(
         date_interval: city['DeliveryPeriod'].to_i,
+        inactive: courier_delivery_method_inactive?,
         method: :courier,
         time_intervals: time_intervals,
         deliverable: locality,

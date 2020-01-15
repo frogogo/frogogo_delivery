@@ -1,5 +1,6 @@
 class RU::ShoplogisticsService < DeliveryService
   SHOPLOGISTICS_NAME = 'ShopLogistics'
+  SUBDIVISION_LIST = ['Москва', 'Санкт-Петербург', 'Московская', 'Ленинградская']
 
   CITIES_WITH_EXTENDED_TIME_INTERVALS = ['Москва, Санкт-Петербург']
   EXTENDED_TIME_INTERVALS = ['9:00–12:00', '12:00–15:00', '15:00–18:00', '18:00-21:00']
@@ -57,6 +58,7 @@ class RU::ShoplogisticsService < DeliveryService
     @courier_delivery_method ||=
       DeliveryMethod.create!(
         date_interval: date_interval,
+        inactive: courier_delivery_method_inactive?,
         method: :courier,
         time_intervals: time_intervals,
         deliverable: locality,
