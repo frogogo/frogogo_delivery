@@ -37,7 +37,7 @@ class RU::ShoplogisticsService < DeliveryService
         @pickup_delivery_method.delivery_points.create!(
           address: tarif['address'],
           date_interval: tarif['srok_dostavki'],
-          directions: tarif['proezd_info'].strip,
+          directions: tarif['proezd_info']&.strip,
           latitude: tarif['latitude'],
           longitude: tarif['longitude'],
           name: tarif['address'],
