@@ -39,12 +39,14 @@ class DeliveryMethod < ApplicationRecord
   def courier_delivery_dates
     return unless courier?
 
-    @hash = {}
-    (estimate_delivery_date..(estimate_delivery_date + 7.days)).each do |key|
-      @hash[key] = time_intervals
+    hash = {}
+    Time.use_zone(time_zone) do
+      ((Date.current)..(Date.current + 7.days)).each do |date|
+        hash[calculate_esimate_delivery_date(date)] = time_intervals
+      end
     end
 
-    @hash
+    hash
   end
 
   private
