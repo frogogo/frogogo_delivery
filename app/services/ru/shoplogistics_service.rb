@@ -32,18 +32,23 @@ class RU::ShoplogisticsService < DeliveryService
 
         courier_delivery_method(tarif['srok_dostavki'])
       when '2'
-        pickup_delivery_method(tarif['srok_dostavki'])
+        # May potentialy crash
+        begin
+          pickup_delivery_method(tarif['srok_dostavki'])
 
-        @pickup_delivery_method.delivery_points.create!(
-          address: tarif['address'],
-          date_interval: tarif['srok_dostavki'],
-          directions: tarif['proezd_info']&.strip,
-          latitude: tarif['latitude'],
-          longitude: tarif['longitude'],
-          name: tarif['address'],
-          phone_number: tarif['phone'],
-          working_hours: tarif['worktime']
-        )
+          @pickup_delivery_method.delivery_points.create!(
+            address: tarif['address'],
+            date_interval: tarif['srok_dostavki'],
+            directions: tarif['proezd_info']&.strip,
+            latitude: tarif['latitude'],
+            longitude: tarif['longitude'],
+            name: tarif['address'],
+            phone_number: tarif['phone'],
+            working_hours: tarif['worktime']
+          )
+        rescue ActiveRecord::RecordNotUnique => e
+          Rails.logger.error(e.inspect)
+        end
       end
     end
   end
