@@ -2,10 +2,6 @@ class RU::ShopLogisticsService < DeliveryService
   SHOPLOGISTICS_NAME = 'ShopLogistics'
   SUBDIVISION_LIST = ['Москва', 'Санкт-Петербург', 'Московская', 'Ленинградская']
 
-  CITIES_WITH_EXTENDED_TIME_INTERVALS = ['Москва', 'Санкт-Петербург']
-  EXTENDED_TIME_INTERVALS = ['9:00–12:00', '12:00–15:00', '15:00–18:00', '18:00-21:00']
-  TIME_INTERVALS = ['9:00–12:00', '12:00–15:00', '15:00–18:00']
-
   def initialize(locality)
     super
 
@@ -61,7 +57,6 @@ class RU::ShopLogisticsService < DeliveryService
         date_interval: date_interval,
         inactive: courier_delivery_method_inactive?,
         method: :courier,
-        time_intervals: time_intervals,
         deliverable: locality,
         provider: provider
       )
@@ -72,13 +67,8 @@ class RU::ShopLogisticsService < DeliveryService
       DeliveryMethod.create_or_find_by!(
         date_interval: date_interval,
         method: :pickup,
-        time_intervals: time_intervals,
         deliverable: locality,
         provider: provider
       )
-  end
-
-  def time_intervals
-    CITIES_WITH_EXTENDED_TIME_INTERVALS.include?(locality.name) ? EXTENDED_TIME_INTERVALS : TIME_INTERVALS
   end
 end

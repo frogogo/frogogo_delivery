@@ -34,4 +34,10 @@ class DeliveryPoint < ApplicationRecord
   belongs_to :delivery_method, touch: true
 
   validates :address, presence: true
+
+  private
+  # TODO: remove
+  def subdivision
+    nil
+  end
 end

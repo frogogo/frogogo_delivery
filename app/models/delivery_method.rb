@@ -49,7 +49,22 @@ class DeliveryMethod < ApplicationRecord
     hash
   end
 
+  def time_intervals
+    return unless courier?
+
+    self[:time_intervals] || constant_time_intervals
+  end
+
   private
+
+  def subdivision
+    @subdivision ||=
+      if deliverable.class == Locality
+        deliverable.subdivision
+      else
+        deliverable
+      end
+  end
 
   def update_delivery_points
     delivery_points.update_all(inactive: inactive)

@@ -1,10 +1,6 @@
 class RU::BoxberryService < DeliveryService
   BOXBERRY_NAME = 'Boxberry'
 
-  CITIES_WITH_EXTENDED_TIME_INTERVALS = ['Москва', 'Санкт-Петербург']
-  EXTENDED_TIME_INTERVALS = ['10:00–14:00', '14:00–18:00', '18:00-22:00']
-  TIME_INTERVALS = ['10:00–14:00', '14:00–18:00']
-
   # Localities list:
   COURIER_LOCALITIES_LIST = 'courier_localities_list'
   PICKUP_LOCALITIES_LIST = 'pickup_localities_list'
@@ -57,7 +53,6 @@ class RU::BoxberryService < DeliveryService
         date_interval: city['DeliveryPeriod'].to_i,
         inactive: courier_delivery_method_inactive?,
         method: :courier,
-        time_intervals: time_intervals,
         deliverable: locality,
         provider: provider
       )
@@ -85,9 +80,5 @@ class RU::BoxberryService < DeliveryService
     rescue ActiveRecord::RecordNotUnique => e
       Rails.logger.error(e.inspect)
     end
-  end
-
-  def time_intervals
-    CITIES_WITH_EXTENDED_TIME_INTERVALS.include?(locality.name) ? EXTENDED_TIME_INTERVALS : TIME_INTERVALS
   end
 end

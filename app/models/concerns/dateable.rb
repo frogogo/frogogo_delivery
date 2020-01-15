@@ -21,9 +21,23 @@ module Dateable
     estimate_delivery_date = date + date_interval.scan(/\d+/).last.to_i.days
     # +1 day if Time.current > 4pm
     estimate_delivery_date += 1.day if Time.current > Time.current.middle_of_day + 4.hours
-    return estimate_delivery_date unless estimate_delivery_date.on_weekend?
 
-    estimate_delivery_date.next_weekday
+    if estimate_delivery_date.on_weekday? || RU::Constants::CITIES_WITH_EXTENDED_TIME_INTERVALS.include?(subdivision&.name)
+      estimate_delivery_date
+    else
+      estimate_delivery_date.next_weekday
+    end
+  end
+
+  def constant_time_intervals
+    case I18n.locale
+    when :ru
+      if RU::Constants::CITIES_WITH_EXTENDED_TIME_INTERVALS.include?(self.deliverable.name)
+        RU::Constants::EXTENDED_TIME_INTERVALS
+      else
+        RU::Constants::TIME_INTERVALS
+      end
+    end
   end
 
   def time_zone
