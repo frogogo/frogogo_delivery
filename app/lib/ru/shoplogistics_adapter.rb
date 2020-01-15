@@ -20,17 +20,21 @@ class RU::ShoplogisticsAdapter < DeliveryAdapter
 
   def delivery_info
     @request_body = DELIVERY_INFO_REQUEST_BODY.merge(to_city: locality.name)
+    @response = request_data
 
-    request_data
+    parsed_response
   end
 
   def localities_list
     @request_body = LOCALITIES_LIST_REQUEST_BODY
+    @response = request_data
 
-    request_data
+    parsed_response
   end
 
   private
+
+  attr_reader :response
 
   def api_token
     Rails.application.credentials.dig(:ru, :shoplogistics, :api_token)
@@ -38,6 +42,10 @@ class RU::ShoplogisticsAdapter < DeliveryAdapter
 
   def encoded_request_body
     URI.escape(Base64.strict_encode64(xml_body))
+  end
+
+  def parsed_response
+    Hash.from_xml(response.parsed_response)
   end
 
   def request_data

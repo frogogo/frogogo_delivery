@@ -35,7 +35,8 @@ class DeliveryMethodsResolver
       create_locality_and_subdivision
 
       RU::BoxberryService.new(locality).fetch_delivery_info
-      # shoplogistics, etc...
+      RU::ShoplogisticsService.new(locality).fetch_delivery_info
+
       locality.delivery_methods
     end
   end

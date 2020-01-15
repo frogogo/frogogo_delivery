@@ -1,6 +1,10 @@
 class RU::ShoplogisticsService < DeliveryService
   SHOPLOGISTICS_NAME = 'ShopLogistics'
 
+  CITIES_WITH_EXTENDED_TIME_INTERVALS = ['Москва, Санкт-Петербург']
+  EXTENDED_TIME_INTERVALS = ['9:00–12:00', '12:00–15:00', '15:00–18:00', '18:00-21:00']
+  TIME_INTERVALS = ['9:00–12:00', '12:00–15:00', '15:00–18:00']
+
   def initialize(locality)
     super
 
@@ -9,16 +13,64 @@ class RU::ShoplogisticsService < DeliveryService
   end
 
   def fetch_delivery_info
-    super
+    return unless super
 
-    @response = delivery_service.delivery_info
+    @response = delivery_service.delivery_info['answer']
+    return if response.blank?
+    return unless response['error'] == '0'
 
-    parsed_response
+    save_data
   end
 
   private
 
-  def parsed_response
-    Hash.from_xml(response.parsed_response)
+  def save_data
+    response['tarifs']['tarif'].each do |tarif|
+      case tarif['tarifs_type']
+      when '1'
+        next unless tarif['is_basic'] == '1'
+
+        courier_delivery_method(tarif['srok_dostavki'])
+      when '2'
+        pickup_delivery_method(tarif['srok_dostavki'])
+
+        @pickup_delivery_method.delivery_points.create!(
+          address: tarif['address'],
+          date_interval: tarif['srok_dostavki'],
+          directions: tarif['proezd_info'].strip,
+          latitude: tarif['latitude'],
+          longitude: tarif['longitude'],
+          name: tarif['address'],
+          phone_number: tarif['phone'],
+          working_hours: tarif['worktime']
+        )
+      end
+    end
+  end
+
+  def courier_delivery_method(date_interval)
+    @courier_delivery_method ||=
+      DeliveryMethod.create!(
+        date_interval: date_interval,
+        method: :courier,
+        time_intervals: time_intervals,
+        deliverable: locality,
+        provider: provider
+      )
+  end
+
+  def pickup_delivery_method(date_interval)
+    @pickup_delivery_method ||=
+      DeliveryMethod.create!(
+        date_interval: date_interval,
+        method: :pickup,
+        time_intervals: time_intervals,
+        deliverable: locality,
+        provider: provider
+      )
+  end
+
+  def time_intervals
+    CITIES_WITH_EXTENDED_TIME_INTERVALS.include?(locality.name) ? EXTENDED_TIME_INTERVALS : TIME_INTERVALS
   end
 end
