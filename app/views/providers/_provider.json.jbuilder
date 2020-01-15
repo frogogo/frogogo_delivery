@@ -1,3 +1,3 @@
 json.cache! provider do
-  json.extract! provider, :id, :code, :name
+  json.extract! provider, :code, :name
 end
