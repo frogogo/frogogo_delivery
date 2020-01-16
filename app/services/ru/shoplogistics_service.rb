@@ -1,6 +1,5 @@
 class RU::ShopLogisticsService < DeliveryService
   SHOPLOGISTICS_NAME = 'ShopLogistics'
-  SUBDIVISION_LIST = ['Москва', 'Санкт-Петербург', 'Московская', 'Ленинградская']
 
   def initialize(locality)
     super

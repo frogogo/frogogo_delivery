@@ -1,0 +1,28 @@
+---
+ru:
+  constants:
+    boxberry:
+      excluded_deliverables:
+        - Ленинградская
+        - Москва
+        - Московская
+        - Санкт-Петербург
+    shop-logistics:
+      excluded_deliverables: []
+    delivery_period: 7
+    time_intervals:
+      default:
+        - 10:00-18:00
+      deliverables:
+        - Ленинградская
+        - Москва
+        - Московская
+        - Санкт-Петербург
+      extended:
+        - 9:00–12:00
+        - 12:00–15:00
+        - 15:00–18:00
+        - 18:00-21:00
+        - 10:00-21:00
+      weekend_intervals:
+        - 10:00-18:00

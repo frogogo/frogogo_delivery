@@ -30,15 +30,9 @@ class DeliveryService
   end
 
   def courier_delivery_method_inactive?
-    return false unless I18n.locale == :ru
+    return true if I18n.t(:excluded_deliverables, scope: [:constants, provider.code.to_sym]).include?(subdivision.name)
 
-    case provider.name
-    when 'Boxberry'
-      RU::ShopLogisticsService::SUBDIVISION_LIST.include?(subdivision.name)
-    when 'ShopLogistics'
-      !RU::ShopLogisticsService::SUBDIVISION_LIST.include?(subdivision.name) &&
-        locality.delivery_methods.joins(:provider).courier.where(providers: { name: 'Boxberry' }).any?
-    end
+    locality.delivery_methods.joins(:provider).courier.where.not(inactive: true, providers: { name: provider.name }).any?
   end
 
   def format_string(string)

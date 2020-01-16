@@ -22,7 +22,7 @@ module Dateable
     # +1 day if Time.current > 4pm
     estimate_delivery_date += 1.day if Time.current > Time.current.middle_of_day + 4.hours
 
-    if estimate_delivery_date.on_weekday? || RU::Constants::CITIES_WITH_EXTENDED_TIME_INTERVALS.include?(subdivision&.name)
+    if estimate_delivery_date.on_weekday? || I18n.t(:deliverables, scope: %i[constants time_intervals]).include?(subdivision&.name)
       estimate_delivery_date
     else
       estimate_delivery_date.next_weekday
@@ -32,10 +32,10 @@ module Dateable
   def constant_time_intervals
     case I18n.locale
     when :ru
-      if RU::Constants::CITIES_WITH_EXTENDED_TIME_INTERVALS.include?(deliverable.name)
-        RU::Constants::EXTENDED_TIME_INTERVALS
+      if I18n.t(:deliverables, scope: %i[constants time_intervals]).include?(deliverable.name)
+        I18n.t(:extended, scope: %i[constants time_intervals])
       else
-        RU::Constants::TIME_INTERVALS
+        I18n.t(:default, scope: %i[constants time_intervals])
       end
     end
   end
