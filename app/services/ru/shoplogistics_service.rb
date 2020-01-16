@@ -13,7 +13,6 @@ class RU::ShopLogisticsService < DeliveryService
     return unless super
 
     @response = delivery_service.delivery_info['answer']
-    byebug
     return if response.blank?
     return unless response['error'] == '0'
 
