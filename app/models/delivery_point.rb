@@ -35,10 +35,5 @@ class DeliveryPoint < ApplicationRecord
 
   validates :address, presence: true
 
-  private
-
-  # TODO: remove
-  def subdivision
-    nil
-  end
+  delegate :deliverable, to: :delivery_method
 end

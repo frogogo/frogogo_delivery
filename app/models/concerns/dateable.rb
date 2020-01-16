@@ -1,8 +1,10 @@
 module Dateable
   extend ActiveSupport::Concern
 
+  TIME_ZONES = { ru: 'Moscow', sl: 'Ljubljana', tr: 'Istanbul' }
+
   def expires_in
-    Time.use_zone(time_zone) do
+    Time.use_zone(TIME_ZONES[I18n.locale]) do
       Time.current.middle_of_day + 4.hours - Time.current
     end
   end
@@ -10,7 +12,7 @@ module Dateable
   def estimate_delivery_date
     return if date_interval.blank?
 
-    Time.use_zone(time_zone) do
+    Time.use_zone(TIME_ZONES[I18n.locale]) do
       calculate_esimate_delivery_date(Date.current)
     end
   end
@@ -22,30 +24,17 @@ module Dateable
     # +1 day if Time.current > 4pm
     estimate_delivery_date += 1.day if Time.current > Time.current.middle_of_day + 4.hours
 
-    if estimate_delivery_date.on_weekday? || I18n.t(:deliverables, scope: %i[constants time_intervals]).include?(subdivision&.name)
-      estimate_delivery_date
-    else
-      estimate_delivery_date.next_weekday
-    end
+    return estimate_delivery_date if estimate_delivery_date.on_weekday?
+    return estimate_delivery_date if I18n.t(:deliverables, scope: %i[constants time_intervals]).include?(deliverable.name)
+
+    estimate_delivery_date.next_weekday
   end
 
   def constant_time_intervals
-    case I18n.locale
-    when :ru
-      if I18n.t(:deliverables, scope: %i[constants time_intervals]).include?(deliverable.name)
-        I18n.t(:extended, scope: %i[constants time_intervals])
-      else
-        I18n.t(:default, scope: %i[constants time_intervals])
-      end
+    if I18n.t(:deliverables, scope: %i[constants time_intervals]).include?(deliverable.name)
+      I18n.t(:extended, scope: %i[constants time_intervals])
+    else
+      I18n.t(:default, scope: %i[constants time_intervals])
     end
-  end
-
-  def time_zone
-    @time_zone ||=
-      case I18n.locale
-      when :ru then 'Moscow'
-      when :sl then 'Ljubljana'
-      when :tr then 'Istanbul'
-      end
   end
 end

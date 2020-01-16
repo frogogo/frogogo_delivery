@@ -40,7 +40,7 @@ class DeliveryMethod < ApplicationRecord
     return unless courier?
 
     hash = {}
-    Time.use_zone(time_zone) do
+    Time.use_zone(TIME_ZONES[I18n.locale]) do
       ((Date.current)..(Date.current + 7.days)).each do |date|
         hash[calculate_esimate_delivery_date(date)] = time_intervals
       end
@@ -56,15 +56,6 @@ class DeliveryMethod < ApplicationRecord
   end
 
   private
-
-  def subdivision
-    @subdivision ||=
-      if deliverable.class == Locality
-        deliverable.subdivision
-      else
-        deliverable
-      end
-  end
 
   def update_delivery_points
     delivery_points.update_all(inactive: inactive)
