@@ -13,8 +13,13 @@ class RU::ShopLogisticsService < DeliveryService
     return unless super
 
     @response = delivery_service.delivery_info['answer']
+
     return if response.blank?
-    return unless response['error'] == '0'
+    return if response['error'] != '0'
+    return if response['tarifs'].blank?
+
+    @response = response['tarifs']['tarif']
+    @response = [response] if response.is_a?(Hash)
 
     save_data
   end
@@ -22,7 +27,7 @@ class RU::ShopLogisticsService < DeliveryService
   private
 
   def save_data
-    response['tarifs']['tarif'].each do |tarif|
+    response.each do |tarif|
       next unless tarif['is_basic'] == '1'
 
       case tarif['tarifs_type']
