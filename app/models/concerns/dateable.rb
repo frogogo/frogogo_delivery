@@ -3,7 +3,7 @@ module Dateable
 
   def expires_in
     Time.use_zone(time_zone) do
-      Time.current.middle_of_day + 4.hours - Time.currnet
+      Time.current.middle_of_day + 4.hours - Time.current
     end
   end
 
