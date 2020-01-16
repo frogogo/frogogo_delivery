@@ -1,5 +1,6 @@
 class RU::BoxberryService < DeliveryService
   BOXBERRY_NAME = 'Boxberry'
+  DEFAULT_DELIVERY_PERIOD = 7
 
   # Localities list:
   COURIER_LOCALITIES_LIST = 'courier_localities_list'
@@ -47,10 +48,9 @@ class RU::BoxberryService < DeliveryService
   def save_data
     localities_list[COURIER_LOCALITIES_LIST].each do |city|
       next unless city['City'] == locality.name && city['Area'] == locality.subdivision.name
-      next if city['DeliveryPeriod'].blank?
 
       DeliveryMethod.create_or_find_by!(
-        date_interval: city['DeliveryPeriod'].to_i,
+        date_interval: (city['DeliveryPeriod'] || DEFAULT_DELIVERY_PERIOD).to_i,
         inactive: courier_delivery_method_inactive?,
         method: :courier,
         deliverable: locality,
