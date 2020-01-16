@@ -32,7 +32,7 @@ module Dateable
   def constant_time_intervals
     case I18n.locale
     when :ru
-      if RU::Constants::CITIES_WITH_EXTENDED_TIME_INTERVALS.include?(self.deliverable.name)
+      if RU::Constants::CITIES_WITH_EXTENDED_TIME_INTERVALS.include?(deliverable.name)
         RU::Constants::EXTENDED_TIME_INTERVALS
       else
         RU::Constants::TIME_INTERVALS

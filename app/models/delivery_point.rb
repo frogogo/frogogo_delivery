@@ -36,6 +36,7 @@ class DeliveryPoint < ApplicationRecord
   validates :address, presence: true
 
   private
+
   # TODO: remove
   def subdivision
     nil
