@@ -13,6 +13,7 @@ class RU::ShopLogisticsService < DeliveryService
     return unless super
 
     @response = delivery_service.delivery_info['answer']
+    byebug
     return if response.blank?
     return unless response['error'] == '0'
 
@@ -27,6 +28,8 @@ class RU::ShopLogisticsService < DeliveryService
 
       case tarif['tarifs_type']
       when '1'
+        next unless tarif['partner'].nil?
+
         courier_delivery_method(tarif['srok_dostavki'])
       when '2'
         next unless tarif['pickup_places_type_name'] == 'А' # cyrillic symbol
