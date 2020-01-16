@@ -70,7 +70,7 @@ class RU::BoxberryService < DeliveryService
       @delivery_method.delivery_points.create!(
         address: pickup['Address'],
         date_interval: pickup['DeliveryPeriod'],
-        directions: pickup['TripDescription'].strip,
+        directions: format_string(pickup['TripDescription']),
         latitude: pickup['GPS'].split(',').first,
         longitude: pickup['GPS'].split(',').last,
         name: pickup['AddressReduce'],

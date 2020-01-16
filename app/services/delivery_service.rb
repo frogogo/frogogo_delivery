@@ -1,4 +1,6 @@
 class DeliveryService
+  SYMBOLS_TO_DELETE = ','
+
   def initialize(locality)
     raise ArgumentError if locality.class != Locality
 
@@ -37,5 +39,11 @@ class DeliveryService
       !RU::ShopLogisticsService::SUBDIVISION_LIST.include?(subdivision.name) &&
         locality.delivery_methods.joins(:provider).courier.where(providers: { name: 'Boxberry' }).any?
     end
+  end
+
+  def format_string(string)
+    return if string.blank?
+
+    string.strip.delete_prefix(SYMBOLS_TO_DELETE).delete_suffix(SYMBOLS_TO_DELETE)
   end
 end
