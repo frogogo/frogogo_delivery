@@ -1,5 +1,6 @@
 class RU::ShopLogisticsService < DeliveryService
   SHOPLOGISTICS_NAME = 'ShopLogistics'
+  SYMBOLS_TO_DELETE = ','
 
   def initialize(locality)
     super
@@ -41,12 +42,12 @@ class RU::ShopLogisticsService < DeliveryService
           pickup_delivery_method(tarif['srok_dostavki'])
 
           @pickup_delivery_method.delivery_points.create!(
-            address: tarif['address'],
+            address: format_string(tarif['address']),
             date_interval: tarif['srok_dostavki'],
             directions: format_string(tarif['proezd_info']),
             latitude: tarif['latitude'],
             longitude: tarif['longitude'],
-            name: tarif['address'],
+            name: format_string(tarif['address']),
             phone_number: tarif['phone'],
             working_hours: tarif['worktime']
           )
@@ -76,5 +77,11 @@ class RU::ShopLogisticsService < DeliveryService
         deliverable: locality,
         provider: provider
       )
+  end
+
+  def format_string(string)
+    return if string.blank?
+
+    string.delete_prefix(SYMBOLS_TO_DELETE).delete_suffix(SYMBOLS_TO_DELETE).strip
   end
 end
