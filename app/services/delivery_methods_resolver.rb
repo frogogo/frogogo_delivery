@@ -21,10 +21,10 @@ class DeliveryMethodsResolver
   attr_reader :locality_name, :subdivision, :subdivision_name
 
   def create_locality_and_subdivision
-    @subdivision = Subdivision.find_or_create_by!(
+    @subdivision = Subdivision.create_or_find_by!(
       name: subdivision_name, country: country, delivery_zone: delivery_zone(subdivision_name, :regions)
     )
-    @locality = Locality.find_or_create_by!(
+    @locality = Locality.create_or_find_by!(
       name: locality_name, subdivision: subdivision, delivery_zone: delivery_zone(locality_name, :cities)
     )
   end
