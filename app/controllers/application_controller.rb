@@ -8,7 +8,7 @@ class ApplicationController < ActionController::API
   before_action :authenticate!
   before_action :set_locale!
 
-  around_action :switch_locale
+  around_action :switch_locale_and_time_zone
 
   private
 
@@ -26,7 +26,9 @@ class ApplicationController < ActionController::API
     raise ArgumentError if locale.blank?
   end
 
-  def switch_locale(&action)
-    I18n.with_locale(locale, &action)
+  def switch_locale_and_time_zone(&action)
+    I18n.with_locale(locale) do
+      Time.use_zone(I18n.t(:time_zone, scope: :constants), &action)
+    end
   end
 end

@@ -1,28 +1,21 @@
 module Dateable
   extend ActiveSupport::Concern
 
-  TIME_ZONES = { ru: 'Moscow', sl: 'Ljubljana', tr: 'Istanbul' }
-
   def expires_in
-    Time.use_zone(TIME_ZONES[I18n.locale]) do
-      Time.current.middle_of_day + 4.hours - Time.current
-    end
+    time_before_delivery_date_changes - Time.current
   end
 
   def estimate_delivery_date
     return if date_interval.blank?
 
-    Time.use_zone(TIME_ZONES[I18n.locale]) do
-      calculate_esimate_delivery_date(Date.current)
-    end
+    calculate_esimate_delivery_date(Date.current)
   end
 
   private
 
   def calculate_esimate_delivery_date(date)
     estimate_delivery_date = date + date_interval.scan(/\d+/).last.to_i.days
-    # +1 day if Time.current > 4pm
-    estimate_delivery_date += 1.day if Time.current > Time.current.middle_of_day + 4.hours
+    estimate_delivery_date += 1.day if Time.current > time_before_delivery_date_changes
 
     return estimate_delivery_date if estimate_delivery_date.on_weekday?
     return estimate_delivery_date if I18n.t(:deliverables, scope: %i[constants time_intervals]).include?(deliverable.name)
@@ -36,5 +29,10 @@ module Dateable
     else
       I18n.t(:default, scope: %i[constants time_intervals])
     end
+  end
+
+  def time_before_delivery_date_changes
+    # 16:00
+    Time.current.middle_of_day + 4.hours
   end
 end

@@ -39,11 +39,9 @@ class DeliveryMethod < ApplicationRecord
   def courier_delivery_dates
     return unless courier?
 
-    Time.use_zone(TIME_ZONES[I18n.locale]) do
-      ((Date.current)..(Date.current + 7.days)).map do |date|
-        [calculate_esimate_delivery_date(date), time_intervals]
-      end.to_h
-    end
+    ((Date.current)..(Date.current + 7.days)).map do |date|
+      [calculate_esimate_delivery_date(date), time_intervals]
+    end.to_h
   end
 
   def time_intervals
