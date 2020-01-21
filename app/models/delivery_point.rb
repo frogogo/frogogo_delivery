@@ -8,8 +8,8 @@
 #  date_interval      :string
 #  directions         :string
 #  inactive           :boolean          default(FALSE)
-#  latitude           :string
-#  longitude          :string
+#  latitude           :decimal(10, 6)
+#  longitude          :decimal(10, 6)
 #  name               :string
 #  phone_number       :string
 #  working_hours      :string

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_10_162123) do
+ActiveRecord::Schema.define(version: 2020_01_21_105129) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,8 +44,6 @@ ActiveRecord::Schema.define(version: 2020_01_10_162123) do
     t.string "address", null: false
     t.string "code"
     t.string "directions"
-    t.string "latitude"
-    t.string "longitude"
     t.string "phone_number"
     t.string "working_hours"
     t.datetime "created_at", precision: 6, null: false
@@ -53,6 +51,8 @@ ActiveRecord::Schema.define(version: 2020_01_10_162123) do
     t.string "name"
     t.string "date_interval"
     t.boolean "inactive", default: false
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
     t.index ["address", "delivery_method_id"], name: "index_delivery_points_on_address_and_delivery_method_id", unique: true
     t.index ["delivery_method_id"], name: "index_delivery_points_on_delivery_method_id"
   end
