@@ -14,7 +14,13 @@ module Dateable
   private
 
   def calculate_esimate_delivery_date(date)
-    estimate_delivery_date = date + date_interval.scan(/\d+/).last.to_i.days
+    estimate_delivery_date = date
+    if (Date.current.friday? || Date.current.on_weekend?) &&
+       !I18n.t(:deliverables, scope: %i[constants time_intervals]).include?(deliverable.name)
+      estimate_delivery_date = estimate_delivery_date.next_weekday
+    end
+
+    estimate_delivery_date += date_interval.scan(/\d+/).last.to_i.days
     estimate_delivery_date += 1.day if Time.current > time_before_delivery_date_changes
 
     return estimate_delivery_date if estimate_delivery_date.on_weekday?
