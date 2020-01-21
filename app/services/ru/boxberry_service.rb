@@ -1,5 +1,6 @@
 class RU::BoxberryService < DeliveryService
   BOXBERRY_NAME = 'Boxberry'
+  SYMBOLS_TO_DELETE = '-'
 
   # Localities list:
   COURIER_LOCALITIES_LIST = 'courier_localities_list'
@@ -38,7 +39,7 @@ class RU::BoxberryService < DeliveryService
   def city_code
     @city_code ||=
       localities_list[PICKUP_LOCALITIES_LIST].each do |city|
-        if city['Name'] == locality.name && city['Region'] == locality.subdivision.name
+        if city['Name'] == locality.name && format_string(city['Region']).downcase == locality.subdivision.name.downcase
           return city['Code']
         end
       end
@@ -46,7 +47,7 @@ class RU::BoxberryService < DeliveryService
 
   def save_data
     localities_list[COURIER_LOCALITIES_LIST].each do |city|
-      next unless city['City'] == locality.name && city['Area'] == locality.subdivision.name
+      next unless city['City'] == locality.name && format_string(city['Area']).downcase == locality.subdivision.name.downcase
 
       DeliveryMethod.create_or_find_by!(
         date_interval: (city['DeliveryPeriod'] || I18n.t(:delivery_period, scope: :constants)).to_i,
@@ -67,17 +68,23 @@ class RU::BoxberryService < DeliveryService
 
     response.each do |pickup|
       @delivery_method.delivery_points.create!(
-        address: pickup['Address'],
+        address: format_string(pickup['Address']),
         date_interval: pickup['DeliveryPeriod'],
         directions: pickup['TripDescription']&.strip,
         latitude: pickup['GPS'].split(',').first,
         longitude: pickup['GPS'].split(',').last,
-        name: pickup['AddressReduce'],
+        name: format_string(pickup['AddressReduce']),
         phone_number: pickup['Phone'],
         working_hours: pickup['WorkShedule']
       )
     rescue ActiveRecord::RecordNotUnique => e
       Rails.logger.error(e.inspect)
     end
+  end
+
+  def format_string(string)
+    return if string.blank?
+
+    string.delete_suffix(SYMBOLS_TO_DELETE).strip
   end
 end
