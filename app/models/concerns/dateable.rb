@@ -8,12 +8,12 @@ module Dateable
   def estimate_delivery_date
     return if date_interval.blank?
 
-    calculate_esimate_delivery_date(Date.current)
+    calculate_estimate_delivery_date(Date.current)
   end
 
   private
 
-  def calculate_esimate_delivery_date(date)
+  def calculate_estimate_delivery_date(date)
     estimate_delivery_date = date
     if (Date.current.friday? || Date.current.on_weekend?) &&
        !I18n.t(:deliverables, scope: %i[constants time_intervals]).include?(deliverable.name)

@@ -40,7 +40,7 @@ class DeliveryMethod < ApplicationRecord
     return unless courier?
 
     ((Date.current)..(Date.current + 7.days)).map do |date|
-      [calculate_esimate_delivery_date(date), time_intervals]
+      [calculate_estimate_delivery_date(date), time_intervals]
     end.to_h
   end
 
