@@ -40,7 +40,7 @@ class RU::BoxberryService < DeliveryService
     @city_code ||=
       localities_list[PICKUP_LOCALITIES_LIST].each do |city|
         if city['Name'] == locality.name && format_string(city['Region']).downcase == locality.subdivision.name.downcase
-          return city['Code']
+          return format_string(city['Code'])
         end
       end
   end
