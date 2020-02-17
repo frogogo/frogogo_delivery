@@ -5,7 +5,7 @@ class ApplicationController < ActionController::API
   ACCEPT_LANGUAGE_HEADER = 'HTTP_ACCEPT_LANGUAGE'
   LANGUAGE_CODE_REGEXP = /^[a-z]{2}/
 
-  # before_action :authenticate!
+  before_action :authenticate!
   before_action :set_locale!
 
   around_action :switch_locale_and_time_zone
