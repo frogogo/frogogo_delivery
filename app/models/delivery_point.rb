@@ -12,6 +12,7 @@
 #  longitude          :decimal(10, 6)
 #  name               :string
 #  phone_number       :string
+#  uuid               :uuid             not null
 #  working_hours      :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null

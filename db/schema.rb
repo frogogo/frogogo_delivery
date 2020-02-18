@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_21_105129) do
+ActiveRecord::Schema.define(version: 2020_02_18_074506) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "countries", force: :cascade do |t|
@@ -53,6 +54,7 @@ ActiveRecord::Schema.define(version: 2020_01_21_105129) do
     t.boolean "inactive", default: false
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.index ["address", "delivery_method_id"], name: "index_delivery_points_on_address_and_delivery_method_id", unique: true
     t.index ["delivery_method_id"], name: "index_delivery_points_on_delivery_method_id"
   end
