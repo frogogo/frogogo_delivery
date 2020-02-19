@@ -40,14 +40,15 @@ class DeliveryMethod < ApplicationRecord
     return unless courier?
 
     ((Date.current)..(Date.current + 7.days)).map do |date|
-      [calculate_estimate_delivery_date(date), time_intervals]
+      estimated_delivery_date = calculate_estimated_delivery_date(date)
+      [estimated_delivery_date, time_intervals(date: estimated_delivery_date)]
     end.to_h
   end
 
-  def time_intervals
+  def time_intervals(date: Date.current)
     return unless courier?
 
-    self[:time_intervals] || constant_time_intervals
+    self[:time_intervals] || default_time_intervals(date)
   end
 
   private

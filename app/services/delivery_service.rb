@@ -28,7 +28,7 @@ class DeliveryService
   end
 
   def courier_delivery_method_inactive?
-    return true if I18n.t(:excluded_deliverables, scope: [:constants, provider.code.to_sym]).include?(subdivision.name)
+    return true if I18n.t(:excluded_deliverables, scope: [:constants, :providers, provider.code.to_sym]).include?(subdivision.name)
 
     locality.delivery_methods.joins(:provider).courier.where.not(inactive: true, providers: { name: provider.name }).any?
   end

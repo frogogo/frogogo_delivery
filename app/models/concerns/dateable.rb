@@ -1,44 +1,69 @@
 module Dateable
   extend ActiveSupport::Concern
 
-  def expires_in
-    time_before_delivery_date_changes - Time.current
-  end
+  DIGIT_REGEXP = /\d+/
 
   def estimate_delivery_date
+    estimated_delivery_date
+  end
+
+  def estimated_delivery_date
     return if date_interval.blank?
 
-    calculate_estimate_delivery_date(Date.current)
+    calculate_estimated_delivery_date(Date.current)
+  end
+
+  def expires_in
+    time_after_delivery_date_will_change - Time.current
   end
 
   private
 
-  def calculate_estimate_delivery_date(date)
-    estimate_delivery_date = date
-    if (Date.current.friday? || Date.current.on_weekend?) &&
-       !I18n.t(:deliverables, scope: %i[constants time_intervals]).include?(deliverable.name)
-      estimate_delivery_date = estimate_delivery_date.next_weekday
+  def calculate_estimated_delivery_date(date)
+    delivery_date = date
+    delivery_date += 1.day if Time.current > time_after_delivery_date_will_change
+
+    date_interval.scan(DIGIT_REGEXP).last.to_i.times do
+      if delivery_date.friday?
+        if [6, 7].include?(I18n.t(:avaliable_days_for_delivery, scope: %i[constants])[deliverable_name])
+          delivery_date += 1.day
+        else
+          delivery_date = delivery_date.next_weekday
+        end
+      elsif delivery_date.saturday?
+        if I18n.t(:avaliable_days_for_delivery, scope: %i[constants])[deliverable_name] == 7
+          delivery_date += 1.day
+        else
+          delivery_date = delivery_date.next_weekday
+        end
+      else
+        delivery_date += 1.day
+      end
     end
 
-    estimate_delivery_date += date_interval.scan(/\d+/).last.to_i.days
-    estimate_delivery_date += 1.day if Time.current > time_before_delivery_date_changes
-
-    return estimate_delivery_date if estimate_delivery_date.on_weekday?
-    return estimate_delivery_date if I18n.t(:deliverables, scope: %i[constants time_intervals]).include?(deliverable.name)
-
-    estimate_delivery_date.next_weekday
+    delivery_date
   end
 
-  def constant_time_intervals
-    if I18n.t(:deliverables, scope: %i[constants time_intervals]).include?(deliverable.name)
-      I18n.t(:extended, scope: %i[constants time_intervals])
+  def deliverable_name
+    case deliverable.class.name
+    when 'Locality'
+      deliverable.subdivision.name.to_sym
+    when 'Subdivision'
+      deliverable.name.to_sym
+    end
+  end
+
+  def default_time_intervals(date)
+    if I18n.t(:avaliable_days_for_delivery, scope: %i[constants]).keys.include?(deliverable_name)
+      I18n.t("extended.#{Date::DAYS_INTO_WEEK.invert[date.wday]}", scope: %i[constants time_intervals])
+    elsif courier?
+      I18n.t(:default_courier, scope: %i[constants time_intervals])
     else
       I18n.t(:default, scope: %i[constants time_intervals])
     end
   end
 
-  def time_before_delivery_date_changes
-    # 16:00
-    Time.current.middle_of_day + 4.hours
+  def time_after_delivery_date_will_change
+    Time.current.middle_of_day + 4.hours # 16:00
   end
 end
