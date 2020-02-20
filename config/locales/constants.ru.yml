@@ -6,15 +6,7 @@ ru:
       Москва: 7
       Московская: 7
       Санкт-Петербург: 6
-    providers:
-      boxberry:
-        excluded_deliverables:
-          - Ленинградская
-          - Москва
-          - Московская
-          - Санкт-Петербург
-      shop-logistics:
-        excluded_deliverables: []
+    date_interval: 8
     time_intervals:
       default:
         - 10:00-14:00
