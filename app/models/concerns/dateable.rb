@@ -23,7 +23,7 @@ module Dateable
     delivery_date = date
     delivery_date += 1.day if Time.current > time_after_delivery_date_will_change
 
-    date_interval.scan(DIGIT_REGEXP).last.to_i.times do
+    date_interval.scan(DIGIT_REGEXP).max.to_i.times do
       if delivery_date.friday?
         if [6, 7].include?(I18n.t(:avaliable_days_for_delivery, scope: %i[constants])[deliverable_name])
           delivery_date += 1.day
