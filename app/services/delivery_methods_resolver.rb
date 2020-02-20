@@ -3,7 +3,7 @@ class DeliveryMethodsResolver
 
   def initialize(search_params)
     @country = Country.find_by(language_code: I18n.locale)
-    @locality_name = search_params[:locality]
+    @locality_name = I18n.t("aliases.#{search_params[:locality]}", default: nil) || search_params[:locality]
     @subdivision_name = search_params[:subdivision]
   end
 
