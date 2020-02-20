@@ -49,7 +49,12 @@ class RU::BoxberryService < DeliveryService
     localities_list[COURIER_LOCALITIES_LIST].each do |city|
       next unless city['City'] == locality.name && format_string(city['Area']).downcase == locality.subdivision.name.downcase
 
-      date_interval = city['DeliveryPeriod'] || I18n.t("custom_date_intervals.boxberry.#{locality.subdivision.name}.#{locality.name}", default: I18n.t(:delivery_period, scope: :constants)).to_i
+      date_interval = city['DeliveryPeriod']
+      if date_interval.blank?
+        date_interval = I18n.t("#{locality.subdivision.name}.#{locality.name}",
+                               scope: %i[custom_date_intervals boxberry],
+                               default: I18n.t(:delivery_period, scope: :constants)).to_i
+      end
 
       DeliveryMethod.create_or_find_by!(
         date_interval: date_interval,
