@@ -9,6 +9,7 @@ class DeliveryMethodsResolver
 
   def resolve
     return if country.blank? || locality_name.blank?
+    return if I18n.t("excluded_deliverables.all.#{subdivision_name}", default: nil)&.include?(locality_name)
 
     @result = search_by_params
     return result.delivery_methods.active if result.present?
