@@ -56,7 +56,7 @@ class RU::BoxberryService < DeliveryService
                                default: nil).to_i
       end
 
-      next if date_interval.blank? || date_interval.zero?
+      next if date_interval.blank?
 
       DeliveryMethod.create_or_find_by!(
         date_interval: date_interval,
