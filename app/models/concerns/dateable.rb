@@ -56,8 +56,6 @@ module Dateable
   def default_time_intervals(date)
     if I18n.t(:avaliable_days_for_delivery, scope: %i[constants]).keys.include?(deliverable_name)
       I18n.t("extended.#{Date::DAYS_INTO_WEEK.invert[date.wday]}", scope: %i[constants time_intervals])
-    elsif courier?
-      I18n.t(:default_courier, scope: %i[constants time_intervals])
     else
       I18n.t(:default, scope: %i[constants time_intervals])
     end
