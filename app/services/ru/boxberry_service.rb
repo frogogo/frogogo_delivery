@@ -53,8 +53,10 @@ class RU::BoxberryService < DeliveryService
       if date_interval.blank?
         date_interval = I18n.t("#{locality.subdivision.name}.#{locality.name}",
                                scope: %i[custom_date_intervals boxberry],
-                               default: I18n.t(:delivery_period, scope: :constants)).to_i
+                               default: nil).to_i
       end
+
+      next if date_interval.blank? || date_interval.zero?
 
       DeliveryMethod.create_or_find_by!(
         date_interval: date_interval,
