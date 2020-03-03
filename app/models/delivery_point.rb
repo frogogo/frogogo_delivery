@@ -36,5 +36,7 @@ class DeliveryPoint < ApplicationRecord
 
   validates :address, presence: true
 
+  delegate :courier?, to: :delivery_method
   delegate :deliverable, to: :delivery_method
+  delegate :provider, to: :delivery_method
 end

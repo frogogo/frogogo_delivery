@@ -23,7 +23,12 @@ module Dateable
     delivery_date = date
     delivery_date += 1.day if Time.current > time_after_delivery_date_will_change
 
-    date_interval.scan(DIGIT_REGEXP).max.to_i.times do
+    days_count = date_interval.scan(DIGIT_REGEXP).max.to_i
+
+    # HACK: add +1 day to delivery interval
+    days_count += 1 if override_days_count?
+
+    days_count.times do
       if delivery_date.friday?
         if [6, 7].include?(I18n.t(:avaliable_days_for_delivery, scope: %i[constants])[deliverable_name])
           delivery_date += 1.day
@@ -58,6 +63,13 @@ module Dateable
       I18n.t(Date::DAYS_INTO_WEEK.invert[date.wday], scope: %i[constants time_intervals extended])
     else
       I18n.t(:default, scope: %i[constants time_intervals])
+    end
+  end
+
+  def override_days_count?
+    case provider.name
+    when 'Boxberry'
+      courier? || I18n.t(:hack, scope: %i[custom_date_intervals boxberry]).include?(deliverable_name)
     end
   end
 
