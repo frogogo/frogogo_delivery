@@ -1,6 +1,5 @@
 class RU::BoxberryService < DeliveryService
   BOXBERRY_NAME = 'Boxberry'
-  DIGIT_REGEXP = /\d+/
   SYMBOLS_TO_DELETE = '-'
 
   # Localities list:
@@ -55,10 +54,9 @@ class RU::BoxberryService < DeliveryService
         date_interval = I18n.t("#{locality.subdivision.name}.#{locality.name}",
                                scope: %i[custom_date_intervals boxberry],
                                default: nil).to_i
-      else
-        # HACK: add +1 day for courier delivery
-        date_interval = date_interval.scan(DIGIT_REGEXP).max.to_i + 1
       end
+
+      next if date_interval.blank?
 
       DeliveryMethod.create_or_find_by!(
         date_interval: date_interval,
