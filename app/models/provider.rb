@@ -21,13 +21,4 @@ class Provider < ApplicationRecord
   has_many :delivery_methods, dependent: :destroy
 
   validates :name, presence: true, uniqueness: true
-
-  after_update_commit :update_delivery_methods, if: :saved_change_to_inactive?
-
-  private
-
-  def update_delivery_methods
-    delivery_methods.update_all(inactive: inactive)
-    delivery_methods.touch_all
-  end
 end
