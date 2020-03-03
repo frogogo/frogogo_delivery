@@ -3,9 +3,15 @@ class DeliveryMethodsController < ApplicationController
     @delivery_methods = DeliveryMethodsResolver.new(search_params).resolve
     return head :not_found if @delivery_methods.blank?
 
-    @delivery_points = DeliveryPoint
+    @delivery_methods = @delivery_methods
+      .joins(:provider)
+      .merge(Provider.active)
       .active
-      .where(delivery_method: @delivery_methods)
+
+    @delivery_points = DeliveryPoint
+      .joins(:delivery_method)
+      .merge(@delivery_methods)
+      .active
       .uniq { |delivery_point| [delivery_point.latitude, delivery_point.longitude] }
 
     @delivery_zone = @delivery_methods.first.deliverable.delivery_zone
