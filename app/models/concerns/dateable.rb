@@ -30,13 +30,13 @@ module Dateable
 
     days_count.times do
       if delivery_date.friday?
-        if [6, 7].include?(I18n.t(:avaliable_days_for_delivery, scope: %i[constants])[deliverable_name])
+        if [6, 7].include?(I18n.t(:avaliable_days_for_delivery)[deliverable_name])
           delivery_date += 1.day
         else
           delivery_date = delivery_date.next_weekday
         end
       elsif delivery_date.saturday?
-        if I18n.t(:avaliable_days_for_delivery, scope: %i[constants])[deliverable_name] == 7
+        if I18n.t(:avaliable_days_for_delivery)[deliverable_name] == 7
           delivery_date += 1.day
         else
           delivery_date = delivery_date.next_weekday
@@ -59,10 +59,10 @@ module Dateable
   end
 
   def default_time_intervals(date)
-    if I18n.t(:avaliable_days_for_delivery, scope: %i[constants]).keys.include?(deliverable_name)
-      I18n.t(Date::DAYS_INTO_WEEK.invert[date.wday], scope: %i[constants time_intervals extended])
+    if I18n.t(:avaliable_days_for_delivery).keys.include?(deliverable_name)
+      I18n.t("#{deliverable_name}.#{Date::DAYS_INTO_WEEK.invert[date.wday]}", scope: %i[time_intervals])
     else
-      I18n.t(:default, scope: %i[constants time_intervals])
+      I18n.t(:default, scope: %i[time_intervals])
     end
   end
 
