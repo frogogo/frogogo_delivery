@@ -26,7 +26,7 @@ tr_default_sub = Subdivision.create!(iso_code: '00', local_code: '00', name: 'De
 # Create providers
 # Provider.create!(name: 'Russian Post')
 Provider.create!(code: 'boxberry', name: 'Boxberry')
-Provider.create!(code: 'shop-logistics', name: 'ShopLogistics', inactive: true)
+Provider.create!(code: 'shop-logistics', name: 'ShopLogistics')
 Provider.create!(name: 'Turkey Post')
 
 # Create delivery methods
