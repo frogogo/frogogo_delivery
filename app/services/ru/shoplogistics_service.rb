@@ -40,6 +40,7 @@ class RU::ShopLogisticsService < DeliveryService
 
         begin
           pickup_delivery_method(tarif['srok_dostavki'])
+          next if tarif['srok_dostavki'] == '0'
 
           @pickup_delivery_method.delivery_points.create!(
             address: format_string(tarif['address']),
