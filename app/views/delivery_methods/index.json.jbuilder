@@ -9,5 +9,5 @@ json.cache! @delivery_points, expires_in: @delivery_points.first&.expires_in do
 end
 
 json.delivery_zone do
-  json.partial! '/delivery_zones/delivery_zone', delivery_zone: @delivery_zone
+  json.partial! '/delivery_zone/delivery_zone', delivery_zone: @delivery_zone
 end
