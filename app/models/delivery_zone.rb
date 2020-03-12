@@ -3,9 +3,11 @@
 # Table name: delivery_zones
 #
 #  id                           :bigint           not null, primary key
-#  fee                          :float            not null
+#  courier_fee                  :float            default("0.0"), not null
 #  free_delivery_gold_threshold :float            not null
 #  free_delivery_threshold      :float            not null
+#  pickup_fee                   :float            default("0.0"), not null
+#  post_fee                     :float            default("0.0"), not null
 #  zone                         :integer          not null
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
@@ -29,7 +31,13 @@ class DeliveryZone < ApplicationRecord
     "5": 5, "6": 6, "7": 7, "8": 8, "9": 9
   }
 
-  validates :fee, presence: true
+  validates :courier_fee, presence: true
+  validates :pickup_fee, presence: true
+  validates :post_fee, presence: true
   validates :free_delivery_gold_threshold, presence: true
   validates :free_delivery_threshold, presence: true
+
+  def fee
+    courier_fee
+  end
 end
