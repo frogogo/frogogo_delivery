@@ -37,6 +37,10 @@ class DeliveryZone < ApplicationRecord
   validates :free_delivery_gold_threshold, presence: true
   validates :free_delivery_threshold, presence: true
 
+  def delivery_fee
+    courier_fee
+  end
+
   def fee
     courier_fee
   end
