@@ -7,7 +7,7 @@ turkey = Country.create!(iso_code: 'TR', language_code: 'tr', name: 'Turkey')
 DeliveryZone.create!(courier_fee: 299, pickup_fee: 199, free_delivery_gold_threshold: 1500, free_delivery_threshold: 2000, zone: 1, country: russia)
 DeliveryZone.create!(courier_fee: 349, pickup_fee: 249, free_delivery_gold_threshold: 1500, free_delivery_threshold: 2000, zone: 2, country: russia)
 DeliveryZone.create!(courier_fee: 399, pickup_fee: 299, free_delivery_gold_threshold: 2000, free_delivery_threshold: 2500, zone: 3, country: russia)
-DeliveryZone.create!(courier_fee: 499, pickup_fee: 399, free_delivery_gold_threshold: 3000, free_delivery_threshold: 3500, zone: 4, country: russia)
+DeliveryZone.create!(courier_fee: 499, pickup_fee: 399, free_delivery_gold_threshold: 2000, free_delivery_threshold: 2500, zone: 4, country: russia)
 DeliveryZone.create!(courier_fee: 799, pickup_fee: 699, free_delivery_gold_threshold: 3500, free_delivery_threshold: 4500, zone: 5, country: russia)
 DeliveryZone.create!(courier_fee: 7, pickup_fee: 7, post_fee: 7, free_delivery_gold_threshold: 100, free_delivery_threshold: 150, zone: :default, country: turkey)
 
