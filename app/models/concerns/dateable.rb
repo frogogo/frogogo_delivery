@@ -4,7 +4,7 @@ module Dateable
   DIGIT_REGEXP = /\d+/
 
   def date_interval
-    self[:date_interval].scan(DIGIT_REGEXP).max.to_i
+    self[:date_interval].scan(DIGIT_REGEXP).max
   end
 
   def estimate_delivery_date
@@ -27,7 +27,7 @@ module Dateable
     delivery_date = date
     delivery_date += 1.day if Time.current > time_after_delivery_date_will_change
 
-    days_count = date_interval
+    days_count = date_interval.to_i
 
     # HACK: add +1 day to delivery interval
     days_count += 1 if override_days_count?
