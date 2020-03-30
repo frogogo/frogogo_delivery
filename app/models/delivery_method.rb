@@ -43,7 +43,7 @@ class DeliveryMethod < ApplicationRecord
     end.to_h
   end
 
-  def time_intervals(date: Date.current)
+  def time_intervals(date: calculate_estimated_delivery_date(Date.current))
     return unless courier?
 
     self[:time_intervals] || default_time_intervals(date)
