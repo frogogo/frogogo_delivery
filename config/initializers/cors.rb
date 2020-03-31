@@ -12,5 +12,9 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     resource '/delivery_methods',
              headers: :any,
              methods: [:get]
+
+    resource '/delivery_zone',
+             headers: :any,
+             methods: [:get]
   end
 end
