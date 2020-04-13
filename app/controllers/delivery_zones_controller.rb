@@ -1,11 +1,15 @@
 class DeliveryZonesController < ApplicationController
   def show
-    @delivery_zone = Locality
-      .joins(:subdivision)
-      .find_by(name: search_params[:locality], subdivisions: { name: search_params[:subdivision] })
-      &.delivery_zone
+    @delivery_methods = DeliveryMethodsResolver.new(search_params).resolve
+    return head :not_found if @delivery_methods.blank?
 
-    head :not_found if @delivery_zone.blank?
+    @delivery_methods = @delivery_methods
+      .joins(:provider)
+      .merge(Provider.active)
+      .active
+
+    @delivery_zone = @delivery_methods.first.deliverable.delivery_zone
+    return head :not_found if @delivery_zone.blank?
   end
 
   private
