@@ -1,6 +1,6 @@
 # README
 
-- Ruby version: 2.6.5
+- Ruby version: see `.ruby-version`
 - No system dependencies
 - Database configuration: `$ rails db:setup`
 - How to run the test suite: `$ rails test`
