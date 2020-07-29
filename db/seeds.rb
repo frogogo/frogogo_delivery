@@ -23,7 +23,7 @@ tr_default_sub = Subdivision.create!(iso_code: '00', local_code: '00', name: 'De
 # Locality.create!(name: 'Москва', local_code: '45000000', postal_code: '101000', delivery_zone: russia.delivery_zones.find_by(zone: 1), subdivision: moscow)
 
 # Create providers
-# Provider.create!(name: 'Russian Post')
+Provider.create!(code: 'russian-post', name: 'RussianPost')
 Provider.create!(code: 'boxberry', name: 'Boxberry')
 Provider.create!(name: 'Turkey Post')
 
