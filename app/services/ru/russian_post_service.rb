@@ -25,8 +25,12 @@ class RU::RussianPostService < DeliveryService
     response.each do |post_office|
       next if post_office['is-temporary-closed'] == true
 
-      pickup_delivery_method.delivery_points.create!(
+      date_interval = I18n.t('custom_date_intervals.russian_post.intervals')
+      pickup_delivery_method(date_interval)
+
+      @pickup_delivery_method.delivery_points.create!(
         address: "#{post_office['address-source']}, #{post_office['settlement']}",
+        date_interval: date_interval,
         latitude: post_office['latitude'],
         longitude: post_office['longitude'],
         name: post_office['address-source'],
@@ -35,9 +39,10 @@ class RU::RussianPostService < DeliveryService
     end
   end
 
-  def pickup_delivery_method
+  def pickup_delivery_method(date_interval)
     @pickup_delivery_method ||=
       DeliveryMethod.create_or_find_by!(
+        date_interval: date_interval,
         method: :pickup,
         deliverable: locality,
         provider: provider
