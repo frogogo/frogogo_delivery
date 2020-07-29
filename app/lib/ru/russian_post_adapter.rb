@@ -53,7 +53,7 @@ class RU::RussianPostAdapter < DeliveryAdapter
       DADATA_URI,
       headers: HEADERS.merge(
         'Authorization': "Token #{dadata_api_token}",
-        'X-Secret': "#{dadata_secret_key}"
+        'X-Secret': dadata_secret_key
       ),
       body: [locality.subdivision.name, locality.name].to_json
     )
