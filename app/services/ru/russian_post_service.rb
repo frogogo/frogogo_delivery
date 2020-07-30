@@ -23,8 +23,8 @@ class RU::RussianPostService < DeliveryService
 
   def save_data
     response.each do |post_office|
-      next unless post_office['settlement'] == locality.name && post_office['region'] == locality.subdivision.name
-      next if post_office['type-code'] == 'ПОЧТОМАТ'
+      next unless post_office['settlement'] == locality.name
+      next unless post_office['type-code'] == 'ГОПС'
       next if post_office['is-temporary-closed'] == true
 
       date_interval = I18n.t('custom_date_intervals.russian_post.intervals')
