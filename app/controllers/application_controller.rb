@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
+  helper DeliveryPointHelper
   include ActionController::Caching
   include ActionController::HttpAuthentication::Token::ControllerMethods
 
