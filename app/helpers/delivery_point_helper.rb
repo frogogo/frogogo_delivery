@@ -7,49 +7,49 @@ module DeliveryPointHelper
     working_hours_to_json.each do |hours|
       case hours['weekday-id']
       when 1
-        result += 'Пн'
+        result += 'пн'
         if hours['begin-worktime'].nil?
           result += ' — выходной; '
         else
           result += ": c #{Time.zone.parse(hours['begin-worktime']).strftime('%H:%M')} до #{Time.zone.parse(hours['end-worktime']).strftime('%H:%M')}; "
         end
       when 2
-        result += 'Вт'
+        result += 'вт'
         if hours['begin-worktime'].nil?
           result += ' — выходной; '
         else
           result += ": c #{Time.zone.parse(hours['begin-worktime']).strftime('%H:%M')} до #{Time.zone.parse(hours['end-worktime']).strftime('%H:%M')}; "
         end
       when 3
-        result += 'Ср'
+        result += 'ср'
         if hours['begin-worktime'].nil?
           result += ' — выходной; '
         else
           result += ": c #{Time.zone.parse(hours['begin-worktime']).strftime('%H:%M')} до #{Time.zone.parse(hours['end-worktime']).strftime('%H:%M')}; "
         end
       when 4
-        result += 'Чт'
+        result += 'чт'
         if hours['begin-worktime'].nil?
           result += ' — выходной; '
         else
           result += ": c #{Time.zone.parse(hours['begin-worktime']).strftime('%H:%M')} до #{Time.zone.parse(hours['end-worktime']).strftime('%H:%M')}; "
         end
       when 5
-        result += 'Пт'
+        result += 'пт'
         if hours['begin-worktime'].nil?
           result += ' — выходной; '
         else
           result += ": c #{Time.zone.parse(hours['begin-worktime']).strftime('%H:%M')} до #{Time.zone.parse(hours['end-worktime']).strftime('%H:%M')}; "
         end
       when 6
-        result += 'Сб'
+        result += 'сб'
         if hours['begin-worktime'].nil?
           result += ' — выходной; '
         else
           result += ": c #{Time.zone.parse(hours['begin-worktime']).strftime('%H:%M')} до #{Time.zone.parse(hours['end-worktime']).strftime('%H:%M')}; "
         end
       when 7
-        result += 'Вс'
+        result += 'вс'
         if hours['begin-worktime'].nil?
           result += ' — выходной; '
         else
