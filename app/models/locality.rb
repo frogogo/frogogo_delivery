@@ -30,6 +30,7 @@ class Locality < ApplicationRecord
   belongs_to :subdivision
 
   has_many :delivery_methods, as: :deliverable, dependent: :destroy
+  has_many :providers, through: :delivery_methods, dependent: :nullify
 
   validates :name, presence: true
 
