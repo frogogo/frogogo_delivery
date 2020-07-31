@@ -1,16 +1,9 @@
 class RU::RussianPostAdapter < DeliveryAdapter
   POST_OFFICE_URI = 'https://otpravka-api.pochta.ru/postoffice/1.0/nearby'
   DADATA_URI = 'https://cleaner.dadata.ru/api/v1/clean/address'
-  HEADERS = {
-    'Content-Type' => 'application/json; charset=UTF-8',
-    'Authorization' => '',
-    'X-User-Authorization' => '',
-    'X-Secret' => ''
-  }
+  HEADERS = { 'Content-Type' => 'application/json; charset=UTF-8' }
   QUERY = {
-    'latitude' => '',
-    'longitude' => '',
-    'top' => '4000',
+    'top' => '1000',
     'filter' => 'ALL',
     'filter-by-office-type' => 'true'
   }
