@@ -30,7 +30,9 @@ class DeliveryMethodsResolver
       name: subdivision_name, country: country, delivery_zone: delivery_zone(subdivision_name, :regions)
     )
     @locality = Locality.create_or_find_by!(
-      name: locality_name, subdivision: subdivision, delivery_zone: delivery_zone(locality_name, :cities)
+      name: locality_name,
+      subdivision: subdivision,
+      delivery_zone: delivery_zone(locality_name, :cities) || subdivision.delivery_zone
     )
   end
 
