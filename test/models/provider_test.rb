@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ProviderTest < ActiveSupport::TestCase
   setup do
-    @provider = providers(:shoplogistics)
+    @provider = providers(:boxberry)
   end
 
   test 'valid' do
