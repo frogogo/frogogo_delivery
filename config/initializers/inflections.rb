@@ -16,5 +16,4 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.acronym 'RU'
   inflect.acronym 'SI'
   inflect.acronym 'TR'
-  inflect.acronym 'ShopLogistics'
 end
