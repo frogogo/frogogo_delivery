@@ -1,5 +1,6 @@
 class RU::RussianPostService < DeliveryService
   RUSSIAN_POST_NAME = 'RussianPost'
+  POST_OFFICE_TYPES = %w[ГОПС СОПС]
 
   def initialize(locality)
     super
@@ -25,7 +26,7 @@ class RU::RussianPostService < DeliveryService
     response.each do |post_office|
       next unless post_office['settlement'] == locality.name &&
                   post_office['region'].include?(locality.subdivision.name)
-      next unless post_office['type-code'] == 'ГОПС'
+      next unless post_office['type-code'].in?(POST_OFFICE_TYPES)
       next if post_office['is-temporary-closed'] == true
 
       date_interval = I18n.t('custom_date_intervals.russian_post.intervals')
