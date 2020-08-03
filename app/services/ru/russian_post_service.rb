@@ -33,11 +33,12 @@ class RU::RussianPostService < DeliveryService
 
       @pickup_delivery_method.delivery_points.create!(
         address: "#{post_office['address-source']}, #{post_office['settlement']}",
+        code: post_office['postal-code'],
         date_interval: date_interval,
         latitude: post_office['latitude'],
         longitude: post_office['longitude'],
         phone_number: '8 800 200-58-88',
-        name: post_office['address-source'],
+        name: "#{post_office['address-source']}, #{post_office['postal-code']}",
         working_hours: post_office['working-hours']
       )
     end
