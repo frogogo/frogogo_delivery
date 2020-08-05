@@ -13,9 +13,7 @@ class RU::RussianPostService < DeliveryService
     return unless super
 
     # Get unique points by address to avoid 'PG::UniqueViolation'
-    @response = delivery_service.post_offices_list.uniq do |post_office|
-      [post_office['address-source']]
-    end
+    @response = delivery_service.post_offices_list.uniq
 
     save_data
   end
@@ -24,24 +22,26 @@ class RU::RussianPostService < DeliveryService
 
   def save_data
     response.each do |post_office|
-      next unless post_office['settlement'] == locality.name &&
-                  post_office['region'].include?(locality.subdivision.name)
-      next unless post_office['type-code'].in?(POST_OFFICE_TYPES)
-      next if post_office['is-temporary-closed'] == true
+      request = delivery_service.request_post_offices(post_office)
+
+      next unless request['type-code'].in?(POST_OFFICE_TYPES)
+      next if request['is-temporary-closed'] == true
 
       date_interval = I18n.t('custom_date_intervals.russian_post.intervals')
       pickup_delivery_method(date_interval)
 
       @pickup_delivery_method.delivery_points.create!(
-        address: "#{post_office['address-source']}, #{post_office['settlement']}",
-        code: post_office['postal-code'],
+        address: "#{request['address-source']}, #{request['settlement']}",
+        code: request['postal-code'],
         date_interval: date_interval,
-        latitude: post_office['latitude'],
-        longitude: post_office['longitude'],
+        latitude: request['latitude'],
+        longitude: request['longitude'],
         phone_number: '8 800 200-58-88',
-        name: "#{post_office['address-source']}, #{post_office['postal-code']}",
-        working_hours: post_office['working-hours']
+        name: "#{request['address-source']}, #{request['postal-code']}",
+        working_hours: request['working-hours']
       )
+    rescue ActiveRecord::RecordNotUnique => e
+      Rails.logger.error(e.inspect)
     end
   end
 

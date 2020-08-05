@@ -1,6 +1,7 @@
 module DeliveryPointHelper
   def format_working_hours(delivery_point)
     working_hours = delivery_point.working_hours
+    return if working_hours.nil?
     working_hours_to_json = JSON.parse(working_hours.tr('\\', '').gsub('=>', ':'))
 
     result = ''
