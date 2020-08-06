@@ -71,6 +71,8 @@ module Dateable
   end
 
   def override_days_count?
+    return if deliverable_name == (:Москва || :Московская)
+
     case provider.name
     when 'Boxberry'
       courier? || I18n.t(:hack, scope: %i[custom_date_intervals boxberry]).include?(deliverable_name)
