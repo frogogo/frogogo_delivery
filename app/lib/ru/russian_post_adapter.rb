@@ -16,7 +16,7 @@ class RU::RussianPostAdapter < DeliveryAdapter
         'X-User-Authorization': "Basic #{post_api_key}"
       ),
       query: QUERY
-    ).parsed_response
+    )
   end
 
   private

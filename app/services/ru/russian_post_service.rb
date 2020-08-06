@@ -24,21 +24,27 @@ class RU::RussianPostService < DeliveryService
     response.each do |post_office|
       request = delivery_service.request_post_offices(post_office)
 
-      next unless request['type-code'].in?(POST_OFFICE_TYPES)
-      next if request['is-temporary-closed'] == true
+      next unless request.success?
+
+      response = request.parsed_response
+
+      next unless response['settlement'] == locality.name &&
+                  response['region'].include?(locality.subdivision.name)
+      next unless response['type-code'].in?(POST_OFFICE_TYPES)
+      next if response['is-temporary-closed'] == true
 
       date_interval = I18n.t('custom_date_intervals.russian_post.intervals')
       pickup_delivery_method(date_interval)
 
       @pickup_delivery_method.delivery_points.create!(
-        address: "#{request['address-source']}, #{request['settlement']}",
-        code: request['postal-code'],
+        address: "#{response['address-source']}, #{response['settlement']}",
+        code: response['postal-code'],
         date_interval: date_interval,
-        latitude: request['latitude'],
-        longitude: request['longitude'],
+        latitude: response['latitude'],
+        longitude: response['longitude'],
         phone_number: '8 800 200-58-88',
-        name: "#{request['address-source']}, #{request['postal-code']}",
-        working_hours: request['working-hours']
+        name: "#{response['address-source']}, #{response['postal-code']}",
+        working_hours: response['working-hours']
       )
     rescue ActiveRecord::RecordNotUnique => e
       Rails.logger.error(e.inspect)
