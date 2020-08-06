@@ -75,7 +75,7 @@ module Dateable
 
     case provider.name
     when 'Boxberry'
-      courier? || I18n.t(:hack, scope: %i[custom_date_intervals boxberry]).include?(deliverable_name)
+      I18n.t(:hack, scope: %i[custom_date_intervals boxberry]).include?(deliverable_name)
     end
   end
 
