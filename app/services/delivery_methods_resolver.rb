@@ -40,7 +40,6 @@ class DeliveryMethodsResolver
     case country.language_code.to_sym
     when :ru
       create_locality_and_subdivision
-      return if I18n.t('excluded_deliverables.types').any? { |type| locality.name.downcase.include?(type.downcase) }
 
       RU::BoxberryService.new(locality).fetch_delivery_info
       RU::RussianPostService.new(locality).fetch_delivery_info
