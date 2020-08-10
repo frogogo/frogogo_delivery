@@ -12,7 +12,6 @@ class RU::RussianPostService < DeliveryService
   def fetch_delivery_info
     return unless super
 
-    # Get unique points by address to avoid 'PG::UniqueViolation'
     @response = delivery_service.post_offices_list.uniq
 
     save_data
@@ -29,7 +28,7 @@ class RU::RussianPostService < DeliveryService
       response = request.parsed_response
 
       next unless response['settlement'] == locality.name &&
-                  response['region'].include?(locality.subdivision.name)
+                  response['region'].downcase.include?(locality.subdivision.name.downcase)
       next unless response['type-code'].in?(POST_OFFICE_TYPES)
       next if response['is-temporary-closed'] == true
 
