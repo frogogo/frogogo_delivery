@@ -4,7 +4,7 @@ module Dateable
   DIGIT_REGEXP = /\d+/
 
   def date_interval
-    self[:date_interval].scan(DIGIT_REGEXP).max
+    provider.name == 'RussianPost' ? self[:date_interval] : self[:date_interval].scan(DIGIT_REGEXP).max
   end
 
   def estimate_delivery_date
