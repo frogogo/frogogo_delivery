@@ -21,6 +21,7 @@ class RU::RussianPostService < DeliveryService
 
   def save_data
     response.each do |post_office|
+      intervals = delivery_service.request_intervals(post_office)
       request = delivery_service.request_post_offices(post_office)
 
       next unless request.success?
@@ -32,7 +33,7 @@ class RU::RussianPostService < DeliveryService
       next unless response['type-code'].in?(POST_OFFICE_TYPES)
       next if response['is-temporary-closed'] == true
 
-      date_interval = I18n.t('custom_date_intervals.russian_post.intervals')
+      date_interval = "От #{intervals['delivery']['min']} до #{intervals['delivery']['max']} дней"
       pickup_delivery_method(date_interval)
 
       @pickup_delivery_method.delivery_points.create!(

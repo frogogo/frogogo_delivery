@@ -1,8 +1,11 @@
 class RU::RussianPostAdapter < DeliveryAdapter
   POSTAL_CODES_URI = 'https://otpravka-api.pochta.ru/postoffice/1.0/settlement.offices.codes'
   POST_OFFICE_URI = 'https://otpravka-api.pochta.ru/postoffice/1.0/'
+  INTERVALS_URI = 'https://tariff.pochta.ru/delivery/v1/calculate?json'
   HEADERS = { 'Content-Type' => 'application/json; charset=UTF-8' }
   QUERY = { 'filter-by-office-type' => 'true' }
+  PARCEL_TYPE = '23030'
+  SENDER_CODE = '140961'
 
   def post_offices_list
     request_postal_codes.parsed_response
@@ -17,6 +20,13 @@ class RU::RussianPostAdapter < DeliveryAdapter
       ),
       query: QUERY
     )
+  end
+
+  def request_intervals(post_office)
+    HTTParty.get(
+      INTERVALS_URI,
+      query: { 'object' => PARCEL_TYPE, 'from' => SENDER_CODE, 'to' => post_office }
+    ).parsed_response
   end
 
   private
