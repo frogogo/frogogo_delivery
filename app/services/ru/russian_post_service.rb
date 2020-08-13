@@ -42,7 +42,6 @@ class RU::RussianPostService < DeliveryService
         date_interval: date_interval,
         latitude: response['latitude'],
         longitude: response['longitude'],
-        phone_number: '8 800 200-58-88',
         name: "#{response['address-source']}, #{response['postal-code']}",
         working_hours: response['working-hours']
       )
