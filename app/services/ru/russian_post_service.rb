@@ -12,9 +12,10 @@ class RU::RussianPostService < DeliveryService
   def fetch_delivery_info
     return unless super
     # Temporarily create delivery_points for Moscow only
-    return unless locality.delivery_zone_id == 1
+    # return unless locality.delivery_zone_id == 1
 
     @response = delivery_service.post_offices_list.uniq
+    @intervals = delivery_service.request_intervals(response.first) unless locality.name == 'Москва'
 
     save_data
   end
@@ -23,7 +24,6 @@ class RU::RussianPostService < DeliveryService
 
   def save_data
     response.each do |post_office|
-      intervals = delivery_service.request_intervals(post_office)
       request = delivery_service.request_post_offices(post_office)
 
       next unless request.success?
@@ -35,10 +35,16 @@ class RU::RussianPostService < DeliveryService
       next unless response['type-code'].in?(POST_OFFICE_TYPES)
       next if response['is-temporary-closed'] == true
 
-      date_interval = "От #{intervals['delivery']['min']} до #{intervals['delivery']['max']} дней"
-      pickup_delivery_method(date_interval)
+      date_interval = if @intervals.blank?
+                        # Russian Post always sends '1 day' for Moscow
+                        '1 день'
+                      else
+                        "От #{@intervals['delivery']['min']} до #{@intervals['delivery']['max']} дней"
+                      end
 
-      @pickup_delivery_method.delivery_points.create!(
+      delivery_method(date_interval)
+
+      @delivery_method.delivery_points.create!(
         address: "#{response['address-source']}, #{response['settlement']}",
         code: response['postal-code'],
         date_interval: date_interval,
@@ -52,8 +58,8 @@ class RU::RussianPostService < DeliveryService
     end
   end
 
-  def pickup_delivery_method(date_interval)
-    @pickup_delivery_method ||=
+  def delivery_method(date_interval)
+    @delivery_method ||=
       DeliveryMethod.create_or_find_by!(
         date_interval: date_interval,
         method: :pickup,
