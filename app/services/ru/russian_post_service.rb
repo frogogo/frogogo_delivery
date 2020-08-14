@@ -11,6 +11,8 @@ class RU::RussianPostService < DeliveryService
 
   def fetch_delivery_info
     return unless super
+    # Temporarily create delivery_points for Moscow only
+    return unless locality.delivery_zone_id == 1
 
     @response = delivery_service.post_offices_list.uniq
 
