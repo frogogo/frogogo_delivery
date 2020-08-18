@@ -4,6 +4,10 @@ json.cache! delivery_point, expires_in: delivery_point.expires_in do
                 :estimate_delivery_date, :estimated_delivery_date,
                 :latitude, :longitude, :name, :phone_number, :uuid, :working_hours
 
+  if delivery_point.provider.name == 'RussianPostPickup'
+    json.working_hours format_working_hours(delivery_point)
+  end
+
   json.provider do
     json.partial! 'providers/provider', provider: delivery_point.delivery_method.provider
   end

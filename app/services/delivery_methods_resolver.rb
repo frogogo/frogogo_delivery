@@ -13,9 +13,12 @@ class DeliveryMethodsResolver
     return if excluded_deliverable.present?
 
     @result = search_by_params
-    return result.delivery_methods.active if result.present?
 
-    fetch_new_data
+    if result.present? && result.providers.include?(Provider.find_by(name: 'RussianPostPickup'))
+      result.delivery_methods.active
+    else
+      fetch_new_data
+    end
   end
 
   private
@@ -27,7 +30,9 @@ class DeliveryMethodsResolver
       name: subdivision_name, country: country, delivery_zone: delivery_zone(subdivision_name, :regions)
     )
     @locality = Locality.create_or_find_by!(
-      name: locality_name, subdivision: subdivision, delivery_zone: delivery_zone(locality_name, :cities)
+      name: locality_name,
+      subdivision: subdivision,
+      delivery_zone: delivery_zone(locality_name, :cities) || subdivision.delivery_zone
     )
   end
 
@@ -37,6 +42,7 @@ class DeliveryMethodsResolver
       create_locality_and_subdivision
 
       RU::BoxberryService.new(locality).fetch_delivery_info
+      RU::RussianPostService.new(locality).fetch_delivery_info
 
       locality.delivery_methods.active
     end
