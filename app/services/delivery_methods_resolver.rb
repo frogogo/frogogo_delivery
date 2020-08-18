@@ -14,7 +14,7 @@ class DeliveryMethodsResolver
 
     @result = search_by_params
 
-    if result.present? && result.providers.include?(Provider.find_by(name: 'RussianPost'))
+    if result.present? && result.providers.include?(Provider.find_by(name: 'RussianPostPickup'))
       result.delivery_methods.active
     else
       fetch_new_data

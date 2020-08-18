@@ -1,5 +1,5 @@
 class RU::RussianPostService < DeliveryService
-  RUSSIAN_POST_NAME = 'RussianPost'
+  RUSSIAN_POST_NAME = 'RussianPostPickup'
   POST_OFFICE_TYPES = %w[ГОПС СОПС]
 
   def initialize(locality)
