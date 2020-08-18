@@ -50,7 +50,7 @@ class RU::RussianPostService < DeliveryService
         date_interval: date_interval,
         latitude: response['latitude'],
         longitude: response['longitude'],
-        name: "#{response['address-source']}, #{response['postal-code']}",
+        name: "Почта России №#{response['postal-code']}",
         working_hours: response['working-hours']
       )
     rescue ActiveRecord::RecordNotUnique => e
