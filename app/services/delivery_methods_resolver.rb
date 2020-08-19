@@ -13,11 +13,9 @@ class DeliveryMethodsResolver
     return if excluded_deliverable.present?
 
     @result = search_by_params
+    return result.delivery_methods if result.present?
 
-    if result.present? && result.providers.include?(Provider.find_by(name: 'RussianPostPickup'))
-      result.delivery_methods.active
-    else
-      fetch_new_data
+    fetch_new_data
     end
   end
 
