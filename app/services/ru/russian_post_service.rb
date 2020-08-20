@@ -62,7 +62,7 @@ class RU::RussianPostService < DeliveryService
     @delivery_method ||=
       DeliveryMethod.create_or_find_by!(
         date_interval: date_interval,
-        method: :post,
+        method: :pickup,
         deliverable: locality,
         provider: provider
       )
