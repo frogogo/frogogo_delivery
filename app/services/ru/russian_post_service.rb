@@ -11,8 +11,8 @@ class RU::RussianPostService < DeliveryService
 
   def fetch_delivery_info
     return unless super
-    # Choose small city to test Russian Post
-    return unless locality.name == 'Ужур'
+    # TODO: Choose small city to test Russian Post
+    # return unless locality.name == 'Ужур'
 
     @response = delivery_service.post_offices_list.uniq
     @intervals = delivery_service.request_intervals(response.first) unless locality.name == 'Москва'
