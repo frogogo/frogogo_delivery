@@ -4,7 +4,12 @@ module Dateable
   DIGIT_REGEXP = /\d+/
 
   def date_interval
-    self[:date_interval].scan(DIGIT_REGEXP).max
+    case provider.name
+    when 'Boxberry'
+      self[:date_interval].scan(DIGIT_REGEXP).max
+    when 'RussianPostPickup'
+      self[:date_interval]
+    end
   end
 
   def estimate_delivery_date
@@ -12,7 +17,7 @@ module Dateable
   end
 
   def estimated_delivery_date
-    return if date_interval.blank?
+    return if date_interval.blank? || provider.name == 'RussianPostPickup'
 
     calculate_estimated_delivery_date(Date.current)
   end

@@ -37,9 +37,9 @@ class RU::RussianPostService < DeliveryService
 
       date_interval = if @intervals.blank?
                         # Russian Post always sends '1 day' for Moscow
-                        '1 день'
+                        '1'
                       else
-                        "От #{@intervals['delivery']['min']} до #{@intervals['delivery']['max']} дней"
+                        "#{@intervals['delivery']['min']}-#{@intervals['delivery']['max']}"
                       end
 
       delivery_method(date_interval)
