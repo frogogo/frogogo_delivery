@@ -12,7 +12,7 @@ class DeliveryMethodsController < ApplicationController
       .joins(:delivery_method)
       .merge(@delivery_methods)
       .active
-      .order(date_interval: :asc)
+      .order(provider_id: :asc, date_interval: :asc)
       .uniq { |delivery_point| [delivery_point.latitude, delivery_point.longitude] }
 
     @delivery_zone = @delivery_methods.first.deliverable.delivery_zone
