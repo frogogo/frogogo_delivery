@@ -22,9 +22,10 @@ class ApplicationController < ActionController::API
   end
 
   def set_locale!
-    @locale = request.env[ACCEPT_LANGUAGE_HEADER]&.scan(LANGUAGE_CODE_REGEXP)&.first
+    # @locale = request.env[ACCEPT_LANGUAGE_HEADER]&.scan(LANGUAGE_CODE_REGEXP)&.first
 
-    raise ArgumentError if locale.blank?
+    # raise ArgumentError if locale.blank?
+    @locale = 'ru'
   end
 
   def switch_locale_and_time_zone(&action)
