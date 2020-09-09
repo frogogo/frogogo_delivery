@@ -8,6 +8,7 @@ json.cache! delivery_point, expires_in: delivery_point.expires_in do
     json.working_hours format_working_hours(delivery_point)
   end
 
+  # TODO: refactor
   if delivery_point.estimated_delivery_date.blank?
     json.estimated_delivery_date 10.days.from_now.to_date.to_s
   else
