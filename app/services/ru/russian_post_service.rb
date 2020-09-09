@@ -11,8 +11,8 @@ class RU::RussianPostService < DeliveryService
 
   def fetch_delivery_info
     return unless super
-    # Temporarily create Russian Post points for 3 and 4 zones
-    return unless locality.delivery_zone_id == (3 || 4)
+    # Temporarily create Russian Post points for zones 3–5
+    return unless [3, 4, 5].include?(locality.delivery_zone_id)
 
     @response = delivery_service.post_offices_list.uniq
     @intervals = delivery_service.request_intervals(response.first) unless locality.name == 'Москва'
