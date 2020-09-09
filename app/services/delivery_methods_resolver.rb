@@ -13,9 +13,12 @@ class DeliveryMethodsResolver
     return if excluded_deliverable.present?
 
     @result = search_by_params
-    return result.delivery_methods if result.present?
 
-    fetch_new_data
+    if result.present? && result.delivery_methods.order(updated_at: :asc).last.updated_at > 1.week.ago
+      fetch_new_data
+    else
+      result.delivery_methods
+    end
   end
 
   private
