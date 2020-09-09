@@ -15,9 +15,9 @@ class DeliveryMethodsResolver
     @result = search_by_params
 
     if result.present? && result.delivery_methods.order(updated_at: :asc).last.updated_at > 1.week.ago
-      fetch_new_data
-    else
       result.delivery_methods
+    else
+      fetch_new_data
     end
   end
 
