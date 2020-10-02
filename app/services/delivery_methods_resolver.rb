@@ -48,6 +48,8 @@ class DeliveryMethodsResolver
     when :ru
       create_locality_and_subdivision
 
+      return if @subdivision.delivery_zone == 7 || @locality.delivery_zone == 7
+
       RU::BoxberryService.new(locality).fetch_delivery_info
       RU::RussianPostService.new(locality).fetch_delivery_info
 
