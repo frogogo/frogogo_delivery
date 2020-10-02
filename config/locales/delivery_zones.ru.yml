@@ -12,6 +12,8 @@ ru:
         delivery_zone: 5
       Динская:
         delivery_zone: 3
+      Дудинка:
+        delivery_zone: 7
       Ейск:
         delivery_zone: 3
       Елизово:
@@ -34,6 +36,8 @@ ru:
         delivery_zone: 1
       Новороссийск:
         delivery_zone: 3
+      Норильск:
+        delivery_zone: 7
       Петропавловск-Камчатский:
         delivery_zone: 6
       Прокопьевск:
@@ -101,6 +105,8 @@ ru:
         delivery_zone: 4
       Калужская:
         delivery_zone: 3
+      Камчатский:
+        delivery_zone: 7
       Карачаево-Черкесская:
         delivery_zone: 3
       Карелия:
@@ -129,6 +135,8 @@ ru:
         delivery_zone: 3
       Липецкая:
         delivery_zone: 3
+      Магаданская:
+        delivery_zone: 7
       Марий Эл:
         delivery_zone: 3
       Марий, Эл:
@@ -141,6 +149,8 @@ ru:
         delivery_zone: 1
       Мурманская:
         delivery_zone: 4
+      Ненецкий:
+        delivery_zone: 7
       Нижегородская:
         delivery_zone: 3
       Новгородская:
@@ -171,6 +181,12 @@ ru:
         delivery_zone: 2
       Саратовская:
         delivery_zone: 3
+      Саха /Якутия/:
+        delivery_zone: 7
+      Саха, (Якутия):
+        delivery_zone: 7
+      Сахалинская:
+        delivery_zone: 7
       Свердловская:
         delivery_zone: 4
       Севастополь:
@@ -218,8 +234,8 @@ ru:
       Чувашская республика:
         delivery_zone: 3
       Чукотский:
-        delivery_zone: 5
+        delivery_zone: 7
       Ямало-Ненецкий:
-        delivery_zone: 5
+        delivery_zone: 7
       Ярославская:
         delivery_zone: 3
