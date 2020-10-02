@@ -1,4 +1,6 @@
 class DeliveryMethodsResolver
+  EXCLUDED_DELIVERY_ZONE = '7'
+
   attr_reader :country, :excluded_deliverable, :locality, :result
 
   def initialize(search_params)
@@ -48,7 +50,8 @@ class DeliveryMethodsResolver
     when :ru
       create_locality_and_subdivision
 
-      return if @subdivision.delivery_zone == 7 || @locality.delivery_zone == 7
+      return if subdivision.delivery_zone.zone == EXCLUDED_DELIVERY_ZONE
+      return if locality.delivery_zone.zone == EXCLUDED_DELIVERY_ZONE
 
       RU::BoxberryService.new(locality).fetch_delivery_info
       RU::RussianPostService.new(locality).fetch_delivery_info
