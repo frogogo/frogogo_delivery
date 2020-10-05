@@ -1,6 +1,7 @@
 class RU::BoxberryService < DeliveryService
   BOXBERRY_NAME = 'Boxberry'
   SYMBOLS_TO_DELETE = '-'
+  LETTER_TO_REPLACE = %w[ё е]
 
   # Localities list:
   COURIER_LOCALITIES_LIST = 'courier_localities_list'
@@ -39,15 +40,23 @@ class RU::BoxberryService < DeliveryService
   def city_code
     @city_code ||=
       localities_list[PICKUP_LOCALITIES_LIST].each do |city|
-        if city['Name'] == locality.name && format_string(city['Region']).downcase == locality.subdivision.name.downcase
-          return format_string(city['Code'])
-        end
+        name = city['Name'].downcase.gsub(*LETTER_TO_REPLACE)
+        region = format_string(city['Region']).downcase
+
+        next unless region == locality.subdivision.name.downcase
+        next unless name == locality.name.downcase.gsub(*LETTER_TO_REPLACE)
+
+        return format_string(city['Code'])
       end
   end
 
   def save_data
     localities_list[COURIER_LOCALITIES_LIST].each do |city|
-      next unless city['City'] == locality.name && format_string(city['Area']).downcase == locality.subdivision.name.downcase
+      name = city['City'].downcase.gsub(*LETTER_TO_REPLACE)
+      region = format_string(city['Area']).downcase
+
+      next unless name == locality.name.downcase.gsub(*LETTER_TO_REPLACE) &&
+                  region == locality.subdivision.name.downcase
 
       date_interval = city['DeliveryPeriod']
       if date_interval.blank?
