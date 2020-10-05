@@ -1,6 +1,7 @@
 class RU::RussianPostService < DeliveryService
   RUSSIAN_POST_NAME = 'RussianPostPickup'
   POST_OFFICE_TYPES = %w[ГОПС СОПС]
+  LETTER_TO_REPLACE = %w[ё е]
 
   def initialize(locality)
     super
@@ -30,8 +31,11 @@ class RU::RussianPostService < DeliveryService
 
       response = request.parsed_response
 
-      next unless response['settlement'] == locality.name &&
-                  response['region'].downcase.include?(locality.subdivision.name.downcase)
+      settlement = response['settlement'].downcase.gsub(*LETTER_TO_REPLACE)
+      region = response['region'].downcase
+
+      next unless settlement == locality.name.downcase.gsub(*LETTER_TO_REPLACE) &&
+                  region.include?(locality.subdivision.name.downcase)
       next unless response['type-code'].in?(POST_OFFICE_TYPES)
       next if response['is-temporary-closed'] == true
 
