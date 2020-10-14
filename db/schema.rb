@@ -82,6 +82,9 @@ ActiveRecord::Schema.define(version: 2020_10_21_105426) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "delivery_zone_id"
+    t.float "latitude"
+    t.float "longitude"
+    t.string "district"
     t.index ["delivery_zone_id"], name: "index_localities_on_delivery_zone_id"
     t.index ["local_code", "subdivision_id"], name: "index_localities_on_local_code_and_subdivision_id", unique: true
     t.index ["name", "subdivision_id"], name: "index_localities_on_name_and_subdivision_id", unique: true
