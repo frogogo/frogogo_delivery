@@ -14,10 +14,14 @@ class RU::RussianPostService < DeliveryService
   def fetch_delivery_info
     return unless super
 
-    @response = delivery_service.post_offices_list.uniq
-    @intervals = unless PERMANENT_INTERVALS_SUBDIVISIONS.include?(locality.subdivision.name)
-                   delivery_service.request_intervals(response.first)
-                 end
+    # Get unique points by address to avoid 'PG::UniqueViolation'
+    @response = delivery_service.post_offices_list.uniq do |post_office|
+      [post_office['address-source']]
+    end
+
+    unless PERMANENT_INTERVALS_SUBDIVISIONS.include?(locality.subdivision.name)
+      @intervals = delivery_service.request_intervals(response.first['postal-code'])
+    end
 
     save_data
   end
@@ -26,19 +30,14 @@ class RU::RussianPostService < DeliveryService
 
   def save_data
     response.each do |post_office|
-      request = delivery_service.request_post_offices(post_office)
+      next if post_office['is-temporary-closed'] == true
 
-      next unless request.success?
-
-      response = request.parsed_response
-
-      settlement = response['settlement'].downcase.gsub(*LETTER_TO_REPLACE)
-      region = response['region'].downcase
+      settlement = post_office['settlement'].downcase.gsub(*LETTER_TO_REPLACE)
+      region = post_office['region'].downcase
 
       next unless settlement == locality.name.downcase.gsub(*LETTER_TO_REPLACE) &&
                   region.include?(locality.subdivision.name.downcase)
-      next unless response['type-code'].in?(POST_OFFICE_TYPES)
-      next if response['is-temporary-closed'] == true
+      next unless post_office['type-code'].in?(POST_OFFICE_TYPES)
 
       date_interval = if @intervals.nil?
                         # Russian Post always sends '1 day' for Moscow, we added +1 day
@@ -50,13 +49,13 @@ class RU::RussianPostService < DeliveryService
       delivery_method(date_interval)
 
       @delivery_method.delivery_points.create!(
-        address: "#{response['address-source']}, #{response['settlement']}",
-        code: response['postal-code'],
+        address: "#{post_office['address-source']}, #{post_office['settlement']}",
+        code: post_office['postal-code'],
         date_interval: date_interval,
-        latitude: response['latitude'],
-        longitude: response['longitude'],
-        name: "Почта России №#{response['postal-code']}",
-        working_hours: response['working-hours']
+        latitude: post_office['latitude'],
+        longitude: post_office['longitude'],
+        name: "Почта России №#{post_office['postal-code']}",
+        working_hours: post_office['working-hours']
       )
     rescue ActiveRecord::RecordNotUnique => e
       Rails.logger.error(e.inspect)
