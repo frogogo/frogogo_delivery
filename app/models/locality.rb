@@ -12,6 +12,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  delivery_zone_id :bigint
+#  kladr_id         :string
 #  subdivision_id   :bigint           not null
 #
 # Indexes
