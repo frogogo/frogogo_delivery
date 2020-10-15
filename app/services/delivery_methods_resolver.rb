@@ -5,6 +5,9 @@ class DeliveryMethodsResolver
     @country = Country.find_by(language_code: I18n.locale)
     @locality_name = I18n.t(search_params[:locality], scope: %i[aliases], default: nil) || search_params[:locality]
     @subdivision_name = search_params[:subdivision]
+    @latitude = search_params[:latitude]
+    @longitude = search_params[:longitude]
+    @district = search_params[:district]
   end
 
   def resolve
@@ -30,7 +33,7 @@ class DeliveryMethodsResolver
 
   private
 
-  attr_reader :locality_name, :subdivision, :subdivision_name
+  attr_reader :locality_name, :subdivision, :subdivision_name, :latitude, :longitude, :district
 
   def create_locality_and_subdivision
     @subdivision = Subdivision.create_or_find_by!(
@@ -41,6 +44,9 @@ class DeliveryMethodsResolver
     @locality = Locality.create_or_find_by!(
       name: locality_name,
       subdivision: subdivision,
+      latitude: latitude,
+      longitude: longitude,
+      district: district,
       delivery_zone: city_delivery_zone(subdivision_name, locality_name) ||
         subdivision.delivery_zone
     )
@@ -65,6 +71,8 @@ class DeliveryMethodsResolver
     when :ru
       Locality.joins(:subdivision).find_by(
         name: locality_name,
+        latitude: latitude,
+        longitude: longitude,
         subdivisions: { name: subdivision_name, country: country }
       )
     when :tr

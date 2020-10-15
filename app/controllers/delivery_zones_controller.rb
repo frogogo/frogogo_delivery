@@ -15,6 +15,6 @@ class DeliveryZonesController < ApplicationController
   private
 
   def search_params
-    params.permit(:locality, :subdivision)
+    params.permit(:locality, :subdivision, :longitude, :latitude, :district)
   end
 end
