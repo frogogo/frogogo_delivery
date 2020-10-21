@@ -1,6 +1,4 @@
 class DeliveryMethodsResolver
-  EXCLUDED_DELIVERY_ZONE = '7'
-
   attr_reader :country, :excluded_deliverable, :locality, :result
 
   def initialize(search_params)
@@ -18,6 +16,8 @@ class DeliveryMethodsResolver
 
     # TODO: refactor
     if result.present?
+      return if result.delivery_zone.inactive?
+
       delivery_methods = result.delivery_methods.order(updated_at: :asc)
 
       if delivery_methods.last.present? && delivery_methods.last.updated_at > 1.week.ago
@@ -36,7 +36,9 @@ class DeliveryMethodsResolver
 
   def create_locality_and_subdivision
     @subdivision = Subdivision.create_or_find_by!(
-      name: subdivision_name, country: country, delivery_zone: delivery_zone(subdivision_name, :regions)
+      name: subdivision_name,
+      country: country,
+      delivery_zone: delivery_zone(subdivision_name, :regions)
     )
     @locality = Locality.create_or_find_by!(
       name: locality_name,
@@ -50,8 +52,7 @@ class DeliveryMethodsResolver
     when :ru
       create_locality_and_subdivision
 
-      return if subdivision.delivery_zone.zone == EXCLUDED_DELIVERY_ZONE
-      return if locality.delivery_zone.zone == EXCLUDED_DELIVERY_ZONE
+      return if locality.delivery_zone.inactive? || subdivision.delivery_zone.inactive?
 
       RU::BoxberryService.new(locality).fetch_delivery_info
       RU::RussianPostService.new(locality).fetch_delivery_info
