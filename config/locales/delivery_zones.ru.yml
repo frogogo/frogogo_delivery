@@ -4,6 +4,10 @@ ru:
     cities:
       Алейск:
         delivery_zone: 4
+      Апука:
+        delivery_zone: 6
+      Ачайваям:
+        delivery_zone: 6
       Барнаул:
         delivery_zone: 4
       Белово:
@@ -12,16 +16,22 @@ ru:
         delivery_zone: 5
       Динская:
         delivery_zone: 3
-      Дудинка:
-        delivery_zone: 7
       Ейск:
         delivery_zone: 3
       Елизово:
         delivery_zone: 6
+      Ивашка, Камчатский:
+        delivery_zone: 6
+      Ильпырский:
+        delivery_zone: 6
       Инта:
         delivery_zone: 5
+      Карага:
+        delivery_zone: 6
       Киселевск:
         delivery_zone: 5
+      Кострома:
+        delivery_zone: 6
       Кореновск:
         delivery_zone: 3
       Краснодар:
@@ -30,16 +40,18 @@ ru:
         delivery_zone: 4
       Ленинск-Кузнецкий:
         delivery_zone: 5
+      Магадан:
+        delivery_zone: 5
       Междуреченск:
         delivery_zone: 5
       Москва:
         delivery_zone: 1
       Новороссийск:
         delivery_zone: 3
-      Норильск:
-        delivery_zone: 7
-      Петропавловск-Камчатский:
+      Оссора:
         delivery_zone: 6
+      Петропавловск-Камчатский:
+        delivery_zone: 5
       Прокопьевск:
         delivery_zone: 5
       Санкт-Петербург:
@@ -50,11 +62,229 @@ ru:
         delivery_zone: 3
       Туапсе:
         delivery_zone: 3
+      Тымлат:
+        delivery_zone: 6
       Усинск:
+        delivery_zone: 5
+      Южно-Сахалинск:
         delivery_zone: 5
       Юрга:
         delivery_zone: 5
       Якутск:
+        delivery_zone: 5
+      Алинское:
+        delivery_zone: 6
+      Ангутиха:
+        delivery_zone: 6
+      Аянка:
+        delivery_zone: 6
+      Байкаловск:
+        delivery_zone: 6
+      Байкит:
+        delivery_zone: 6
+      Бакланиха:
+        delivery_zone: 6
+      Бахта:
+        delivery_zone: 6
+      Бор:
+        delivery_zone: 6
+      Бурный:
+        delivery_zone: 6
+      Ванавара:
+        delivery_zone: 6
+      Верещагино:
+        delivery_zone: 6
+      Верхнеимбатск:
+        delivery_zone: 6
+      Волочанка:
+        delivery_zone: 6
+      Ворогово:
+        delivery_zone: 6
+      Воронцово:
+        delivery_zone: 6
+      Воямполка:
+        delivery_zone: 6
+      Вывенка:
+        delivery_zone: 6
+      Горошиха:
+        delivery_zone: 6
+      Диксон:
+        delivery_zone: 6
+      Дудинка:
+        delivery_zone: 6
+      Ессей:
+        delivery_zone: 6
+      Жданиха:
+        delivery_zone: 6
+      Зотино:
+        delivery_zone: 6
+      Игарка:
+        delivery_zone: 6
+      Индыгино:
+        delivery_zone: 6
+      Казанцево:
+        delivery_zone: 6
+      Каменское:
+        delivery_zone: 6
+      Канготово:
+        delivery_zone: 6
+      Караул:
+        delivery_zone: 6
+      Кареповск:
+        delivery_zone: 6
+      Катырык:
+        delivery_zone: 6
+      Каяк:
+        delivery_zone: 6
+      Келлог:
+        delivery_zone: 6
+      Кислокан:
+        delivery_zone: 6
+      Ковран:
+        delivery_zone: 6
+      Комса:
+        delivery_zone: 6
+      Корф:
+        delivery_zone: 6
+      Костино:
+        delivery_zone: 6
+      Кресты:
+        delivery_zone: 6
+      Кузьмовка:
+        delivery_zone: 6
+      Курейка:
+        delivery_zone: 6
+      Куюмба:
+        delivery_zone: 6
+      Лебедь:
+        delivery_zone: 6
+      Левинские Пески:
+        delivery_zone: 6
+      Лесная:
+        delivery_zone: 6
+      Мадуйка:
+        delivery_zone: 6
+      Манилы:
+        delivery_zone: 6
+      Мирное:
+        delivery_zone: 6
+      Мирюга:
+        delivery_zone: 6
+      Мунгуй:
+        delivery_zone: 6
+      Муторай:
+        delivery_zone: 6
+      Нидым:
+        delivery_zone: 6
+      Новая:
+        delivery_zone: 6
+      Новорыбная:
+        delivery_zone: 6
+      Норильск:
+        delivery_zone: 6
+      Носок:
+        delivery_zone: 6
+      Оклан:
+        delivery_zone: 6
+      Оскоба:
+        delivery_zone: 6
+      Ошарово:
+        delivery_zone: 6
+      Палана:
+        delivery_zone: 6
+      Парень:
+        delivery_zone: 6
+      Пахачи:
+        delivery_zone: 6
+      Подкаменная Тунгуска:
+        delivery_zone: 6
+      Полигус:
+        delivery_zone: 6
+      Поликарповск:
+        delivery_zone: 6
+      Попигай:
+        delivery_zone: 6
+      Потапово:
+        delivery_zone: 6
+      Сандакчес:
+        delivery_zone: 6
+      Светлогорск:
+        delivery_zone: 6
+      Седанка:
+        delivery_zone: 6
+      Селиваниха:
+        delivery_zone: 6
+      Слаутное:
+        delivery_zone: 6
+      Снежногорск:
+        delivery_zone: 6
+      Советская Речка:
+        delivery_zone: 6
+      Средние Пахачи:
+        delivery_zone: 6
+      Старотуруханск:
+        delivery_zone: 6
+      Стрелка-Чуня:
+        delivery_zone: 6
+      Суломай:
+        delivery_zone: 6
+      Сумароково:
+        delivery_zone: 6
+      Сургутиха:
+        delivery_zone: 6
+      Суринда:
+        delivery_zone: 6
+      Сухая Тунгуска:
+        delivery_zone: 6
+      Сындасско:
+        delivery_zone: 6
+      Таловка:
+        delivery_zone: 6
+      Татарск:
+        delivery_zone: 6
+      Тигиль:
+        delivery_zone: 6
+      Тиличики:
+        delivery_zone: 6
+      Тура:
+        delivery_zone: 6
+      Туруханск:
+        delivery_zone: 6
+      Тутончаны:
+        delivery_zone: 6
+      Тухард:
+        delivery_zone: 6
+      Усть-Авам:
+        delivery_zone: 6
+      Усть-Порт:
+        delivery_zone: 6
+      Усть-Хайрюзово:
+        delivery_zone: 6
+      Учами:
+        delivery_zone: 6
+      Фарково:
+        delivery_zone: 6
+      Хаилино:
+        delivery_zone: 6
+      Хайрюзово:
+        delivery_zone: 6
+      Хантайское озеро:
+        delivery_zone: 6
+      Хатанга:
+        delivery_zone: 6
+      Хета:
+        delivery_zone: 6
+      Чемдальск:
+        delivery_zone: 6
+      Черноостровск:
+        delivery_zone: 6
+      Чиринда:
+        delivery_zone: 6
+      Эконда:
+        delivery_zone: 6
+      Юкта:
+        delivery_zone: 6
+      Янов Стан:
         delivery_zone: 6
     regions:
       Адыгея:
@@ -118,7 +348,7 @@ ru:
       Кировская:
         delivery_zone: 3
       Коми:
-        delivery_zone: 5
+        delivery_zone: 4
       Костромская:
         delivery_zone: 3
       Краснодарский:
@@ -150,7 +380,7 @@ ru:
       Мурманская:
         delivery_zone: 4
       Ненецкий:
-        delivery_zone: 7
+        delivery_zone: 6
       Нижегородская:
         delivery_zone: 3
       Новгородская:
@@ -234,8 +464,8 @@ ru:
       Чувашская республика:
         delivery_zone: 3
       Чукотский:
-        delivery_zone: 7
+        delivery_zone: 6
       Ямало-Ненецкий:
-        delivery_zone: 7
+        delivery_zone: 5
       Ярославская:
         delivery_zone: 3
