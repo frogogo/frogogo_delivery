@@ -3,11 +3,12 @@
 # Table name: delivery_zones
 #
 #  id                           :bigint           not null, primary key
-#  courier_fee                  :float            default("0.0"), not null
+#  courier_fee                  :float            default(0.0), not null
 #  free_delivery_gold_threshold :float            not null
 #  free_delivery_threshold      :float            not null
-#  pickup_fee                   :float            default("0.0"), not null
-#  post_fee                     :float            default("0.0"), not null
+#  inactive                     :boolean          default(FALSE)
+#  pickup_fee                   :float            default(0.0), not null
+#  post_fee                     :float            default(0.0), not null
 #  zone                         :integer          not null
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
