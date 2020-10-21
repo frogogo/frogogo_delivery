@@ -2,6 +2,9 @@ class RU::BoxberryService < DeliveryService
   BOXBERRY_NAME = 'Boxberry'
   SYMBOLS_TO_DELETE = '-'
   LETTER_TO_REPLACE = %w[ё е]
+  EXCLUDED_DELIVERY_ZONE = 7
+  EXCLUDED_LOCALITIES = %w[Петропавловск-Камчатский Магадан Южно-Сахалинск Якутск]
+
 
   # Localities list:
   COURIER_LOCALITIES_LIST = 'courier_localities_list'
@@ -18,6 +21,8 @@ class RU::BoxberryService < DeliveryService
     return unless super
 
     return if city_code.blank?
+    return if locality.delivery_zone.zone.to_i == EXCLUDED_DELIVERY_ZONE
+    return if EXCLUDED_LOCALITIES.include?(locality.name)
 
     delivery_service.city_code = city_code
     @response = delivery_service.pickup_delivery_info
