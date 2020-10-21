@@ -5,7 +5,6 @@ class RU::BoxberryService < DeliveryService
   EXCLUDED_DELIVERY_ZONE = 7
   EXCLUDED_LOCALITIES = %w[Петропавловск-Камчатский Магадан Южно-Сахалинск Якутск]
 
-
   # Localities list:
   COURIER_LOCALITIES_LIST = 'courier_localities_list'
   PICKUP_LOCALITIES_LIST = 'pickup_localities_list'
