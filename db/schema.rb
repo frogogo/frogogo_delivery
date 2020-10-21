@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_12_100832) do
+ActiveRecord::Schema.define(version: 2020_10_21_105426) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 2020_03_12_100832) do
     t.integer "zone", null: false
     t.float "pickup_fee", default: 0.0, null: false
     t.float "post_fee", default: 0.0, null: false
+    t.boolean "inactive", default: false
     t.index ["country_id", "zone"], name: "index_delivery_zones_on_country_id_and_zone", unique: true
     t.index ["country_id"], name: "index_delivery_zones_on_country_id"
   end
