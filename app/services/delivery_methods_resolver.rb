@@ -3,14 +3,12 @@ class DeliveryMethodsResolver
 
   def initialize(search_params)
     @country = Country.find_by(language_code: I18n.locale)
-    @excluded_deliverable = I18n.t(search_params[:subdivision], scope: %i[excluded_deliverables all], default: nil)&.include?(search_params[:locality])
     @locality_name = I18n.t(search_params[:locality], scope: %i[aliases], default: nil) || search_params[:locality]
     @subdivision_name = search_params[:subdivision]
   end
 
   def resolve
     return if country.blank? || locality_name.blank? || subdivision_name.blank?
-    return if excluded_deliverable.present?
 
     @result = search_by_params
 

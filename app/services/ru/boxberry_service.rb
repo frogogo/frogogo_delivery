@@ -3,7 +3,6 @@ class RU::BoxberryService < DeliveryService
   SYMBOLS_TO_DELETE = '-'
   LETTER_TO_REPLACE = %w[ё е]
   EXCLUDED_DELIVERY_ZONE = 7
-  EXCLUDED_LOCALITIES = %w[Петропавловск-Камчатский Магадан Южно-Сахалинск Якутск]
 
   # Localities list:
   COURIER_LOCALITIES_LIST = 'courier_localities_list'
@@ -14,6 +13,11 @@ class RU::BoxberryService < DeliveryService
 
     @delivery_service = RU::BoxberryAdapter.new(locality)
     @provider = Provider.find_by(name: BOXBERRY_NAME)
+    @subdivision_name = locality.subdivision.name
+    @excluded_subdivisions =
+      I18n.t(
+        'excluded_deliverables.boxberry.pickup.subdivisions'
+      ).map(&:first).include?(@subdivision_name.to_sym)
   end
 
   def fetch_delivery_info
@@ -21,7 +25,14 @@ class RU::BoxberryService < DeliveryService
 
     return if city_code.blank?
     return if locality.delivery_zone.zone.to_i == EXCLUDED_DELIVERY_ZONE
-    return if EXCLUDED_LOCALITIES.include?(locality.name)
+byebug
+    if @excluded_subdivisions
+      localities = I18n.t(
+        @subdivision_name, scope: %i[excluded_deliverables boxberry pickup subdivisions]
+      )[:localities]
+
+      return if localities.include?(locality.name)
+    end
 
     delivery_service.city_code = city_code
     @response = delivery_service.pickup_delivery_info
@@ -47,7 +58,7 @@ class RU::BoxberryService < DeliveryService
         name = city['Name'].downcase.gsub(*LETTER_TO_REPLACE)
         region = city['Region'].downcase
 
-        next unless region == locality.subdivision.name.downcase
+        next unless region == @subdivision_name.downcase
         next unless name == locality.name.downcase.gsub(*LETTER_TO_REPLACE)
 
         return format_string(city['Code'])
@@ -60,11 +71,11 @@ class RU::BoxberryService < DeliveryService
       region = city['Area'].downcase
 
       next unless name == locality.name.downcase.gsub(*LETTER_TO_REPLACE) &&
-                  region == locality.subdivision.name.downcase
+                  region == @subdivision_name.downcase
 
       date_interval = city['DeliveryPeriod']
       if date_interval.blank?
-        date_interval = I18n.t("#{locality.subdivision.name}.#{locality.name}",
+        date_interval = I18n.t("#{@subdivision_name}.#{locality.name}",
                                scope: %i[custom_date_intervals boxberry],
                                default: nil).to_i
       end
