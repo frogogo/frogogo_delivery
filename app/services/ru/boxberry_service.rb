@@ -25,7 +25,7 @@ class RU::BoxberryService < DeliveryService
 
     return if city_code.blank?
     return if locality.delivery_zone.zone.to_i == EXCLUDED_DELIVERY_ZONE
-byebug
+
     if @excluded_subdivisions
       localities = I18n.t(
         @subdivision_name, scope: %i[excluded_deliverables boxberry pickup subdivisions]
