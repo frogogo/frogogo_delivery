@@ -463,7 +463,9 @@ ru:
         delivery_zone: 4
       Чеченская:
         delivery_zone: 4
-      Чувашская республика - Чувашия:
+      Чувашская:
+        delivery_zone: 3
+      Чувашская республика:
         delivery_zone: 3
       Чукотский:
         delivery_zone: 6
