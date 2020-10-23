@@ -48,9 +48,9 @@ class RU::BoxberryService < DeliveryService
     @city_code ||=
       localities_list[PICKUP_LOCALITIES_LIST].each do |city|
         name = city['Name'].downcase.gsub(*LETTER_TO_REPLACE)
-        region = format_string(city['Region']).downcase
+        region = city['Region'].downcase
 
-        next unless @subdivision_name.downcase.include?(region)
+        next unless region == @subdivision_name.downcase
         next unless name == locality.name.downcase.gsub(*LETTER_TO_REPLACE)
 
         return format_string(city['Code'])
@@ -60,10 +60,10 @@ class RU::BoxberryService < DeliveryService
   def save_data
     localities_list[COURIER_LOCALITIES_LIST].each do |city|
       name = city['City'].downcase.gsub(*LETTER_TO_REPLACE)
-      region = format_string(city['Area']).downcase
+      region = city['Area'].downcase
 
       next unless name == locality.name.downcase.gsub(*LETTER_TO_REPLACE) &&
-                  @subdivision_name.downcase.include?(region)
+                  region == @subdivision_name.downcase
 
       date_interval = city['DeliveryPeriod']
       if date_interval.blank?
