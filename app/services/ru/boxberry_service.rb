@@ -14,10 +14,9 @@ class RU::BoxberryService < DeliveryService
     @delivery_service = RU::BoxberryAdapter.new(locality)
     @provider = Provider.find_by(name: BOXBERRY_NAME)
     @subdivision_name = locality.subdivision.name
-    @excluded_subdivisions =
-      I18n.t(
-        'excluded_deliverables.boxberry.pickup.subdivisions'
-      ).map(&:first).include?(@subdivision_name.to_sym)
+    @excluded_localities = I18n.t(
+      @subdivision_name, scope: %i[excluded_deliverables boxberry pickup subdivisions], default: {}
+    )[:localities]
   end
 
   def fetch_delivery_info
@@ -25,14 +24,7 @@ class RU::BoxberryService < DeliveryService
 
     return if city_code.blank?
     return if locality.delivery_zone.zone.to_i == EXCLUDED_DELIVERY_ZONE
-
-    if @excluded_subdivisions
-      localities = I18n.t(
-        @subdivision_name, scope: %i[excluded_deliverables boxberry pickup subdivisions]
-      )[:localities]
-
-      return if localities.include?(locality.name)
-    end
+    return if @excluded_localities&.include?(locality.name)
 
     delivery_service.city_code = city_code
     @response = delivery_service.pickup_delivery_info
