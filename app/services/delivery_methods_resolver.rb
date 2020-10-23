@@ -36,12 +36,13 @@ class DeliveryMethodsResolver
     @subdivision = Subdivision.create_or_find_by!(
       name: subdivision_name,
       country: country,
-      delivery_zone: delivery_zone(subdivision_name, :regions)
+      delivery_zone: region_delivery_zone(subdivision_name)
     )
     @locality = Locality.create_or_find_by!(
       name: locality_name,
       subdivision: subdivision,
-      delivery_zone: delivery_zone(locality_name, :cities) || subdivision.delivery_zone
+      delivery_zone: city_delivery_zone(subdivision_name, locality_name) ||
+        subdivision.delivery_zone
     )
   end
 
@@ -71,9 +72,23 @@ class DeliveryMethodsResolver
     end
   end
 
-  def delivery_zone(name, zone)
+  def region_delivery_zone(subdivision_name)
     DeliveryZone.find_by(
-      zone: I18n.t(name, scope: [:delivery_zones, zone], default: {})[:delivery_zone]
+      zone: I18n.t(
+        subdivision_name, scope: %i[delivery_zones regions], default: {}
+      )[:delivery_zone]
+    )
+  end
+
+  def city_delivery_zone(subdivision_name, locality_name)
+    locality_zone = I18n.t(
+      subdivision_name, scope: %i[delivery_zones cities region], default: {}
+    )[locality_name.to_sym]
+
+    return if locality_zone.nil?
+
+    DeliveryZone.find_by(
+      zone: locality_zone[:delivery_zone]
     )
   end
 end
