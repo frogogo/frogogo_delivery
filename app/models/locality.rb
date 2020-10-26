@@ -15,7 +15,6 @@
 #
 #  index_localities_on_delivery_zone_id               (delivery_zone_id)
 #  index_localities_on_local_code_and_subdivision_id  (local_code,subdivision_id) UNIQUE
-#  index_localities_on_name_and_subdivision_id        (name,subdivision_id) UNIQUE
 #  index_localities_on_postal_code                    (postal_code) UNIQUE
 #  index_localities_on_subdivision_id                 (subdivision_id)
 #
