@@ -4,10 +4,6 @@ class RU::BoxberryService < DeliveryService
   LETTER_TO_REPLACE = %w[ё е]
   EXCLUDED_DELIVERY_ZONE = 7
 
-  # Localities list:
-  COURIER_LOCALITIES_LIST = 'courier_localities_list'
-  PICKUP_LOCALITIES_LIST = 'pickup_localities_list'
-
   def initialize(locality)
     super
 
@@ -22,43 +18,19 @@ class RU::BoxberryService < DeliveryService
   def fetch_delivery_info
     return unless super
 
-    return if city_code.blank?
+    return if delivery_service.city_code.blank?
     return if locality.delivery_zone.zone.to_i == EXCLUDED_DELIVERY_ZONE
     return if @excluded_localities&.include?(locality.name)
 
-    delivery_service.city_code = city_code
     @response = delivery_service.pickup_delivery_info
 
     save_data
   end
 
-  def fetch_localities_list
-    return unless super
-
-    localities_list = {}
-    localities_list[COURIER_LOCALITIES_LIST] = delivery_service.courier_localities_list
-    localities_list[PICKUP_LOCALITIES_LIST] = delivery_service.pickup_localities_list
-
-    localities_list
-  end
-
   private
 
-  def city_code
-    @city_code ||=
-      localities_list[PICKUP_LOCALITIES_LIST].each do |city|
-        name = city['Name'].gsub(*LETTER_TO_REPLACE).downcase
-        region = format_string(city['Region'].downcase)
-
-        if region == @subdivision_name.downcase &&
-           name == locality.name.downcase.gsub(*LETTER_TO_REPLACE)
-          return format_string(city['Code'])
-        end
-      end
-  end
-
   def save_data
-    localities_list[COURIER_LOCALITIES_LIST].each do |city|
+    delivery_service.courier_localities_list.each do |city|
       name = city['City'].gsub(*LETTER_TO_REPLACE).downcase
       region = format_string(city['Area'].downcase)
 
