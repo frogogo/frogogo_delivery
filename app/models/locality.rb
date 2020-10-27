@@ -3,7 +3,6 @@
 # Table name: localities
 #
 #  id               :bigint           not null, primary key
-#  district         :string
 #  latitude         :float
 #  local_code       :string
 #  longitude        :float

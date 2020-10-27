@@ -22,6 +22,6 @@ class DeliveryMethodsController < ApplicationController
   private
 
   def search_params
-    params.permit(:locality, :subdivision, :longitude, :latitude, :district, :kladr_id)
+    params.permit(:locality, :subdivision, :longitude, :latitude, :kladr_id)
   end
 end
