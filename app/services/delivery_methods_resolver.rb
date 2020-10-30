@@ -13,9 +13,7 @@ class DeliveryMethodsResolver
     @result = search_by_params
 
     # TODO: refactor
-    if result.present?
-      return if result.delivery_zone.inactive?
-
+    if result.present? && result.delivery_methods.present?
       delivery_methods = result.delivery_methods.order(updated_at: :asc)
 
       if delivery_methods.last.present? && delivery_methods.last.updated_at > 1.week.ago
@@ -38,7 +36,7 @@ class DeliveryMethodsResolver
       country: country,
       delivery_zone: region_delivery_zone(subdivision_name)
     )
-    @locality = Locality.create_or_find_by!(
+    @locality = Locality.create!(
       name: locality_name,
       subdivision: subdivision,
       delivery_zone: city_delivery_zone(subdivision_name, locality_name) ||
