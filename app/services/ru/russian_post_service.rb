@@ -38,8 +38,8 @@ class RU::RussianPostService < DeliveryService
       next if response['is-temporary-closed'] == true
 
       date_interval = if @intervals.blank?
-                        # Russian Post always sends '1 day' for Moscow
-                        '1'
+                        # Russian Post always sends '1 day' for Moscow, we added +1 day
+                        '2'
                       else
                         "#{@intervals['delivery']['min']}-#{@intervals['delivery']['max']}"
                       end
