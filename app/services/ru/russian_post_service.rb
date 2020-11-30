@@ -2,6 +2,7 @@ class RU::RussianPostService < DeliveryService
   RUSSIAN_POST_NAME = 'RussianPostPickup'
   POST_OFFICE_TYPES = %w[ГОПС СОПС]
   LETTER_TO_REPLACE = %w[ё е]
+  PERMANENT_INTERVALS_SUBDIVISIONS = %w[Москва Московская]
 
   def initialize(locality)
     super
@@ -14,7 +15,9 @@ class RU::RussianPostService < DeliveryService
     return unless super
 
     @response = delivery_service.post_offices_list.uniq
-    @intervals = delivery_service.request_intervals(response.first) unless locality.name == 'Москва'
+    @intervals = unless PERMANENT_INTERVALS_SUBDIVISIONS.include?(locality.subdivision.name)
+                   delivery_service.request_intervals(response.first)
+                 end
 
     save_data
   end
@@ -37,7 +40,7 @@ class RU::RussianPostService < DeliveryService
       next unless response['type-code'].in?(POST_OFFICE_TYPES)
       next if response['is-temporary-closed'] == true
 
-      date_interval = if @intervals.blank?
+      date_interval = if @intervals.nil?
                         # Russian Post always sends '1 day' for Moscow, we added +1 day
                         '2'
                       else
