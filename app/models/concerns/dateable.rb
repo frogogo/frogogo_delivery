@@ -85,6 +85,6 @@ module Dateable
   end
 
   def time_after_delivery_date_will_change
-    Time.current.middle_of_day + 4.hours # 16:00
+    Time.current.middle_of_day + 2.hours # 14:00
   end
 end
