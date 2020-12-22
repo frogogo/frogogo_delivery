@@ -3,6 +3,8 @@ module Dateable
 
   DIGIT_REGEXP = /\d+/
   HOLIDAYS = %w[20210101 20210102 20210103 20210107]
+  START_DAY = Date.parse('2020-12-31')
+  END_DAY = Date.parse('2021-01-10')
 
   def date_interval
     case provider.name
@@ -79,11 +81,23 @@ module Dateable
     end
   end
 
+  # TODO: Remove after holidays end
   def default_time_intervals(date)
     if I18n.t(:avaliable_days_for_delivery).keys.include?(deliverable_name)
-      I18n.t("#{deliverable_name}.#{Date::DAYS_INTO_WEEK.invert[date.wday]}", scope: %i[time_intervals])
+      if date.between?(START_DAY, END_DAY)
+        I18n.t("#{deliverable_name}.#{date}", scope: %i[holiday_time_intervals])
+      else
+        I18n.t(
+          "#{deliverable_name}.#{Date::DAYS_INTO_WEEK.invert[date.wday]}",
+          scope: %i[time_intervals]
+          )
+      end
     else
-      I18n.t(:default, scope: %i[time_intervals])
+      if date.between?(START_DAY, END_DAY)
+        I18n.t(date, scope: %i[holiday_time_intervals])
+      else
+        I18n.t(:default, scope: %i[time_intervals])
+      end
     end
   end
 
