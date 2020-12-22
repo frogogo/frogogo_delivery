@@ -2,6 +2,7 @@ module Dateable
   extend ActiveSupport::Concern
 
   DIGIT_REGEXP = /\d+/
+  HOLIDAYS = %w[20210101 20210102 20210103 20210107]
 
   def date_interval
     case provider.name
@@ -53,6 +54,17 @@ module Dateable
       else
         delivery_date += 1.day
       end
+    end
+
+    # TODO: Remove after holidays end
+    if delivery_date == HOLIDAYS[0].to_date
+      delivery_date += 3.days
+    elsif delivery_date == HOLIDAYS[1].to_date
+      delivery_date += 2.days
+    elsif delivery_date == HOLIDAYS[2].to_date
+      delivery_date += 1.day
+    elsif delivery_date == HOLIDAYS[3].to_date
+      delivery_date += 1.day
     end
 
     delivery_date
