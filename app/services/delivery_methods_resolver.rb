@@ -16,9 +16,7 @@ class DeliveryMethodsResolver
     @result = search_by_params
 
     # TODO: refactor
-    if result.present?
-      return if result.delivery_zone.inactive?
-
+    if result.present? && !result.delivery_zone.inactive?
       delivery_methods = result.delivery_methods.order(updated_at: :asc)
 
       if delivery_methods.last.present? && delivery_methods.last.updated_at > 1.week.ago
