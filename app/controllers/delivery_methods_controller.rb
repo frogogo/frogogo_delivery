@@ -8,13 +8,6 @@ class DeliveryMethodsController < ApplicationController
       .merge(Provider.active)
       .active
 
-    @delivery_points = DeliveryPoint
-      .joins(:delivery_method)
-      .merge(@delivery_methods)
-      .active
-      .order(provider_id: :asc, date_interval: :asc)
-      .uniq { |delivery_point| [delivery_point.latitude, delivery_point.longitude] }
-
     @delivery_zone = @delivery_methods.first.deliverable.delivery_zone
     return head :not_found if @delivery_zone.blank?
   end
