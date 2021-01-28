@@ -3,7 +3,9 @@ class DeliveryMethodsResolver
 
   def initialize(search_params)
     @country = Country.find_by(language_code: I18n.locale)
-    @locality_name = I18n.t(search_params[:locality], scope: %i[aliases], default: nil) || search_params[:locality]
+    @locality_name = I18n.t(
+      search_params[:locality], scope: %i[aliases], default: nil
+    ) || search_params[:locality]
     @subdivision_name = search_params[:subdivision]
     @latitude = search_params[:latitude]
     @longitude = search_params[:longitude]
@@ -57,7 +59,7 @@ class DeliveryMethodsResolver
 
       return if locality.delivery_zone.inactive? || subdivision.delivery_zone.inactive?
 
-      RU::BoxberryService.new(locality).fetch_delivery_info
+      RU::BoxberryService.new(locality).fetch_delivery_methods
       RU::RussianPostService.new(locality).fetch_delivery_info
 
       locality.delivery_methods.active
