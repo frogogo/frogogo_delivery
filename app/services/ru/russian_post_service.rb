@@ -33,12 +33,12 @@ class RU::RussianPostService < DeliveryService
       @intervals = delivery_service.request_intervals(response.first['postal-code'])
     end
 
-    save_data
+    create_points
   end
 
   private
 
-  def save_data
+  def create_points
     response.each do |post_office|
       next if post_office['is-temporary-closed'] == true
 
@@ -56,7 +56,7 @@ class RU::RussianPostService < DeliveryService
                         "#{@intervals['delivery']['min']}-#{@intervals['delivery']['max']}"
                       end
 
-      delivery_method(date_interval)
+      @delivery_method.update!(date_interval: date_interval)
 
       @delivery_method.delivery_points.create!(
         address: "#{post_office['address-source']}, #{post_office['settlement']}",
