@@ -21,7 +21,7 @@ class RU::BoxberryAdapter < DeliveryAdapter
       DADATA_CITY_CODE_URI,
       headers: HEADERS.merge('Authorization': "Token #{dadata_token}"),
       query: { query: locality.kladr_id }
-    ).parsed_response['suggestions'][0]['data']['boxberry_id']
+    ).parsed_response.dig('suggestions', 0, 'data', 'boxberry_id')
   end
 
   private
