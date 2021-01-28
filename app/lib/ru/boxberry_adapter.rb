@@ -5,10 +5,10 @@ class RU::BoxberryAdapter < DeliveryAdapter
   LIST_POINTS = 'ListPoints'
   HEADERS = { 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
 
-  def courier_localities_list
+  def courier_localities_list(locality_name)
     @request_body = { method: COURIER_LIST_CITIES }
 
-    request_data.parsed_response
+    request_data.parsed_response.select { |locality| locality['City'] == locality_name }
   end
 
   def pickup_delivery_info
