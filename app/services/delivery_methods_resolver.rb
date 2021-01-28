@@ -60,7 +60,7 @@ class DeliveryMethodsResolver
       return if locality.delivery_zone.inactive? || subdivision.delivery_zone.inactive?
 
       RU::BoxberryService.new(locality).fetch_delivery_methods
-      RU::RussianPostService.new(locality).fetch_delivery_info
+      RU::RussianPostService.new(locality).fetch_delivery_method
 
       locality.delivery_methods.active
     end

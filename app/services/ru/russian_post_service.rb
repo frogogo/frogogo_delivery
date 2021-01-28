@@ -3,6 +3,7 @@ class RU::RussianPostService < DeliveryService
   POST_OFFICE_TYPES = %w[ГОПС СОПС]
   LETTER_TO_REPLACE = %w[ё е]
   PERMANENT_INTERVALS_SUBDIVISIONS = %w[Москва Московская]
+  DEFAULT_DATE_INTERVAL = '2.00'
 
   def initialize(locality)
     super
@@ -11,7 +12,16 @@ class RU::RussianPostService < DeliveryService
     @provider = Provider.find_by(name: RUSSIAN_POST_NAME)
   end
 
-  def fetch_delivery_info
+  def fetch_delivery_method
+    @delivery_method = DeliveryMethod.create_or_find_by!(
+      date_interval: DEFAULT_DATE_INTERVAL,
+      method: :pickup,
+      deliverable: locality,
+      provider: provider
+    )
+  end
+
+  def fetch_pickup_points
     return unless super
 
     # Get unique points by address to avoid 'PG::UniqueViolation'
@@ -60,15 +70,5 @@ class RU::RussianPostService < DeliveryService
     rescue ActiveRecord::RecordNotUnique => e
       Rails.logger.error(e.inspect)
     end
-  end
-
-  def delivery_method(date_interval)
-    @delivery_method ||=
-      DeliveryMethod.create_or_find_by!(
-        date_interval: date_interval,
-        method: :pickup,
-        deliverable: locality,
-        provider: provider
-      )
   end
 end
