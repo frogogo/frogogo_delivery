@@ -30,7 +30,7 @@ class RU::BoxberryService < DeliveryService
     create_courier_delivery_method
   end
 
-  def fetch_delivery_info
+  def fetch_pickup_points
     return if DeliveryMethod.where(deliverable: locality, method: :pickup).blank?
 
     @response = delivery_service.pickup_delivery_info

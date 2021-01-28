@@ -6,7 +6,7 @@ class DeliveryService
     @subdivision = @locality.subdivision
   end
 
-  def fetch_delivery_info
+  def fetch_pickup_points
     !provider.inactive?
   end
 
