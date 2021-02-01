@@ -32,24 +32,4 @@ class DeliveryMethodsResolver
       @locality.delivery_methods.active
     end
   end
-
-  def region_delivery_zone(subdivision_name)
-    DeliveryZone.find_by(
-      zone: I18n.t(
-        subdivision_name, scope: %i[delivery_zones regions], default: {}
-      )[:delivery_zone]
-    )
-  end
-
-  def city_delivery_zone(subdivision_name, locality_name)
-    locality_zone = I18n.t(
-      subdivision_name, scope: %i[delivery_zones cities region], default: {}
-    )[locality_name.to_sym]
-
-    return if locality_zone.nil?
-
-    DeliveryZone.find_by(
-      zone: locality_zone[:delivery_zone]
-    )
-  end
 end
