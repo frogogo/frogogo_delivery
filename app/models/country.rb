@@ -9,11 +9,6 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
-# Indexes
-#
-#  index_countries_on_iso_code       (iso_code) UNIQUE
-#  index_countries_on_language_code  (language_code) UNIQUE
-#
 
 class Country < ApplicationRecord
   has_many :delivery_zones, dependent: :destroy

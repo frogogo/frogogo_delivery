@@ -14,15 +14,6 @@
 #  updated_at                   :datetime         not null
 #  country_id                   :bigint           not null
 #
-# Indexes
-#
-#  index_delivery_zones_on_country_id           (country_id)
-#  index_delivery_zones_on_country_id_and_zone  (country_id,zone) UNIQUE
-#
-# Foreign Keys
-#
-#  fk_rails_...  (country_id => countries.id)
-#
 
 class DeliveryZone < ApplicationRecord
   belongs_to :country

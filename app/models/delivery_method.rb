@@ -13,15 +13,6 @@
 #  deliverable_id   :bigint
 #  provider_id      :bigint           not null
 #
-# Indexes
-#
-#  index_delivery_methods_on_deliverable_type_and_deliverable_id  (deliverable_type,deliverable_id)
-#  index_delivery_methods_on_provider_id                          (provider_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (provider_id => providers.id)
-#
 
 class DeliveryMethod < ApplicationRecord
   include Activatable
