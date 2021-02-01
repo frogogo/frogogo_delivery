@@ -8,7 +8,7 @@ class DeliveryZonesControllerTest < ActionDispatch::IntegrationTest
   test 'should return not found' do
     get delivery_zone_path,
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
           'Accept-Language': 'ru'
         }.merge(bearer_token)
 
@@ -18,7 +18,7 @@ class DeliveryZonesControllerTest < ActionDispatch::IntegrationTest
   test 'should return delivery zone for moscow' do
     get delivery_zone_path,
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
           'Accept-Language': 'ru'
         }.merge(bearer_token),
         params: {
