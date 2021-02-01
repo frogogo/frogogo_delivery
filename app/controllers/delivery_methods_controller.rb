@@ -26,10 +26,6 @@ class DeliveryMethodsController < ApplicationController
     @locality = @subdivision.localities.create!(new_locality_params) if @locality.blank?
   end
 
-  def search_params
-    params.permit(:locality, :subdivision, :longitude, :latitude, :locality_uid)
-  end
-
   def new_locality_params
     params
       .permit(:longitude, :latitude, :locality_uid)
