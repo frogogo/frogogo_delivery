@@ -34,7 +34,12 @@ DeliveryZone.create!(
 # istanbul = Subdivision.create!(iso_code: 'TR-34', local_code: '34', name: 'İstanbul')
 # ljubljana = Subdivision.create!(iso_code: 'SI-061', local_code: '61', name: 'Ljubljana')
 # tr_default_sub = Subdivision.create!(iso_code: '00', local_code: '00', name: 'Default', delivery_zone: turkey.delivery_zones.default.first)
-# moscow = Subdivision.create!(iso_code: 'RU-MOW', local_code: '45', name: 'Москва', delivery_zone: russia.delivery_zones.find_by(zone: 1))
+moscow = Subdivision.create!(
+  iso_code: 'RU-MOW',
+  local_code: '45',
+  name: 'Москва',
+  delivery_zone: DeliveryZone.find_by(zone: 1)
+)
 
 # Create localities
 # Locality.create!(name: 'İstanbul', local_code: '212', postal_code: '34000', subdivision: tr_default_sub)
@@ -42,7 +47,7 @@ DeliveryZone.create!(
 # Locality.create!(name: 'Москва', local_code: '45000000', postal_code: '101000', delivery_zone: russia.delivery_zones.find_by(zone: 1), subdivision: moscow)
 
 # Create providers
-Provider.create!(code: 'russian_post', name: 'RussianPostPickup')
+russian_post = Provider.create!(code: 'russian_post', name: 'RussianPostPickup')
 Provider.create!(code: 'boxberry', name: 'Boxberry')
 # Provider.create!(name: 'Turkey Post')
 
