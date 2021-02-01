@@ -1,8 +1,7 @@
 class DeliveryMethodsResolver
-  attr_reader :country, :excluded_deliverable, :locality, :result
+  attr_reader :excluded_deliverable, :locality, :result
 
   def initialize(search_params)
-    @country = Country.find_by(language_code: I18n.locale)
     @locality_name = I18n.t(
       search_params[:locality], scope: %i[aliases], default: nil
     ) || search_params[:locality]
@@ -13,7 +12,7 @@ class DeliveryMethodsResolver
   end
 
   def resolve
-    return if country.blank? || locality_name.blank? || subdivision_name.blank?
+    return if locality_name.blank? || subdivision_name.blank?
 
     @result = search_by_params
 
@@ -38,7 +37,6 @@ class DeliveryMethodsResolver
   def create_locality_and_subdivision
     @subdivision = Subdivision.create_or_find_by!(
       name: subdivision_name,
-      country: country,
       delivery_zone: region_delivery_zone(subdivision_name)
     )
     @locality = Locality.create_or_find_by!(
@@ -53,7 +51,7 @@ class DeliveryMethodsResolver
   end
 
   def fetch_new_data
-    case country.language_code.to_sym
+    case I18n.locale
     when :ru
       create_locality_and_subdivision
 
@@ -66,18 +64,17 @@ class DeliveryMethodsResolver
     end
   end
 
+  # TODO: посмотреть, проверить, написать тесты
   def search_by_params
-    case country.language_code.to_sym
+    case I18n.locale
     when :ru
       Locality.joins(:subdivision).find_by(
         name: locality_name,
         latitude: latitude,
         longitude: longitude,
         kladr_id: kladr_id,
-        subdivisions: { name: subdivision_name, country: country }
+        subdivisions: { name: subdivision_name }
       )
-    when :tr
-      country.default_subdivision
     end
   end
 

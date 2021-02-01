@@ -18,7 +18,7 @@ class DeliveryPointsResolver
   private
 
   def fetch_new_data
-    case country.language_code.to_sym
+    case I18n.locale
     when :ru
       RU::BoxberryService.new(@locality).fetch_pickup_points
       RU::RussianPostService.new(@locality).fetch_pickup_points
