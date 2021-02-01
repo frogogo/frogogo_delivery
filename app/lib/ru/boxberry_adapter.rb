@@ -20,7 +20,7 @@ class RU::BoxberryAdapter < DeliveryAdapter
     HTTParty.get(
       DADATA_CITY_CODE_URI,
       headers: HEADERS.merge(Authorization: "Token #{dadata_token}"),
-      query: { query: locality.kladr_id }
+      query: { query: locality.locality_uid }
     ).parsed_response.dig('suggestions', 0, 'data', 'boxberry_id')
   end
 

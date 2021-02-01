@@ -8,7 +8,7 @@ class DeliveryMethodsResolver
     @subdivision_name = search_params[:subdivision]
     @latitude = search_params[:latitude]
     @longitude = search_params[:longitude]
-    @kladr_id = search_params[:kladr_id]
+    @locality_uid = search_params[:locality_uid]
   end
 
   def resolve
@@ -32,7 +32,7 @@ class DeliveryMethodsResolver
 
   private
 
-  attr_reader :locality_name, :subdivision, :subdivision_name, :latitude, :longitude, :kladr_id
+  attr_reader :locality_name, :subdivision, :subdivision_name, :latitude, :longitude, :locality_uid
 
   def create_locality_and_subdivision
     @subdivision = Subdivision.create_or_find_by!(
@@ -44,7 +44,7 @@ class DeliveryMethodsResolver
       subdivision: subdivision,
       latitude: latitude,
       longitude: longitude,
-      kladr_id: kladr_id,
+      locality_uid: locality_uid,
       delivery_zone: city_delivery_zone(subdivision_name, locality_name) ||
         subdivision.delivery_zone
     )
@@ -72,7 +72,7 @@ class DeliveryMethodsResolver
         name: locality_name,
         latitude: latitude,
         longitude: longitude,
-        kladr_id: kladr_id,
+        locality_uid: locality_uid,
         subdivisions: { name: subdivision_name }
       )
     end
