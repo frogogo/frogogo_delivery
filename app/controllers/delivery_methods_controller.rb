@@ -3,7 +3,7 @@ class DeliveryMethodsController < ApplicationController
   before_action :set_locality
 
   def index
-    @delivery_methods = DeliveryMethodsResolver.new(search_params).resolve
+    @delivery_methods = DeliveryMethodsResolver.new(@locality).resolve
     return head :not_found if @delivery_methods.blank?
 
     @delivery_methods = @delivery_methods

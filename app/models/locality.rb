@@ -24,7 +24,7 @@ class Locality < ApplicationRecord
 
   validates :name, presence: true
 
-  before_create :set_delivery_zone, if: -> { delivery_zone.blank? }
+  before_create :set_delivery_zone
 
   def set_delivery_zone
     # Поиск зоны доставки по городу

@@ -1,30 +1,19 @@
 class DeliveryMethodsResolver
-  attr_reader :excluded_deliverable, :locality, :result
+  attr_reader :excluded_deliverable
 
-  def initialize(search_params)
-    @locality_name = I18n.t(
-      search_params[:locality], scope: %i[aliases], default: nil
-    ) || search_params[:locality]
-    @subdivision_name = search_params[:subdivision]
-    @latitude = search_params[:latitude]
-    @longitude = search_params[:longitude]
-    @locality_uid = search_params[:locality_uid]
+  def initialize(locality)
+    @locality = locality
   end
 
   def resolve
-    return if locality_name.blank? || subdivision_name.blank?
+    return if @locality.delivery_zone.blank?
+    return if @locality.delivery_zone.inactive?
 
-    @result = search_by_params
+    delivery_methods = @locality.delivery_methods
 
     # TODO: refactor
-    if result.present? && !result.delivery_zone.inactive?
-      delivery_methods = result.delivery_methods.order(updated_at: :asc)
-
-      if delivery_methods.last.present? && delivery_methods.last.updated_at > 1.week.ago
-        result.delivery_methods
-      else
-        fetch_new_data
-      end
+    if delivery_methods.any? && delivery_methods.last.updated_at > 1.week.ago
+      @locality.delivery_methods
     else
       fetch_new_data
     end
@@ -61,20 +50,6 @@ class DeliveryMethodsResolver
       RU::RussianPostService.new(locality).fetch_delivery_method
 
       locality.delivery_methods.active
-    end
-  end
-
-  # TODO: посмотреть, проверить, написать тесты
-  def search_by_params
-    case I18n.locale
-    when :ru
-      Locality.joins(:subdivision).find_by(
-        name: locality_name,
-        latitude: latitude,
-        longitude: longitude,
-        locality_uid: locality_uid,
-        subdivisions: { name: subdivision_name }
-      )
     end
   end
 
