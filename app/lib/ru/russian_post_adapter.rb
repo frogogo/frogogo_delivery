@@ -23,7 +23,7 @@ class RU::RussianPostAdapter < DeliveryAdapter
     HTTParty.get(
       POST_OFFICE_URI,
       headers: HEADERS.merge(
-        'Authorization': "AccessToken #{post_api_token}",
+        Authorization: "AccessToken #{post_api_token}",
         'X-User-Authorization': "Basic #{post_api_key}"
       ),
       query: QUERY.merge('latitude' => locality.latitude, 'longitude' => locality.longitude)

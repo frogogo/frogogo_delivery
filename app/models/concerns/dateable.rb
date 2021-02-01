@@ -90,7 +90,7 @@ module Dateable
         I18n.t(
           "#{deliverable_name}.#{Date::DAYS_INTO_WEEK.invert[date.wday]}",
           scope: %i[time_intervals]
-          )
+        )
       end
     else
       if date.between?(START_DAY, END_DAY)
