@@ -22,6 +22,8 @@ Style/AsciiComments:
   Enabled: false
 Style/ClassAndModuleChildren:
   Enabled: false
+Style/ConditionalAssignment:
+  EnforcedStyle: assign_inside_condition
 Style/Documentation:
   Enabled: false
 Style/EmptyMethod:
