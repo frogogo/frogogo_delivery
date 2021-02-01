@@ -8,9 +8,7 @@ class RU::BoxberryAdapter < DeliveryAdapter
   def courier_localities_list(locality_name)
     @request_body = { method: COURIER_LIST_CITIES }
 
-    request_data.parsed_response
-      .filter_map { |locality| locality['City'] }
-      .select { |city| city == locality_name }
+    request_data.parsed_response.select { |locality| locality['City'] == locality_name }
   end
 
   def pickup_delivery_info
