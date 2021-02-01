@@ -183,6 +183,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-20
+  ruby
 
 DEPENDENCIES
   annotate (~> 3.1)
