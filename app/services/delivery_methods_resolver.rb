@@ -21,8 +21,6 @@ class DeliveryMethodsResolver
 
   private
 
-  attr_reader :locality_name, :subdivision, :subdivision_name, :latitude, :longitude, :locality_uid
-
   def fetch_new_data
     case I18n.locale
     when :ru
