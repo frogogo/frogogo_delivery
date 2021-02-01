@@ -10,21 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_14_131657) do
+ActiveRecord::Schema.define(version: 2021_02_01_104453) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
-
-  create_table "countries", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "iso_code", null: false
-    t.string "language_code", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["iso_code"], name: "index_countries_on_iso_code", unique: true
-    t.index ["language_code"], name: "index_countries_on_language_code", unique: true
-  end
 
   create_table "delivery_methods", force: :cascade do |t|
     t.bigint "provider_id", null: false
@@ -60,7 +50,6 @@ ActiveRecord::Schema.define(version: 2021_01_14_131657) do
   end
 
   create_table "delivery_zones", force: :cascade do |t|
-    t.bigint "country_id", null: false
     t.float "courier_fee", default: 0.0, null: false
     t.float "free_delivery_gold_threshold", null: false
     t.float "free_delivery_threshold", null: false
@@ -70,8 +59,6 @@ ActiveRecord::Schema.define(version: 2021_01_14_131657) do
     t.float "pickup_fee", default: 0.0, null: false
     t.float "post_fee", default: 0.0, null: false
     t.boolean "inactive", default: false
-    t.index ["country_id", "zone"], name: "index_delivery_zones_on_country_id_and_zone", unique: true
-    t.index ["country_id"], name: "index_delivery_zones_on_country_id"
   end
 
   create_table "localities", force: :cascade do |t|
@@ -103,25 +90,19 @@ ActiveRecord::Schema.define(version: 2021_01_14_131657) do
   end
 
   create_table "subdivisions", force: :cascade do |t|
-    t.bigint "country_id", null: false
     t.string "iso_code"
     t.string "local_code"
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "delivery_zone_id"
-    t.index ["country_id"], name: "index_subdivisions_on_country_id"
     t.index ["delivery_zone_id"], name: "index_subdivisions_on_delivery_zone_id"
     t.index ["iso_code"], name: "index_subdivisions_on_iso_code", unique: true
-    t.index ["local_code", "country_id"], name: "index_subdivisions_on_local_code_and_country_id", unique: true
-    t.index ["name", "country_id"], name: "index_subdivisions_on_name_and_country_id", unique: true
   end
 
   add_foreign_key "delivery_methods", "providers"
   add_foreign_key "delivery_points", "delivery_methods"
-  add_foreign_key "delivery_zones", "countries"
   add_foreign_key "localities", "delivery_zones"
   add_foreign_key "localities", "subdivisions"
-  add_foreign_key "subdivisions", "countries"
   add_foreign_key "subdivisions", "delivery_zones"
 end
