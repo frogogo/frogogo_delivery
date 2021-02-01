@@ -9,11 +9,8 @@ class DeliveryMethodsResolver
     return if @locality.delivery_zone.blank?
     return if @locality.delivery_zone.inactive? || @locality.subdivision.delivery_zone.inactive?
 
-    delivery_methods = @locality.delivery_methods
-
-    # TODO: refactor
-    if delivery_methods.any? && delivery_methods.last.updated_at > 1.week.ago
-      @locality.delivery_methods
+    if @locality.updated_at > 1.week.ago
+      @locality.delivery_methods.active
     else
       fetch_new_data
     end
@@ -27,6 +24,7 @@ class DeliveryMethodsResolver
       RU::BoxberryService.new(@locality).fetch_delivery_methods
       RU::RussianPostService.new(@locality).fetch_delivery_method
 
+      @locality.touch
       @locality.delivery_methods.active
     end
   end
