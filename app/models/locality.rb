@@ -26,6 +26,12 @@ class Locality < ApplicationRecord
 
   before_create :set_delivery_zone, if: -> { delivery_zone.blank? }
 
+  def self.find_or_create_by_params(params)
+    locality = Locality.find_by(locality_uid: params[:locality_uid])
+    locality = Locality.create!(params) if locality.blank?
+    locality
+  end
+
   def set_delivery_zone
     self.delivery_zone = subdivision.delivery_zone
   end
