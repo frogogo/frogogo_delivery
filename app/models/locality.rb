@@ -26,13 +26,18 @@ class Locality < ApplicationRecord
 
   before_create :set_delivery_zone, if: -> { delivery_zone.blank? }
 
-  def self.find_or_create_by_params(params)
-    locality = Locality.find_by(locality_uid: params[:locality_uid])
-    locality = Locality.create!(params) if locality.blank?
-    locality
-  end
-
   def set_delivery_zone
-    self.delivery_zone = subdivision.delivery_zone
+    # Поиск зоны доставки по городу
+    locality_zone = I18n.t(
+      subdivision.name,
+      scope: %i[delivery_zones cities region],
+      default: {}
+    )[name.to_sym]
+
+    if locality_zone.present?
+      self.delivery_zone = DeliveryZone.find_by(zone: locality_zone[:delivery_zone])
+    else
+      self.delivery_zone = subdivision.delivery_zone
+    end
   end
 end

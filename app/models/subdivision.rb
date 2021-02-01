@@ -19,5 +19,17 @@ class Subdivision < ApplicationRecord
   has_many :delivery_methods, as: :deliverable, dependent: :destroy
   has_many :localities, dependent: :destroy
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
+
+  before_create :set_delivery_zone
+
+  private
+
+  def set_delivery_zone
+    self.delivery_zone = DeliveryZone.find_by(
+      zone: I18n.t(
+        name, scope: %i[delivery_zones regions], default: {}
+      )[:delivery_zone]
+    )
+  end
 end
