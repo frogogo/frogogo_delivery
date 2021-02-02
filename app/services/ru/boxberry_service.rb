@@ -5,7 +5,7 @@ class RU::BoxberryService < DeliveryService
   EXCLUDED_DELIVERY_ZONE = 7
   DEFAULT_DATE_INTERVAL = '2.00'
 
-  def initialize(locality)
+  def initialize(locality, delivery_method: nil)
     super
 
     @delivery_service = RU::BoxberryAdapter.new(locality)
@@ -16,6 +16,7 @@ class RU::BoxberryService < DeliveryService
       scope: %i[excluded_deliverables boxberry pickup subdivisions], default: {}
     )[:localities]
     @courier_locality = delivery_service.courier_localities_list(locality.name)
+    @delivery_method = delivery_method
   end
 
   def fetch_delivery_methods
@@ -57,7 +58,7 @@ class RU::BoxberryService < DeliveryService
   end
 
   def create_pickup_delivery_method
-    @pickup_delivery_method = DeliveryMethod.create_or_find_by!(
+    DeliveryMethod.create_or_find_by!(
       method: :pickup,
       deliverable: locality,
       date_interval: DEFAULT_DATE_INTERVAL
@@ -65,9 +66,9 @@ class RU::BoxberryService < DeliveryService
   end
 
   def create_points
-    @pickup_delivery_method.update(date_interval: response.first['DeliveryPeriod'])
+    @delivery_method.update(date_interval: response.first['DeliveryPeriod'])
     response.each do |pickup|
-      @pickup_delivery_method.delivery_points.create!(
+      @delivery_method.delivery_points.create!(
         address: format_string(pickup['Address']),
         code: pickup['Code'],
         date_interval: pickup['DeliveryPeriod'],

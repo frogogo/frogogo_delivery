@@ -5,15 +5,16 @@ class RU::RussianPostService < DeliveryService
   PERMANENT_INTERVALS_SUBDIVISIONS = %w[Москва Московская]
   DEFAULT_DATE_INTERVAL = '2.00'
 
-  def initialize(locality)
+  def initialize(locality, delivery_method: nil)
     super
 
     @delivery_service = RU::RussianPostAdapter.new(locality)
     @provider = Provider.find_by(name: RUSSIAN_POST_NAME)
+    @delivery_method = delivery_method
   end
 
-  def fetch_delivery_method
-    @delivery_method = DeliveryMethod.create_or_find_by!(
+  def fetch_delivery_methods
+    DeliveryMethod.create_or_find_by!(
       date_interval: DEFAULT_DATE_INTERVAL,
       method: :pickup,
       deliverable: locality
