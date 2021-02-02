@@ -1,14 +1,14 @@
 class DeliveryPointsResolver
-  def initialize(delivery_methods_ids)
-    @delivery_methods = DeliveryMethod.where(id: [delivery_methods_ids])
-    @locality = @delivery_methods.first.locality
+  def initialize(delivery_method)
+    @delivery_method = delivery_method
+    @locality = @delivery_method.locality
   end
 
   def resolve
-    return if @delivery_methods.blank?
+    return if @delivery_method.blank?
     return if @locality.delivery_zone.inactive? || @locality.subdivision.delivery_zone.inactive?
 
-    result = @delivery_methods.map(&:delivery_points)
+    result = @delivery_method.delivery_points
 
     return result if result.present?
 
