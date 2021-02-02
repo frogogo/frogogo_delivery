@@ -3,7 +3,8 @@ class AddUniqueIndexToDeliveryMethods < ActiveRecord::Migration[6.0]
 
     # Destroy all duplicates
     Locality.find_each do |locality|
-      grouped = locality.delivery_methods.group_by{ |method| method.method }
+      grouped = locality.delivery_methods.group_by { |delivery_method| delivery_method.method }
+
       grouped.values.each do |group|
         first = group.shift
         group.each { |duplicate| duplicate.destroy }
