@@ -17,6 +17,7 @@
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  delivery_method_id :bigint           not null
+#  provider_id        :bigint           not null
 #
 
 class DeliveryPoint < ApplicationRecord
@@ -24,6 +25,7 @@ class DeliveryPoint < ApplicationRecord
   include Dateable
 
   belongs_to :delivery_method, touch: true
+  belongs_to :provider, touch: true
 
   validates :address, presence: true
 

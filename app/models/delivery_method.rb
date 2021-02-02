@@ -11,7 +11,6 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  deliverable_id   :bigint
-#  provider_id      :bigint           not null
 #
 
 class DeliveryMethod < ApplicationRecord
@@ -21,7 +20,6 @@ class DeliveryMethod < ApplicationRecord
   enum method: { post: 0, courier: 1, pickup: 2 }
 
   belongs_to :deliverable, polymorphic: true
-  belongs_to :provider
 
   has_many :delivery_points, dependent: :destroy
 

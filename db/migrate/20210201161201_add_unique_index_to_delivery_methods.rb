@@ -12,6 +12,5 @@ class AddUniqueIndexToDeliveryMethods < ActiveRecord::Migration[6.0]
 
     # Add index
     add_index :delivery_methods, %i[method deliverable_id], unique: true
-    add_index :delivery_methods, %i[provider_id deliverable_id], unique: true
   end
 end
