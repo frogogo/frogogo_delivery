@@ -1,6 +1,6 @@
 class DeliveryPointsController < ApplicationController
   def index
-    @delivery_points = DeliveryPointsResolver.new(search_params).resolve
+    @delivery_points = DeliveryPointsResolver.new(@delivery_method).resolve
 
     @delivery_points = @delivery_points
       .joins(:delivery_method)
@@ -11,7 +11,7 @@ class DeliveryPointsController < ApplicationController
 
   private
 
-  def search_params
-    params.permit(delivery_methods_ids: [])
+  def set_delivery_method
+    @delivery_method = DeliveryMethod.find(params[:id])
   end
 end
