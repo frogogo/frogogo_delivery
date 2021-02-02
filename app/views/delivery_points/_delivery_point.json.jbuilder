@@ -15,7 +15,5 @@ json.cache! delivery_point, expires_in: delivery_point.expires_in do
     json.estimated_delivery_date delivery_point.estimated_delivery_date
   end
 
-  json.provider do
-    json.partial! 'providers/provider', provider: delivery_point.delivery_method.provider
-  end
+  json.provider delivery_point.provider.name
 end
