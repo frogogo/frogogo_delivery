@@ -16,8 +16,7 @@ class RU::RussianPostService < DeliveryService
     @delivery_method = DeliveryMethod.create_or_find_by!(
       date_interval: DEFAULT_DATE_INTERVAL,
       method: :pickup,
-      deliverable: locality,
-      provider: provider
+      deliverable: locality
     )
   end
 
@@ -65,6 +64,7 @@ class RU::RussianPostService < DeliveryService
         latitude: post_office['latitude'],
         longitude: post_office['longitude'],
         name: "Почта России №#{post_office['postal-code']}",
+        provider: provider,
         working_hours: post_office['working-hours']
       )
     rescue ActiveRecord::RecordNotUnique => e

@@ -52,7 +52,6 @@ class RU::BoxberryService < DeliveryService
       inactive: courier_delivery_method_inactive?,
       method: :courier,
       deliverable: locality,
-      provider: provider,
       date_interval: date_interval
     )
   end
@@ -61,7 +60,6 @@ class RU::BoxberryService < DeliveryService
     @pickup_delivery_method = DeliveryMethod.create_or_find_by!(
       method: :pickup,
       deliverable: locality,
-      provider: provider,
       date_interval: DEFAULT_DATE_INTERVAL
     )
   end
@@ -78,6 +76,7 @@ class RU::BoxberryService < DeliveryService
         longitude: pickup['GPS'].split(',').last,
         name: format_string(pickup['AddressReduce']),
         phone_number: pickup['Phone'],
+        provider: provider,
         working_hours: pickup['WorkShedule']
       )
     rescue ActiveRecord::RecordNotUnique => e
