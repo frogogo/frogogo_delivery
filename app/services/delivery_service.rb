@@ -33,9 +33,8 @@ class DeliveryService
     end
 
     locality.delivery_methods
-      .joins(:provider)
       .courier
-      .where.not(inactive: true, providers: { name: provider.name })
+      .where.not(inactive: true)
       .any?
   end
 end

@@ -31,5 +31,4 @@ class DeliveryPoint < ApplicationRecord
 
   delegate :courier?, to: :delivery_method
   delegate :deliverable, to: :delivery_method
-  delegate :provider, to: :delivery_method
 end

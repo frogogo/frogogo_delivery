@@ -7,12 +7,7 @@ module Dateable
   END_DAY = Date.parse('2021-01-10')
 
   def date_interval
-    case provider.name
-    when 'Boxberry'
-      self[:date_interval].scan(DIGIT_REGEXP).max
-    when 'RussianPostPickup'
-      self[:date_interval]
-    end
+    self[:date_interval].scan(DIGIT_REGEXP).max
   end
 
   def estimate_delivery_date
@@ -20,8 +15,6 @@ module Dateable
   end
 
   def estimated_delivery_date
-    return if date_interval.blank? || provider.name == 'RussianPostPickup'
-
     calculate_estimated_delivery_date(Date.current)
   end
 
@@ -104,10 +97,7 @@ module Dateable
   def override_days_count?
     return if deliverable_name == (:Москва || :Московская)
 
-    case provider.name
-    when 'Boxberry'
-      courier? || I18n.t(:hack, scope: %i[custom_date_intervals boxberry]).include?(deliverable_name)
-    end
+    courier? || I18n.t(:hack, scope: %i[custom_date_intervals boxberry]).include?(deliverable_name)
   end
 
   def time_after_delivery_date_will_change
