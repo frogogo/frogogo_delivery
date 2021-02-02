@@ -14,7 +14,7 @@
 class Provider < ApplicationRecord
   include Activatable
 
-  has_many :delivery_methods, dependent: :destroy
+  has_many :delivery_points, dependent: :destroy
 
   validates :name, presence: true, uniqueness: true
 end
