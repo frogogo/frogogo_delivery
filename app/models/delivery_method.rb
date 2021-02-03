@@ -43,6 +43,6 @@ class DeliveryMethod < ApplicationRecord
   private
 
   def update_locality_timestamp
-    deliverable.update_attribute(:delivery_methods_updated_at, Time.zone.now)
+    deliverable.touch(:delivery_methods_updated_at)
   end
 end
