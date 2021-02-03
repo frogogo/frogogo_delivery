@@ -6,6 +6,7 @@ class DeliveryPointsResolver
 
   def resolve
     return if @delivery_method.blank?
+    return if @delivery_method.courier?
     return if @locality.delivery_zone.inactive? || @locality.subdivision.delivery_zone.inactive?
 
     result = @delivery_method.delivery_points

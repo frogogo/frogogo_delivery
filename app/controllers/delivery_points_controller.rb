@@ -3,6 +3,7 @@ class DeliveryPointsController < ApplicationController
 
   def index
     @delivery_points = DeliveryPointsResolver.new(@delivery_method).resolve
+    return head :not_found if @delivery_points.blank?
 
     @delivery_points = @delivery_points
       .active
