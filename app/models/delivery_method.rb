@@ -19,11 +19,9 @@ class DeliveryMethod < ApplicationRecord
 
   enum method: { post: 0, courier: 1, pickup: 2 }
 
-  belongs_to :deliverable, polymorphic: true
+  belongs_to :deliverable, polymorphic: true, touch: :delivery_methods_updated_at
 
   has_many :delivery_points, dependent: :destroy
-
-  after_save :update_locality_timestamp
 
   def courier_delivery_dates
     return unless courier?
@@ -38,11 +36,5 @@ class DeliveryMethod < ApplicationRecord
     return unless courier?
 
     self[:time_intervals] || default_time_intervals(date)
-  end
-
-  private
-
-  def update_locality_timestamp
-    deliverable.touch(:delivery_methods_updated_at)
   end
 end
