@@ -9,7 +9,8 @@ class DeliveryMethodsResolver
     return if @locality.delivery_zone.blank?
     return if @locality.delivery_zone.inactive? || @locality.subdivision.delivery_zone.inactive?
 
-    if @locality.delivery_methods_updated_at > 1.week.ago
+    timestamp = @locality.delivery_methods_updated_at
+    if timestamp.present? && timestamp > 1.week.ago
       @locality.delivery_methods.active
     else
       fetch_new_data
@@ -22,7 +23,7 @@ class DeliveryMethodsResolver
     case I18n.locale
     when :ru
       RU::BoxberryService.new(@locality).fetch_delivery_methods
-      RU::RussianPostService.new(@locality).fetch_delivery_method
+      RU::RussianPostService.new(@locality).fetch_delivery_methods
 
       @locality.touch
       @locality.delivery_methods.active
