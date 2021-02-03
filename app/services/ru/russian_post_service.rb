@@ -41,8 +41,11 @@ class RU::RussianPostService < DeliveryService
   def create_points
     response.each do |post_office|
       next if post_office['is-temporary-closed'] == true
+      settlement = post_office['settlement']
 
-      settlement = post_office['settlement'].downcase.gsub(*LETTER_TO_REPLACE)
+      next if settlement.nil?
+
+      settlement = settlement.downcase.gsub(*LETTER_TO_REPLACE)
       region = post_office['region'].downcase
 
       next unless settlement == locality.name.downcase.gsub(*LETTER_TO_REPLACE) &&
