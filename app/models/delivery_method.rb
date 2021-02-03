@@ -23,6 +23,8 @@ class DeliveryMethod < ApplicationRecord
 
   has_many :delivery_points, dependent: :destroy
 
+  after_save :update_locality_timestamp
+
   def courier_delivery_dates
     return unless courier?
 
@@ -36,5 +38,11 @@ class DeliveryMethod < ApplicationRecord
     return unless courier?
 
     self[:time_intervals] || default_time_intervals(date)
+  end
+
+  private
+
+  def update_locality_timestamp
+    deliverable.update_attribute(:delivery_methods_updated_at, Time.zone.now)
   end
 end
