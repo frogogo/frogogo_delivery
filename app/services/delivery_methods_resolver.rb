@@ -9,7 +9,7 @@ class DeliveryMethodsResolver
     return if @locality.delivery_zone.blank?
     return if @locality.delivery_zone.inactive? || @locality.subdivision.delivery_zone.inactive?
 
-    if @locality.updated_at > 1.week.ago
+    if @locality.delivery_methods_updated_at > 1.week.ago
       @locality.delivery_methods.active
     else
       fetch_new_data
