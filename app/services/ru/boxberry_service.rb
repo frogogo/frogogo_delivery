@@ -66,7 +66,7 @@ class RU::BoxberryService < DeliveryService
   end
 
   def create_points
-    @delivery_method.update(date_interval: response.first['DeliveryPeriod'])
+    @delivery_method.update!(date_interval: response.first['DeliveryPeriod'])
     response.each do |pickup|
       @delivery_method.delivery_points.create!(
         address: format_string(pickup['Address']),
