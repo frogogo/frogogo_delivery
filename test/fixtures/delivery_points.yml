@@ -8,3 +8,4 @@ delivery_point1:
   phone_number: +7 (800) 250 44 34
   working_hours: 'Пн,Вт,Ср,Чт,Пт: 10:00 - 20:00 Сб: 10:00 - 15:00 Вс: выходной'
   delivery_method: russian_post
+  provider: boxberry
