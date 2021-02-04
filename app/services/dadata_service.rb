@@ -12,15 +12,20 @@ class DaDataService
     ).parsed_response.dig('suggestions', 0, 'data', 'boxberry_id')
   end
 
-  def locality_uid_from_locality_and_subdivision(locality, subdivision)
-    HTTParty.get(
+  def suggestion_from_locality_and_subdivision(locality, subdivision)
+    data = HTTParty.post(
       SUGGESTIONS_URL,
       headers: default_headers,
-      query: {
+      body: {
         query: locality,
-        locations: [{ region: subdivision }]
-      }
-    ).parsed_response.dig('suggestions', 0, 'data', 'kladr_id')
+        from_bound: { value: 'city' },
+        to_bound: { value: 'settlement' },
+        locations: [{ region: subdivision }],
+        restrict_value: false
+      }.to_json
+    ).parsed_response.dig('suggestions', 0, 'data')
+
+    DaDataSuggestion.new(data)
   end
 
   private

@@ -20,15 +20,20 @@ class DeliveryMethodsController < ApplicationController
 
   def set_locality
     if params[:locality_uid].present?
-      locality_uid = params[:locality_uid]
+      @locality = @subdivision.localities.find_by(locality_uid: params[:locality_uid])
+      @locality = @subdivision.localities.create!(new_locality_params) if @locality.blank?
     else
-      locality_uid = DaDataService.instance.locality_uid_from_locality_and_subdivision(
+      dadata_suggestion = DaDataService.instance.suggestion_from_locality_and_subdivision(
         params[:locality],
         params[:subdivision]
       )
+      @locality = @subdivision.localities.find_by(locality_uid: dadata_suggestion.kladr_id)
+      if @locality.blank?
+        @locality = @subdivision.localities.create!(
+          dadata_suggestion.locality_attributes.merge(name: params[:locality])
+        )
+      end
     end
-    @locality = @subdivision.localities.find_by(locality_uid: locality_uid)
-    @locality = @subdivision.localities.create!(new_locality_params) if @locality.blank?
   end
 
   def new_locality_params
