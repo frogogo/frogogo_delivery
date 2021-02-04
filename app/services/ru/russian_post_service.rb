@@ -24,8 +24,6 @@ class RU::RussianPostService < DeliveryService
   def fetch_pickup_points(deliver_method)
     return unless super
 
-    @delivery_method = delivery_method
-
     # Get unique points by address to avoid 'PG::UniqueViolation'
     @response = delivery_service.post_offices_list.uniq do |post_office|
       [post_office['address-source']]
@@ -35,20 +33,14 @@ class RU::RussianPostService < DeliveryService
       @intervals = delivery_service.request_intervals(response.first['postal-code'])
     end
 
-    create_points
-  end
-
-  private
-
-  def create_points
     delivery_points_attributes = response.map { |params| RU::PostOffice.new(params) }
       .select(&:valid?)
       .select { |post_office| post_office.settlement.downcase == canonical_locality_name }
       .select { |post_office| post_office.region.downcase.include?(canonical_subdivision_name) }
       .map { |post_office| post_office.to_attributes(date_interval, @provider.id) }
 
-    @delivery_method.delivery_points.create(delivery_points_attributes)
-    @delivery_method.update!(date_interval: date_interval)
+    delivery_method.delivery_points.create(delivery_points_attributes)
+    delivery_method.update!(date_interval: date_interval)
   end
 
   def canonical_locality_name
