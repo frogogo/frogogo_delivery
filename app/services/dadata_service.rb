@@ -18,11 +18,9 @@ class DaDataService
       headers: default_headers,
       query: {
         query: locality,
-        locations: [
-          { region: subdivision }
-        ]
+        locations: [{ region: subdivision }]
       }
-    ).parsed_response.dig('suggestions', 0)
+    ).parsed_response.dig('suggestions', 0, 'data', 'kladr_id')
   end
 
   private
