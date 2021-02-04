@@ -3,7 +3,6 @@ class RU::BoxberryAdapter < DeliveryAdapter
   DADATA_CITY_CODE_URI = 'https://suggestions.dadata.ru/suggestions/api/4_1/rs/findById/delivery'
   COURIER_LIST_CITIES = 'CourierListCities'
   LIST_POINTS = 'ListPoints'
-  HEADERS = { 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
 
   def courier_localities_list(locality_name)
     @request_body = { method: COURIER_LIST_CITIES }
