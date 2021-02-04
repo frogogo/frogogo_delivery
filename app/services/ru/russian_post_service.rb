@@ -21,7 +21,7 @@ class RU::RussianPostService < DeliveryService
     )
   end
 
-  def fetch_pickup_points(deliver_method)
+  def fetch_pickup_points(delivery_method)
     return unless super
 
     # Get unique points by address to avoid 'PG::UniqueViolation'
