@@ -19,7 +19,15 @@ class DeliveryMethodsController < ApplicationController
   end
 
   def set_locality
-    @locality = @subdivision.localities.find_by(locality_uid: params[:locality_uid])
+    if params[:locality_uid].present?
+      locality_uid = params[:locality_uid]
+    else
+      locality_uid = DaDataService.instance.locality_uid_from_locality_and_subdivision(
+        params[:locality],
+        params[:subdivision]
+      )
+    end
+    @locality = @subdivision.localities.find_by(locality_uid: locality_uid)
     @locality = @subdivision.localities.create!(new_locality_params) if @locality.blank?
   end
 
