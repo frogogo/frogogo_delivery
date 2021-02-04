@@ -9,12 +9,7 @@ class DeliveryMethodsResolver
     return if @locality.delivery_zone.blank?
     return if @locality.delivery_zone.inactive? || @locality.subdivision.delivery_zone.inactive?
 
-    timestamp = @locality.delivery_methods_updated_at
-    if timestamp.present? && timestamp > 1.week.ago
-      @locality.delivery_methods.active
-    else
-      fetch_new_data
-    end
+    @locality.needs_update? ? fetch_new_data : @locality.delivery_methods.active
   end
 
   private

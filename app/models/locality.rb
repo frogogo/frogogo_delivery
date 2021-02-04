@@ -26,6 +26,14 @@ class Locality < ApplicationRecord
 
   before_create :set_delivery_zone
 
+  def needs_update?
+    return true if delivery_methods_updated_at.blank?
+
+    delivery_methods_updated_at < 1.week.ago
+  end
+
+  private
+
   def set_delivery_zone
     # Поиск зоны доставки по городу
     locality_zone = I18n.t(
