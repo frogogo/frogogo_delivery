@@ -1,6 +1,5 @@
 class RU::BoxberryAdapter < DeliveryAdapter
   BASE_URI = 'https://api.boxberry.ru/json.php'
-  DADATA_CITY_CODE_URI = 'https://suggestions.dadata.ru/suggestions/api/4_1/rs/findById/delivery'
   COURIER_LIST_CITIES = 'CourierListCities'
   LIST_POINTS = 'ListPoints'
 
