@@ -6,12 +6,11 @@ class RU::RussianPostService < DeliveryService
   DEFAULT_DATE_INTERVAL = '2.00'
 
   # TODO: remove delivery_method param
-  def initialize(locality, delivery_method: nil)
+  def initialize(locality)
     super
 
     @delivery_service = RU::RussianPostAdapter.new(locality)
     @provider = Provider.find_by(name: RUSSIAN_POST_NAME)
-    @delivery_method = delivery_method
   end
 
   def fetch_delivery_methods
@@ -22,8 +21,10 @@ class RU::RussianPostService < DeliveryService
     )
   end
 
-  def fetch_pickup_points
+  def fetch_pickup_points(deliver_method)
     return unless super
+
+    @delivery_method = delivery_method
 
     # Get unique points by address to avoid 'PG::UniqueViolation'
     @response = delivery_service.post_offices_list.uniq do |post_office|

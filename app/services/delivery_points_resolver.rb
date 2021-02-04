@@ -22,7 +22,7 @@ class DeliveryPointsResolver
     case I18n.locale
     when :ru
       RU::BoxberryService.new(@locality, delivery_method: @delivery_method).fetch_pickup_points
-      RU::RussianPostService.new(@locality, delivery_method: @delivery_method).fetch_pickup_points
+      RU::RussianPostService.new(@locality).fetch_pickup_points(@delivery_method)
 
       @locality.touch
       @locality.delivery_methods.active
