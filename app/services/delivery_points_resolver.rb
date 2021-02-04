@@ -9,8 +9,11 @@ class DeliveryPointsResolver
     return if @delivery_method.courier?
     return if @locality.delivery_zone.inactive? || @locality.subdivision.delivery_zone.inactive?
 
-    fetch_new_data if @delivery_method.delivery_points.empty?
-    @delivery_method.delivery_points
+    if @delivery_method.needs_update?
+      fetch_new_data
+    else
+      @delivery_method.delivery_points.active
+    end
   end
 
   private
@@ -21,8 +24,8 @@ class DeliveryPointsResolver
       RU::BoxberryService.new(@locality, delivery_method: @delivery_method).fetch_pickup_points
       RU::RussianPostService.new(@locality).fetch_pickup_points(@delivery_method)
 
-      @locality.touch
-      @locality.delivery_methods.active
+      @delivery_method.touch
+      @delivery_method.delivery_points.active
     end
   end
 end

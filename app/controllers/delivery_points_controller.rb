@@ -7,7 +7,6 @@ class DeliveryPointsController < ApplicationController
 
     @delivery_points = @delivery_points
       .includes(:provider)
-      .active
       .order(provider_id: :asc, date_interval: :asc)
   end
 

@@ -37,4 +37,11 @@ class DeliveryMethod < ApplicationRecord
 
     self[:time_intervals] || default_time_intervals(date)
   end
+
+  def needs_update?
+    # Record was just created
+    return true if created_at == updated_at
+
+    updated_at < 1.week.ago
+  end
 end
