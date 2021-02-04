@@ -10,6 +10,17 @@ class DeliveryMethodsController < ApplicationController
 
     @delivery_zone = @delivery_methods.first.deliverable.delivery_zone
     return head :not_found if @delivery_zone.blank?
+
+    return if request_version > 1
+
+    @delivery_points = DeliveryPointsResolver
+      .new(@delivery_methods.find_by(method: :pickup))
+      .resolve
+    return head :not_found if @delivery_zone.blank?
+
+    @delivery_points = @delivery_points
+      .includes(:provider)
+      .order(provider_id: :asc, date_interval: :asc)
   end
 
   private
