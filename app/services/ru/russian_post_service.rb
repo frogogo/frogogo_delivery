@@ -2,7 +2,7 @@ class RU::RussianPostService < DeliveryService
   RUSSIAN_POST_NAME = 'RussianPostPickup'
   POST_OFFICE_TYPES = %w[ГОПС СОПС]
   LETTER_TO_REPLACE = %w[ё е]
-  PERMANENT_INTERVALS_SUBDIVISIONS = %w[Москва Московская]
+  SUBDIVISIONS_WITH_FIXED_INTERVALS = %w[Москва Московская]
   DEFAULT_DATE_INTERVAL = '2.00'
 
   # TODO: remove delivery_method param
@@ -31,7 +31,7 @@ class RU::RussianPostService < DeliveryService
       [post_office['address-source']]
     end
 
-    unless PERMANENT_INTERVALS_SUBDIVISIONS.include?(locality.subdivision.name)
+    unless SUBDIVISIONS_WITH_FIXED_INTERVALS.include?(locality.subdivision.name)
       @intervals = delivery_service.request_intervals(response.first['postal-code'])
     end
 
