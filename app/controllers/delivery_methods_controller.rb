@@ -16,7 +16,8 @@ class DeliveryMethodsController < ApplicationController
     @delivery_points = DeliveryPointsResolver
       .new(@delivery_methods.find_by(method: :pickup))
       .resolve
-    return head :not_found if @delivery_zone.blank?
+
+    return head :not_found if @delivery_points.blank?
 
     @delivery_points = @delivery_points
       .includes(:provider)
