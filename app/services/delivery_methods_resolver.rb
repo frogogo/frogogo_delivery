@@ -25,6 +25,7 @@ class DeliveryMethodsResolver
       RU::BoxberryService.new(@locality).fetch_delivery_methods
       RU::RussianPostService.new(@locality).fetch_delivery_methods
 
+      @locality.touch
       @locality.delivery_methods.active
     end
   end
