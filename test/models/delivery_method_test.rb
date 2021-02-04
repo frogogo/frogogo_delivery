@@ -9,13 +9,13 @@ class DeliveryMethodTest < ActiveSupport::TestCase
     assert @delivery_method.valid?
   end
 
-  test 'should update delivery_methods_updated_at' do
-    locality = @delivery_method.deliverable
+  test '#needs_update?' do
+    assert @delivery_method.needs_update?
 
-    assert_nil locality.delivery_methods_updated_at
+    assert @delivery_method.touch
+    assert_not @delivery_method.needs_update?
 
-    @delivery_method.update!(date_interval: '2-3')
-
-    assert locality.delivery_methods_updated_at.present?
+    travel 1.month
+    assert @delivery_method.needs_update?
   end
 end

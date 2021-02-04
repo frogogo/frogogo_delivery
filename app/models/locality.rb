@@ -2,18 +2,17 @@
 #
 # Table name: localities
 #
-#  id                          :bigint           not null, primary key
-#  delivery_methods_updated_at :datetime
-#  latitude                    :float
-#  local_code                  :string
-#  locality_uid                :string
-#  longitude                   :float
-#  name                        :string           not null
-#  postal_code                 :string
-#  created_at                  :datetime         not null
-#  updated_at                  :datetime         not null
-#  delivery_zone_id            :bigint
-#  subdivision_id              :bigint           not null
+#  id               :bigint           not null, primary key
+#  latitude         :float
+#  local_code       :string
+#  locality_uid     :string
+#  longitude        :float
+#  name             :string           not null
+#  postal_code      :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  delivery_zone_id :bigint
+#  subdivision_id   :bigint           not null
 #
 
 class Locality < ApplicationRecord
@@ -27,9 +26,9 @@ class Locality < ApplicationRecord
   before_create :set_delivery_zone
 
   def needs_update?
-    return true if delivery_methods_updated_at.blank?
+    return true if created_at == updated_at
 
-    delivery_methods_updated_at < 1.week.ago
+    updated_at < 1.week.ago
   end
 
   private
