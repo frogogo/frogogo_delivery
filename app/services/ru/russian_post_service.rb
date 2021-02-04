@@ -39,7 +39,8 @@ class RU::RussianPostService < DeliveryService
       .select { |post_office| post_office.region.downcase.include?(canonical_subdivision_name) }
       .map { |post_office| post_office.to_attributes(date_interval, @provider.id) }
 
-    delivery_method.delivery_points.create(delivery_points_attributes)
+    delivery_method.delivery_points
+      .insert_all(delivery_points_attributes)
     delivery_method.update!(date_interval: date_interval)
   end
 

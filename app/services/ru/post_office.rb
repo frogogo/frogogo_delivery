@@ -23,11 +23,13 @@ class RU::PostOffice
     {
       address: address,
       code: @postal_code,
+      created_at: Time.current,
       date_interval: date_interval,
       latitude: @latitude,
       longitude: @longitude,
       name: name,
       provider_id: provider_id,
+      updated_at: Time.current,
       working_hours: @working_hours
     }
   end
