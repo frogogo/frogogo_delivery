@@ -10,13 +10,15 @@ class RU::BoxberryAdapter < DeliveryAdapter
   end
 
   def pickup_delivery_info
-    city_code = DaDataService.instance.boxberry_city_code(locality.locality_uid)
-
     @request_body = {
       method: LIST_POINTS,
       CityCode: city_code
     }
     request_data.parsed_response
+  end
+
+  def city_code
+    DaDataService.instance.boxberry_city_code(locality.locality_uid)
   end
 
   private
