@@ -68,22 +68,25 @@ class RU::BoxberryService < DeliveryService
   def create_points
     @delivery_method.update!(date_interval: response.first['DeliveryPeriod'])
 
-    response.each do |pickup|
-      @delivery_method.delivery_points.create!(
-        address: format_string(pickup['Address']),
-        code: pickup['Code'],
-        date_interval: pickup['DeliveryPeriod'],
-        directions: pickup['TripDescription']&.strip,
-        latitude: pickup['GPS'].split(',').first,
-        longitude: pickup['GPS'].split(',').last,
-        name: format_string(pickup['AddressReduce']),
-        phone_number: pickup['Phone'],
-        provider: provider,
-        working_hours: pickup['WorkShedule']
-      )
-    rescue ActiveRecord::RecordNotUnique => e
-      Rails.logger.error(e.inspect)
-    end
+    delivery_points_attributes = response.map { |params| boxberry_point_attributes(params) }
+    @delivery_method.delivery_points.insert_all(delivery_points_attributes)
+  end
+
+  def boxberry_point_attributes(boxberry_point)
+    {
+      address: format_string(boxberry_point['Address']),
+      code: boxberry_point['Code'],
+      created_at: Time.current,
+      date_interval: boxberry_point['DeliveryPeriod'],
+      directions: boxberry_point['TripDescription']&.strip,
+      latitude: boxberry_point['GPS'].split(',').first,
+      longitude: boxberry_point['GPS'].split(',').last,
+      name: format_string(boxberry_point['AddressReduce']),
+      phone_number: boxberry_point['Phone'],
+      provider_id: provider.id,
+      updated_at: Time.current,
+      working_hours: boxberry_point['WorkShedule']
+    }
   end
 
   def format_string(string)
