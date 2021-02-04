@@ -24,6 +24,7 @@ class DeliveryPointsResolver
       RU::BoxberryService.new(@locality, delivery_method: @delivery_method).fetch_pickup_points
       RU::RussianPostService.new(@locality, delivery_method: @delivery_method).fetch_pickup_points
 
+      @locality.touch
       @locality.delivery_methods.active
     end
   end

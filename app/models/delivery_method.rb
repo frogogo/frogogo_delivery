@@ -19,7 +19,7 @@ class DeliveryMethod < ApplicationRecord
 
   enum method: { post: 0, courier: 1, pickup: 2 }
 
-  belongs_to :deliverable, polymorphic: true, touch: :delivery_methods_updated_at
+  belongs_to :deliverable, polymorphic: true
 
   has_many :delivery_points, dependent: :destroy
 
