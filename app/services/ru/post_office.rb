@@ -23,4 +23,25 @@ class RU::PostOffice
   def pickup_available?
     @type_code.in?(PICKUP_OFFICE_TYPES)
   end
+
+  def to_attributes(date_interval)
+    address: address,
+    code: @postal_code,
+    date_interval: date_interval,
+    latitude: latitude,
+    longitude: longitude,
+    name: name,
+    provider: provider,
+    working_hours: @working_hours
+  end
+
+  private
+
+  def address
+    "#{@address_source}, #{@settlement}"
+  end
+
+  def name
+    "Почта России №#{@postal_code}"
+  end
 end

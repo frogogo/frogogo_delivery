@@ -39,40 +39,15 @@ class RU::RussianPostService < DeliveryService
   private
 
   def create_points
-    response.each { |post_office_object| RU::PostOffice.new(post_office_object) }
+    delivery_points_attributes = response.each { |params| RU::PostOffice.new(params) }
       .reject(&:temporary_closed?)
       .reject { |post_office| post_office.settlement.nil? }
       .select { |post_office| post_office.settlement == canonical_locality_name }
       .select { |post_office| post_office.region == canonical_subdivision_name }
       .select(&:pickup_available?)
+      .map { post_office.to_attributes(date_interval) }
 
-    response.each do |post_office|
-      next if post_office['is-temporary-closed'] == true
-      settlement = post_office['settlement']
-
-      next if settlement.nil?
-
-      settlement = settlement.downcase.gsub(*LETTER_TO_REPLACE)
-      region = post_office['region'].downcase
-
-      next unless settlement == locality.name.downcase.gsub(*LETTER_TO_REPLACE) &&
-                  region.include?(locality.subdivision.name.downcase)
-      next unless post_office['type-code'].in?(POST_OFFICE_TYPES)
-
-      @delivery_method.delivery_points.create!(
-        address: "#{post_office['address-source']}, #{post_office['settlement']}",
-        code: post_office['postal-code'],
-        date_interval: date_interval,
-        latitude: post_office['latitude'],
-        longitude: post_office['longitude'],
-        name: "Почта России №#{post_office['postal-code']}",
-        provider: provider,
-        working_hours: post_office['working-hours']
-      )
-    rescue ActiveRecord::RecordNotUnique => e
-      Rails.logger.error(e.inspect)
-    end
-
+    @delivery_methods.delivery_points.create!(delivery_points_attributes)
     @delivery_method.update!(date_interval: date_interval)
   end
 
@@ -85,11 +60,13 @@ class RU::RussianPostService < DeliveryService
   end
 
   def date_interval
-    if @intervals.nil?
-      # Russian Post always sends '1 day' for Moscow, we added +1 day
-      '2'
-    else
-      "#{@intervals['delivery']['min']}-#{@intervals['delivery']['max']}"
+    @date_interval ||= begin
+      if @intervals.nil?
+        # Russian Post always sends '1 day' for Moscow, we added +1 day
+        '2'
+      else
+        "#{@intervals['delivery']['min']}-#{@intervals['delivery']['max']}"
+      end
     end
   end
 end
