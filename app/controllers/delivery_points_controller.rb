@@ -6,6 +6,7 @@ class DeliveryPointsController < ApplicationController
     return head :not_found if @delivery_points.blank?
 
     @delivery_points = @delivery_points
+      .includes(:provider)
       .active
       .order(provider_id: :asc, date_interval: :asc)
   end
