@@ -40,11 +40,9 @@ class RU::RussianPostService < DeliveryService
 
   def create_points
     delivery_points_attributes = response.each { |params| RU::PostOffice.new(params) }
-      .reject(&:temporary_closed?)
-      .reject { |post_office| post_office.settlement.nil? }
+      .select(&:valid?)
       .select { |post_office| post_office.settlement == canonical_locality_name }
       .select { |post_office| post_office.region == canonical_subdivision_name }
-      .select(&:pickup_available?)
       .map { post_office.to_attributes(date_interval) }
 
     @delivery_methods.delivery_points.create!(delivery_points_attributes)

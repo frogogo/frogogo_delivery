@@ -1,8 +1,7 @@
 class RU::PostOffice
   PICKUP_OFFICE_TYPES = %w[ГОПС СОПС]
 
-  attr_reader :region
-  attr_reader :settlement
+  attr_reader :region, :settlement
 
   def initialize(params)
     @address_source = params['address-source']
@@ -16,12 +15,8 @@ class RU::PostOffice
     @working_hours = params['working-hours']
   end
 
-  def temporary_closed?
-    @is_temporary_closed == true
-  end
-
-  def pickup_available?
-    @type_code.in?(PICKUP_OFFICE_TYPES)
+  def valid?
+    !temporary_closed? && @settlement.present? && pickup_available?
   end
 
   def to_attributes(date_interval)
@@ -36,6 +31,14 @@ class RU::PostOffice
   end
 
   private
+
+  def temporary_closed?
+    @is_temporary_closed == true
+  end
+
+  def pickup_available?
+    @type_code.in?(PICKUP_OFFICE_TYPES)
+  end
 
   def address
     "#{@address_source}, #{@settlement}"
