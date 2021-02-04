@@ -30,7 +30,7 @@ class RU::PostOffice
       name: name,
       provider_id: provider_id,
       updated_at: Time.current,
-      working_hours: @working_hours
+      working_hours: @working_hours.to_s
     }
   end
 
