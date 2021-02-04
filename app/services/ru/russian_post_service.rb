@@ -5,7 +5,6 @@ class RU::RussianPostService < DeliveryService
   SUBDIVISIONS_WITH_FIXED_INTERVALS = %w[Москва Московская]
   DEFAULT_DATE_INTERVAL = '2.00'
 
-  # TODO: remove delivery_method param
   def initialize(locality)
     super
 
@@ -15,7 +14,6 @@ class RU::RussianPostService < DeliveryService
 
   def fetch_delivery_methods
     DeliveryMethod.create_or_find_by!(
-      date_interval: DEFAULT_DATE_INTERVAL,
       method: :pickup,
       deliverable: locality
     )

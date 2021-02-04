@@ -49,19 +49,20 @@ class RU::BoxberryService < DeliveryService
                            scope: %i[custom_date_intervals boxberry],
                            default: nil).to_i
 
-    DeliveryMethod.create_or_find_by!(
-      inactive: courier_delivery_method_inactive?,
+    delivery_method = DeliveryMethod.create_or_find_by!(
       method: :courier,
-      deliverable: locality,
-      date_interval: date_interval
+      deliverable: locality
+    )
+    delivery_method.update!(
+      date_interval: date_interval,
+      inactive: courier_delivery_method_inactive?
     )
   end
 
   def create_pickup_delivery_method
     DeliveryMethod.create_or_find_by!(
       method: :pickup,
-      deliverable: locality,
-      date_interval: DEFAULT_DATE_INTERVAL
+      deliverable: locality
     )
   end
 
