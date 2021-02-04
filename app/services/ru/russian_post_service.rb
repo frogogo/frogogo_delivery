@@ -39,6 +39,13 @@ class RU::RussianPostService < DeliveryService
   private
 
   def create_points
+    response.each { |post_office_object| RU::PostOffice.new(post_office_object) }
+      .reject(&:temporary_closed?)
+      .reject { |post_office| post_office.settlement.nil? }
+      .select { |post_office| post_office.settlement == canonical_locality_name }
+      .select { |post_office| post_office.region == canonical_subdivision_name }
+      .select(&:pickup_available?)
+
     response.each do |post_office|
       next if post_office['is-temporary-closed'] == true
       settlement = post_office['settlement']
@@ -74,5 +81,13 @@ class RU::RussianPostService < DeliveryService
     rescue ActiveRecord::RecordNotUnique => e
       Rails.logger.error(e.inspect)
     end
+  end
+
+  def canonical_locality_name
+    locality.name.downcase.gsub(*LETTER_TO_REPLACE)
+  end
+
+  def canonical_subdivision_name
+    locality.subdivision.name.downcase
   end
 end
