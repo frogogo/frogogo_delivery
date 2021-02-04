@@ -15,7 +15,7 @@ class DeliveryMethodsController < ApplicationController
   private
 
   def set_subdivision
-    @subdivision = Subdivision.find_or_create_by(name: params[:subdivision])
+    @subdivision = Subdivision.find_or_create_by!(name: params[:subdivision])
   end
 
   def set_locality
