@@ -5,6 +5,7 @@ class RU::RussianPostService < DeliveryService
   PERMANENT_INTERVALS_SUBDIVISIONS = %w[Москва Московская]
   DEFAULT_DATE_INTERVAL = '2.00'
 
+  # TODO: remove delivery_method param
   def initialize(locality, delivery_method: nil)
     super
 
@@ -39,13 +40,13 @@ class RU::RussianPostService < DeliveryService
   private
 
   def create_points
-    delivery_points_attributes = response.each { |params| RU::PostOffice.new(params) }
+    delivery_points_attributes = response.map { |params| RU::PostOffice.new(params) }
       .select(&:valid?)
-      .select { |post_office| post_office.settlement == canonical_locality_name }
-      .select { |post_office| post_office.region == canonical_subdivision_name }
-      .map { post_office.to_attributes(date_interval) }
+      .select { |post_office| post_office.settlement.downcase == canonical_locality_name }
+      .select { |post_office| post_office.region.downcase.include?(canonical_subdivision_name) }
+      .map { |post_office| post_office.to_attributes(date_interval, @provider.id) }
 
-    @delivery_methods.delivery_points.create!(delivery_points_attributes)
+    @delivery_method.delivery_points.create(delivery_points_attributes)
     @delivery_method.update!(date_interval: date_interval)
   end
 

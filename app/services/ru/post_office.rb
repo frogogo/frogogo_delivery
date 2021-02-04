@@ -19,15 +19,17 @@ class RU::PostOffice
     !temporary_closed? && @settlement.present? && pickup_available?
   end
 
-  def to_attributes(date_interval)
-    address: address,
-    code: @postal_code,
-    date_interval: date_interval,
-    latitude: latitude,
-    longitude: longitude,
-    name: name,
-    provider: provider,
-    working_hours: @working_hours
+  def to_attributes(date_interval, provider_id)
+    {
+      address: address,
+      code: @postal_code,
+      date_interval: date_interval,
+      latitude: @latitude,
+      longitude: @longitude,
+      name: name,
+      provider_id: provider_id,
+      working_hours: @working_hours
+    }
   end
 
   private
