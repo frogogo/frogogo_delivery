@@ -59,15 +59,6 @@ class RU::RussianPostService < DeliveryService
                   region.include?(locality.subdivision.name.downcase)
       next unless post_office['type-code'].in?(POST_OFFICE_TYPES)
 
-      date_interval = if @intervals.nil?
-                        # Russian Post always sends '1 day' for Moscow, we added +1 day
-                        '2'
-                      else
-                        "#{@intervals['delivery']['min']}-#{@intervals['delivery']['max']}"
-                      end
-
-      @delivery_method.update!(date_interval: date_interval)
-
       @delivery_method.delivery_points.create!(
         address: "#{post_office['address-source']}, #{post_office['settlement']}",
         code: post_office['postal-code'],
@@ -81,6 +72,8 @@ class RU::RussianPostService < DeliveryService
     rescue ActiveRecord::RecordNotUnique => e
       Rails.logger.error(e.inspect)
     end
+
+    @delivery_method.update!(date_interval: date_interval)
   end
 
   def canonical_locality_name
@@ -89,5 +82,14 @@ class RU::RussianPostService < DeliveryService
 
   def canonical_subdivision_name
     locality.subdivision.name.downcase
+  end
+
+  def date_interval
+    if @intervals.nil?
+      # Russian Post always sends '1 day' for Moscow, we added +1 day
+      '2'
+    else
+      "#{@intervals['delivery']['min']}-#{@intervals['delivery']['max']}"
+    end
   end
 end
