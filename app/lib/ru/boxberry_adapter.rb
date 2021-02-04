@@ -18,7 +18,7 @@ class RU::BoxberryAdapter < DeliveryAdapter
   end
 
   def city_code
-    DaDataService.instance.boxberry_city_code(locality.locality_uid)
+    @city_code ||= DaDataService.instance.boxberry_city_code(locality.locality_uid)
   end
 
   private
