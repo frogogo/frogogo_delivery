@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_03_100720) do
+ActiveRecord::Schema.define(version: 2021_02_04_083857) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 2021_02_03_100720) do
     t.bigint "provider_id", null: false
     t.index ["address", "delivery_method_id"], name: "index_delivery_points_on_address_and_delivery_method_id", unique: true
     t.index ["delivery_method_id"], name: "index_delivery_points_on_delivery_method_id"
+    t.index ["latitude", "longitude"], name: "index_delivery_points_on_latitude_and_longitude", unique: true
     t.index ["provider_id"], name: "index_delivery_points_on_provider_id"
   end
 

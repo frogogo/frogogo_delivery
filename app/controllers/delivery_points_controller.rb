@@ -8,7 +8,6 @@ class DeliveryPointsController < ApplicationController
     @delivery_points = @delivery_points
       .active
       .order(provider_id: :asc, date_interval: :asc)
-      .uniq { |delivery_point| [delivery_point.latitude, delivery_point.longitude] }
   end
 
   private
