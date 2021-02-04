@@ -12,16 +12,13 @@ class RU::BoxberryAdapter < DeliveryAdapter
   end
 
   def pickup_delivery_info
-    @request_body = { method: LIST_POINTS, CityCode: city_code }
-    request_data.parsed_response
-  end
+    city_code = DaDataService.instance.boxberry_city_code(locality.locality_uid)
 
-  def city_code
-    HTTParty.get(
-      DADATA_CITY_CODE_URI,
-      headers: HEADERS.merge(Authorization: "Token #{dadata_token}"),
-      query: { query: locality.locality_uid }
-    ).parsed_response.dig('suggestions', 0, 'data', 'boxberry_id')
+    @request_body = {
+      method: LIST_POINTS,
+      CityCode: city_code
+    }
+    request_data.parsed_response
   end
 
   private
@@ -35,9 +32,5 @@ class RU::BoxberryAdapter < DeliveryAdapter
 
   def api_token
     Rails.application.credentials.dig(:ru, :boxberry, :api_token)
-  end
-
-  def dadata_token
-    Rails.application.credentials.dig(:ru, :dadata, :api_token)
   end
 end
