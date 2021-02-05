@@ -13,6 +13,12 @@ json.cache! delivery_method, expires_in: delivery_method.expires_in do
   json.provider do
     provider = delivery_method.delivery_points&.first&.provider
     # Courier method has no points, so we pass boxberry
-    json.partial! 'providers/provider', provider: provider || 'boxberry'
+
+    if provider.present?
+      json.partial! 'providers/provider', provider: provider
+    else
+      json.code 'boxberry'
+      json.name 'Boxberry'
+    end
   end
 end
