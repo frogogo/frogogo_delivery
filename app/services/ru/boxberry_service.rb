@@ -52,11 +52,11 @@ class RU::BoxberryService < DeliveryService
 
     delivery_method = DeliveryMethod.create_or_find_by!(
       method: :courier,
-      deliverable: locality
+      deliverable: locality,
+      inactive: courier_delivery_method_inactive?
     )
     delivery_method.update!(
-      date_interval: date_interval,
-      inactive: courier_delivery_method_inactive?
+      date_interval: date_interval
     )
   end
 
