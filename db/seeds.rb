@@ -53,11 +53,10 @@ Locality.create!(
 )
 
 # Create providers
-russian_post = Provider.create!(code: 'russian_post', name: 'RussianPostPickup')
-boxberry = Provider.create!(code: 'boxberry', name: 'Boxberry')
+Provider.create!(code: 'russian_post', name: 'RussianPostPickup')
+Provider.create!(code: 'boxberry', name: 'Boxberry')
 # Provider.create!(name: 'Turkey Post')
 
 # Create delivery methods
-DeliveryMethod.create!(method: :pickup, deliverable: moscow, provider: russian_post)
-DeliveryMethod.create!(method: :pickup, deliverable: moscow, provider: boxberry)
-DeliveryMethod.create!(method: :courier, deliverable: moscow, provider: boxberry)
+DeliveryMethod.create!(method: :pickup, deliverable: moscow)
+DeliveryMethod.create!(method: :courier, deliverable: moscow)
