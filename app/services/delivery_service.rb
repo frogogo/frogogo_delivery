@@ -32,9 +32,9 @@ class DeliveryService
       return true
     end
 
-    locality.delivery_methods
-      .courier
-      .where.not(inactive: true)
-      .any?
+    courier_method = locality.delivery_methods.find_by(method: :courier)
+    return if courier_method.nil?
+
+    courier_method.inactive?
   end
 end
