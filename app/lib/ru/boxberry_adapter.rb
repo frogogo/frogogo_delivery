@@ -1,39 +1,36 @@
 class RU::BoxberryAdapter < DeliveryAdapter
   BASE_URI = 'https://api.boxberry.ru/json.php'
   COURIER_LIST_CITIES = 'CourierListCities'
-  LIST_CITIES = 'ListCitiesFull'
   LIST_POINTS = 'ListPoints'
 
-  attr_accessor :city_code
-
-  def courier_localities_list
+  def courier_localities_list(locality_name)
     @request_body = { method: COURIER_LIST_CITIES }
 
-    request_data.parsed_response
-  end
-
-  def pickup_localities_list
-    @request_body = { method: LIST_CITIES }
-
-    request_data.parsed_response
+    request_data.parsed_response.select { |locality| locality['City'] == locality_name }
   end
 
   def pickup_delivery_info
-    @request_body = { method: LIST_POINTS, CityCode: city_code }
-
+    @request_body = {
+      method: LIST_POINTS,
+      CityCode: city_code
+    }
     request_data.parsed_response
   end
 
-  private
-
-  def api_token
-    Rails.application.credentials.dig(:ru, :boxberry, :api_token)
+  def city_code
+    @city_code ||= DaDataService.instance.boxberry_city_code(locality.locality_uid)
   end
+
+  private
 
   def request_data
     HTTParty.get(
       BASE_URI,
       query: request_body.merge(token: api_token)
     )
+  end
+
+  def api_token
+    Rails.application.credentials.dig(:ru, :boxberry, :api_token)
   end
 end

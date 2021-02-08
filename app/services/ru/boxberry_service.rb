@@ -3,109 +3,92 @@ class RU::BoxberryService < DeliveryService
   SYMBOLS_TO_DELETE = '-'
   LETTER_TO_REPLACE = %w[ё е]
   EXCLUDED_DELIVERY_ZONE = 7
+  DEFAULT_DATE_INTERVAL = '2.00'
 
-  # Localities list:
-  COURIER_LOCALITIES_LIST = 'courier_localities_list'
-  PICKUP_LOCALITIES_LIST = 'pickup_localities_list'
-
-  def initialize(locality)
+  def initialize(locality, delivery_method: nil)
     super
 
     @delivery_service = RU::BoxberryAdapter.new(locality)
     @provider = Provider.find_by(name: BOXBERRY_NAME)
     @subdivision_name = locality.subdivision.name
     @excluded_localities = I18n.t(
-      @subdivision_name, scope: %i[excluded_deliverables boxberry pickup subdivisions], default: {}
+      @subdivision_name,
+      scope: %i[excluded_deliverables boxberry pickup subdivisions], default: {}
     )[:localities]
+    @courier_locality = delivery_service.courier_localities_list(locality.name)
+    @delivery_method = delivery_method
   end
 
-  def fetch_delivery_info
-    return unless super
-
-    return if city_code.blank?
+  def fetch_delivery_methods
+    return if delivery_service.city_code.blank?
     return if locality.delivery_zone.zone.to_i == EXCLUDED_DELIVERY_ZONE
     return if @excluded_localities&.include?(locality.name)
 
-    delivery_service.city_code = city_code
-    @response = delivery_service.pickup_delivery_info
+    create_pickup_delivery_method
 
-    save_data
+    return if @courier_locality.blank?
+
+    create_courier_delivery_method
   end
 
-  def fetch_localities_list
-    return unless super
+  def fetch_pickup_points
+    return if DeliveryMethod.where(deliverable: locality, method: :pickup).blank?
+    return if delivery_service.city_code.blank?
 
-    localities_list = {}
-    localities_list[COURIER_LOCALITIES_LIST] = delivery_service.courier_localities_list
-    localities_list[PICKUP_LOCALITIES_LIST] = delivery_service.pickup_localities_list
+    @response = delivery_service.pickup_delivery_info
 
-    localities_list
+    return if @response.first['Address'].blank?
+
+    create_points
   end
 
   private
 
-  def city_code
-    @city_code ||=
-      localities_list[PICKUP_LOCALITIES_LIST].each do |city|
-        name = city['Name'].gsub(*LETTER_TO_REPLACE).downcase
-        region = format_string(city['Region'].downcase)
+  def create_courier_delivery_method
+    date_interval = @courier_locality.dig(0, 'DeliveryPeriod') ||
+                    I18n.t("#{@subdivision_name}.#{locality.name}",
+                           scope: %i[custom_date_intervals boxberry],
+                           default: nil).to_i
 
-        if region == @subdivision_name.downcase &&
-           name == locality.name.downcase.gsub(*LETTER_TO_REPLACE)
-          return format_string(city['Code'])
-        end
-      end
+    delivery_method = DeliveryMethod.create_or_find_by!(
+      method: :courier,
+      deliverable: locality
+    )
+    delivery_method.update!(
+      date_interval: date_interval,
+      inactive: courier_delivery_method_inactive?
+    )
   end
 
-  def save_data
-    localities_list[COURIER_LOCALITIES_LIST].each do |city|
-      name = city['City'].gsub(*LETTER_TO_REPLACE).downcase
-      region = format_string(city['Area'].downcase)
-
-      next unless name == locality.name.downcase.gsub(*LETTER_TO_REPLACE) &&
-                  region == @subdivision_name.downcase
-
-      date_interval = city['DeliveryPeriod']
-      if date_interval.blank?
-        date_interval = I18n.t("#{@subdivision_name}.#{locality.name}",
-                               scope: %i[custom_date_intervals boxberry],
-                               default: nil).to_i
-      end
-
-      next if date_interval.blank?
-
-      DeliveryMethod.create_or_find_by!(
-        date_interval: date_interval,
-        inactive: courier_delivery_method_inactive?,
-        method: :courier,
-        deliverable: locality,
-        provider: provider
-      )
-      break
-    end
-
-    return if response.first['Address'].blank?
-
-    @delivery_method = DeliveryMethod.create_or_find_by!(
-      date_interval: response.first['DeliveryPeriod'],
-      method: :pickup, deliverable: locality, provider: provider
+  def create_pickup_delivery_method
+    DeliveryMethod.create_or_find_by!(
+      method: :pickup,
+      deliverable: locality
     )
+  end
 
-    response.each do |pickup|
-      @delivery_method.delivery_points.create!(
-        address: format_string(pickup['Address']),
-        code: pickup['Code'],
-        date_interval: pickup['DeliveryPeriod'],
-        directions: pickup['TripDescription']&.strip,
-        latitude: pickup['GPS'].split(',').first,
-        longitude: pickup['GPS'].split(',').last,
-        name: format_string(pickup['AddressReduce']),
-        phone_number: pickup['Phone'],
-        working_hours: pickup['WorkShedule']
-      )
-    rescue ActiveRecord::RecordNotUnique => e
-      Rails.logger.error(e.inspect)
-    end
+  def create_points
+    @delivery_method.update!(date_interval: response.first['DeliveryPeriod'])
+
+    delivery_points_attributes = response.map { |params| boxberry_point_attributes(params) }
+    @delivery_method.delivery_points.insert_all(delivery_points_attributes)
+  end
+
+  def boxberry_point_attributes(boxberry_point)
+    {
+      address: format_string(boxberry_point['Address']),
+      code: boxberry_point['Code'],
+      created_at: Time.current,
+      date_interval: boxberry_point['DeliveryPeriod'],
+      directions: boxberry_point['TripDescription']&.strip,
+      latitude: boxberry_point['GPS'].split(',').first,
+      longitude: boxberry_point['GPS'].split(',').last,
+      name: format_string(boxberry_point['AddressReduce']),
+      phone_number: boxberry_point['Phone'],
+      provider_id: provider.id,
+      updated_at: Time.current,
+      working_hours: boxberry_point['WorkShedule']
+    }
   end
 
   def format_string(string)

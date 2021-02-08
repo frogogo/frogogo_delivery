@@ -1,10 +1,8 @@
 russian_post:
   method: 0
   deliverable: moscow (Locality)
-  provider: russian_post
   date_interval: 1-2
 turkey_post:
   method: 0
   deliverable: tr_default_sub (Subdivision)
-  provider: turkey_post
   date_interval: 1-2

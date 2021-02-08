@@ -17,15 +17,7 @@
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  delivery_method_id :bigint           not null
-#
-# Indexes
-#
-#  index_delivery_points_on_address_and_delivery_method_id  (address,delivery_method_id) UNIQUE
-#  index_delivery_points_on_delivery_method_id              (delivery_method_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (delivery_method_id => delivery_methods.id)
+#  provider_id        :bigint           not null
 #
 
 class DeliveryPoint < ApplicationRecord
@@ -33,10 +25,11 @@ class DeliveryPoint < ApplicationRecord
   include Dateable
 
   belongs_to :delivery_method, touch: true
+  belongs_to :provider, touch: true
 
   validates :address, presence: true
+  validates :latitude, uniqueness: { scope: :longitude }
 
   delegate :courier?, to: :delivery_method
   delegate :deliverable, to: :delivery_method
-  delegate :provider, to: :delivery_method
 end

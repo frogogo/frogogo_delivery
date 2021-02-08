@@ -1,33 +1,29 @@
 ---
-require: rubocop-rails
 AllCops:
   Exclude:
-    - bin/*
+    - bin/**/*
     - db/**/*
-  TargetRubyVersion: 2.6
-  TargetRailsVersion: 6
+    - config/**/*
+    - node_modules/**/*
+  NewCops: enable
+  TargetRubyVersion: 2.7
 Layout/HeredocIndentation:
   Enabled: false
 Layout/LineLength:
   Max: 100
 Layout/MultilineMethodCallIndentation:
-  Enabled: false
-Metrics/AbcSize:
-  Enabled: false
-Metrics/BlockLength:
-  Enabled: false
-Metrics/ClassLength:
-  Enabled: false
-Metrics/MethodLength:
-  Enabled: false
-Rails/SkipsModelValidations:
-  Enabled: false
-Rails/UnknownEnv:
+  EnforcedStyle: indented
+  IndentationWidth: 2
+Layout/ParameterAlignment:
+  EnforcedStyle: with_fixed_indentation
+Metrics:
   Enabled: false
 Style/AsciiComments:
   Enabled: false
 Style/ClassAndModuleChildren:
   Enabled: false
+Style/ConditionalAssignment:
+  EnforcedStyle: assign_inside_condition
 Style/Documentation:
   Enabled: false
 Style/EmptyMethod:
@@ -37,6 +33,4 @@ Style/FrozenStringLiteralComment:
 Style/MutableConstant:
   Enabled: false
 Style/NumericLiterals:
-  Enabled: false
-Style/SingleLineBlockParams:
   Enabled: false

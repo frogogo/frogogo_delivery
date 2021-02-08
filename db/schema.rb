@@ -2,32 +2,21 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_21_105426) do
+ActiveRecord::Schema.define(version: 2021_02_04_115258) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
-  create_table "countries", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "iso_code", null: false
-    t.string "language_code", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["iso_code"], name: "index_countries_on_iso_code", unique: true
-    t.index ["language_code"], name: "index_countries_on_language_code", unique: true
-  end
-
   create_table "delivery_methods", force: :cascade do |t|
-    t.bigint "provider_id", null: false
     t.string "deliverable_type"
     t.bigint "deliverable_id"
     t.integer "method", default: 0
@@ -37,7 +26,7 @@ ActiveRecord::Schema.define(version: 2020_10_21_105426) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["deliverable_type", "deliverable_id"], name: "index_delivery_methods_on_deliverable_type_and_deliverable_id"
-    t.index ["provider_id"], name: "index_delivery_methods_on_provider_id"
+    t.index ["method", "deliverable_id"], name: "index_delivery_methods_on_method_and_deliverable_id", unique: true
   end
 
   create_table "delivery_points", force: :cascade do |t|
@@ -55,12 +44,14 @@ ActiveRecord::Schema.define(version: 2020_10_21_105426) do
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
     t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.bigint "provider_id", null: false
     t.index ["address", "delivery_method_id"], name: "index_delivery_points_on_address_and_delivery_method_id", unique: true
     t.index ["delivery_method_id"], name: "index_delivery_points_on_delivery_method_id"
+    t.index ["latitude", "longitude"], name: "index_delivery_points_on_latitude_and_longitude", unique: true
+    t.index ["provider_id"], name: "index_delivery_points_on_provider_id"
   end
 
   create_table "delivery_zones", force: :cascade do |t|
-    t.bigint "country_id", null: false
     t.float "courier_fee", default: 0.0, null: false
     t.float "free_delivery_gold_threshold", null: false
     t.float "free_delivery_threshold", null: false
@@ -70,8 +61,6 @@ ActiveRecord::Schema.define(version: 2020_10_21_105426) do
     t.float "pickup_fee", default: 0.0, null: false
     t.float "post_fee", default: 0.0, null: false
     t.boolean "inactive", default: false
-    t.index ["country_id", "zone"], name: "index_delivery_zones_on_country_id_and_zone", unique: true
-    t.index ["country_id"], name: "index_delivery_zones_on_country_id"
   end
 
   create_table "localities", force: :cascade do |t|
@@ -82,6 +71,9 @@ ActiveRecord::Schema.define(version: 2020_10_21_105426) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "delivery_zone_id"
+    t.float "latitude"
+    t.float "longitude"
+    t.string "locality_uid"
     t.index ["delivery_zone_id"], name: "index_localities_on_delivery_zone_id"
     t.index ["local_code", "subdivision_id"], name: "index_localities_on_local_code_and_subdivision_id", unique: true
     t.index ["name", "subdivision_id"], name: "index_localities_on_name_and_subdivision_id", unique: true
@@ -100,25 +92,19 @@ ActiveRecord::Schema.define(version: 2020_10_21_105426) do
   end
 
   create_table "subdivisions", force: :cascade do |t|
-    t.bigint "country_id", null: false
     t.string "iso_code"
     t.string "local_code"
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "delivery_zone_id"
-    t.index ["country_id"], name: "index_subdivisions_on_country_id"
     t.index ["delivery_zone_id"], name: "index_subdivisions_on_delivery_zone_id"
     t.index ["iso_code"], name: "index_subdivisions_on_iso_code", unique: true
-    t.index ["local_code", "country_id"], name: "index_subdivisions_on_local_code_and_country_id", unique: true
-    t.index ["name", "country_id"], name: "index_subdivisions_on_name_and_country_id", unique: true
   end
 
-  add_foreign_key "delivery_methods", "providers"
   add_foreign_key "delivery_points", "delivery_methods"
-  add_foreign_key "delivery_zones", "countries"
+  add_foreign_key "delivery_points", "providers"
   add_foreign_key "localities", "delivery_zones"
   add_foreign_key "localities", "subdivisions"
-  add_foreign_key "subdivisions", "countries"
   add_foreign_key "subdivisions", "delivery_zones"
 end

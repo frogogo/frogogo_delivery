@@ -4,7 +4,6 @@ json.cache! delivery_method, expires_in: delivery_method.expires_in do
                 :estimate_delivery_date,
                 :date_interval, :method, :time_intervals
 
-  # TODO: refactor
   if delivery_method.estimated_delivery_date.blank?
     json.estimated_delivery_date 10.days.from_now.to_date.to_s
   else
@@ -12,6 +11,14 @@ json.cache! delivery_method, expires_in: delivery_method.expires_in do
   end
 
   json.provider do
-    json.partial! 'providers/provider', provider: delivery_method.provider
+    provider = delivery_method.delivery_points&.first&.provider
+    # Courier method has no points, so we pass boxberry
+
+    if provider.present?
+      json.partial! 'providers/provider', provider: provider
+    else
+      json.code 'boxberry'
+      json.name 'Boxberry'
+    end
   end
 end

@@ -1,12 +1,12 @@
 class DeliveryService
-  def initialize(locality)
+  def initialize(locality, delivery_method: nil)
     raise ArgumentError if locality.class != Locality
 
     @locality = locality
     @subdivision = @locality.subdivision
   end
 
-  def fetch_delivery_info
+  def fetch_pickup_points(*)
     !provider.inactive?
   end
 
@@ -32,10 +32,9 @@ class DeliveryService
       return true
     end
 
-    locality.delivery_methods
-      .joins(:provider)
-      .courier
-      .where.not(inactive: true, providers: { name: provider.name })
-      .any?
+    courier_method = locality.delivery_methods.find_by(method: :courier)
+    return if courier_method.nil?
+
+    courier_method.inactive?
   end
 end

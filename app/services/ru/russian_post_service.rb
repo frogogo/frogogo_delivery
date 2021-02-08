@@ -2,7 +2,8 @@ class RU::RussianPostService < DeliveryService
   RUSSIAN_POST_NAME = 'RussianPostPickup'
   POST_OFFICE_TYPES = %w[ГОПС СОПС]
   LETTER_TO_REPLACE = %w[ё е]
-  PERMANENT_INTERVALS_SUBDIVISIONS = %w[Москва Московская]
+  SUBDIVISIONS_WITH_FIXED_INTERVALS = %w[Москва Московская]
+  DEFAULT_DATE_INTERVAL = '2.00'
 
   def initialize(locality)
     super
@@ -11,65 +12,54 @@ class RU::RussianPostService < DeliveryService
     @provider = Provider.find_by(name: RUSSIAN_POST_NAME)
   end
 
-  def fetch_delivery_info
+  def fetch_delivery_methods
+    DeliveryMethod.create_or_find_by!(
+      method: :pickup,
+      deliverable: locality
+    )
+  end
+
+  def fetch_pickup_points(delivery_method)
     return unless super
 
-    @response = delivery_service.post_offices_list.uniq
-    @intervals = unless PERMANENT_INTERVALS_SUBDIVISIONS.include?(locality.subdivision.name)
-                   delivery_service.request_intervals(response.first)
-                 end
-
-    save_data
-  end
-
-  private
-
-  def save_data
-    response.each do |post_office|
-      request = delivery_service.request_post_offices(post_office)
-
-      next unless request.success?
-
-      response = request.parsed_response
-
-      settlement = response['settlement'].downcase.gsub(*LETTER_TO_REPLACE)
-      region = response['region'].downcase
-
-      next unless settlement == locality.name.downcase.gsub(*LETTER_TO_REPLACE) &&
-                  region.include?(locality.subdivision.name.downcase)
-      next unless response['type-code'].in?(POST_OFFICE_TYPES)
-      next if response['is-temporary-closed'] == true
-
-      date_interval = if @intervals.nil?
-                        # Russian Post always sends '1 day' for Moscow, we added +1 day
-                        '2'
-                      else
-                        "#{@intervals['delivery']['min']}-#{@intervals['delivery']['max']}"
-                      end
-
-      delivery_method(date_interval)
-
-      @delivery_method.delivery_points.create!(
-        address: "#{response['address-source']}, #{response['settlement']}",
-        code: response['postal-code'],
-        date_interval: date_interval,
-        latitude: response['latitude'],
-        longitude: response['longitude'],
-        name: "Почта России №#{response['postal-code']}",
-        working_hours: response['working-hours']
-      )
-    rescue ActiveRecord::RecordNotUnique => e
-      Rails.logger.error(e.inspect)
+    # Get unique points by address to avoid 'PG::UniqueViolation'
+    @response = delivery_service.post_offices_list.uniq do |post_office|
+      [post_office['address-source']]
     end
+
+    unless SUBDIVISIONS_WITH_FIXED_INTERVALS.include?(locality.subdivision.name)
+      @intervals = delivery_service.request_intervals(response.first['postal-code'])
+    end
+
+    delivery_points_attributes = response.map { |params| RU::PostOffice.new(params) }
+      .select(&:valid?)
+      .select { |post_office| post_office.settlement.downcase == canonical_locality_name }
+      .select { |post_office| post_office.region.downcase.include?(canonical_subdivision_name) }
+      .map { |post_office| post_office.to_attributes(date_interval, @provider.id) }
+
+    return if delivery_points_attributes.blank?
+
+    delivery_method.delivery_points
+      .insert_all(delivery_points_attributes)
+    delivery_method.update!(date_interval: date_interval)
   end
 
-  def delivery_method(date_interval)
-    @delivery_method ||=
-      DeliveryMethod.create_or_find_by!(
-        date_interval: date_interval,
-        method: :pickup,
-        deliverable: locality,
-        provider: provider
-      )
+  def canonical_locality_name
+    locality.name.downcase.gsub(*LETTER_TO_REPLACE)
+  end
+
+  def canonical_subdivision_name
+    locality.subdivision.name.downcase
+  end
+
+  def date_interval
+    @date_interval ||= begin
+      if @intervals.nil?
+        # Russian Post always sends '1 day' for Moscow, we added +1 day
+        '2'
+      else
+        "#{@intervals['delivery']['min']}-#{@intervals['delivery']['max']}"
+      end
+    end
   end
 end

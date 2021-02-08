@@ -1,8 +1,17 @@
-json.cache! delivery_point, expires_in: delivery_point.expires_in do
-  json.extract! delivery_point,
-                :address, :code, :date_interval, :directions,
-                :estimate_delivery_date,
-                :latitude, :longitude, :name, :phone_number, :uuid, :working_hours
+json.cache! delivery_point do
+  json.extract!(
+    delivery_point,
+    :address,
+    :code,
+    :date_interval,
+    :directions,
+    :latitude,
+    :longitude,
+    :name,
+    :phone_number,
+    :uuid,
+    :working_hours
+  )
 
   if delivery_point.provider.name == 'RussianPostPickup'
     json.working_hours format_working_hours(delivery_point)
@@ -15,5 +24,7 @@ json.cache! delivery_point, expires_in: delivery_point.expires_in do
     json.estimated_delivery_date delivery_point.estimated_delivery_date
   end
 
-  json.provider delivery_point.provider.name
+  json.provider do
+    json.partial! 'providers/provider', provider: delivery_point.provider
+  end
 end

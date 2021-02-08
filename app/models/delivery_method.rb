@@ -11,16 +11,6 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  deliverable_id   :bigint
-#  provider_id      :bigint           not null
-#
-# Indexes
-#
-#  index_delivery_methods_on_deliverable_type_and_deliverable_id  (deliverable_type,deliverable_id)
-#  index_delivery_methods_on_provider_id                          (provider_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (provider_id => providers.id)
 #
 
 class DeliveryMethod < ApplicationRecord
@@ -30,7 +20,6 @@ class DeliveryMethod < ApplicationRecord
   enum method: { post: 0, courier: 1, pickup: 2 }
 
   belongs_to :deliverable, polymorphic: true
-  belongs_to :provider
 
   has_many :delivery_points, dependent: :destroy
 
@@ -47,5 +36,12 @@ class DeliveryMethod < ApplicationRecord
     return unless courier?
 
     self[:time_intervals] || default_time_intervals(date)
+  end
+
+  def needs_update?
+    # Record was just created
+    return true if created_at == updated_at
+
+    updated_at < 1.week.ago
   end
 end
