@@ -1,4 +1,4 @@
-json.cache! delivery_method, expires_in: delivery_method.expires_in do
+json.cache! delivery_method do
   json.extract!(
     delivery_method,
     :id,
