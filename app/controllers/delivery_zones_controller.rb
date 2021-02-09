@@ -1,17 +1,23 @@
 class DeliveryZonesController < ApplicationController
+  before_action :set_subdivision
+  before_action :set_locality
+
   def show
-    @delivery_methods = DeliveryMethodsResolver.new(search_params).resolve
-    return head :not_found if @delivery_methods.blank?
+    return head :not_found if @locality.nil?
 
-    @delivery_methods = @delivery_methods.active
+    @delivery_zone = @locality.delivery_zone
 
-    @delivery_zone = @delivery_methods.first.deliverable.delivery_zone
     return head :not_found if @delivery_zone.blank?
   end
 
   private
 
-  def search_params
-    params.permit(:locality, :subdivision, :longitude, :latitude, :locality_uid)
+  def set_locality
+    @locality = @subdivision.localities.find_by(name: params[:locality])
+    @locality = @subdivision.localities.create!(name: params[:locality]) if @locality.blank?
+  end
+
+  def set_subdivision
+    @subdivision = Subdivision.find_or_create_by!(name: params[:subdivision])
   end
 end
