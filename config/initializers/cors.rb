@@ -10,11 +10,15 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     origins '*'
 
     resource '/delivery_methods',
-             headers: :any,
-             methods: [:get]
+             headers: %w[Accept-Language Accept API-Version Authorization],
+             methods: %i[get]
+
+    resource '/delivery_methods/*',
+             headers: %w[Accept-Language Accept API-Version Authorization],
+             methods: %i[get]
 
     resource '/delivery_zone',
-             headers: :any,
-             methods: [:get]
+             headers: %w[Accept-Language Accept API-Version Authorization],
+             methods: %i[get]
   end
 end
