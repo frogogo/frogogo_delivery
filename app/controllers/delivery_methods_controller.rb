@@ -1,5 +1,4 @@
 class DeliveryMethodsController < ApplicationController
-  before_action :set_subdivision
   before_action :set_locality
 
   def index
@@ -26,15 +25,11 @@ class DeliveryMethodsController < ApplicationController
 
   private
 
-  def set_subdivision
-    @subdivision = Subdivision.find_or_create_by!(name: dadata_suggestion.region)
-  end
-
   def set_locality
     locality_uid = params[:locality_uid] || dadata_suggestion.kladr_id
 
-    @locality = @subdivision.localities.find_by(locality_uid: locality_uid)
-    @locality = @subdivision.localities.create!(new_locality_params) if @locality.blank?
+    @locality = Locality.find_by(locality_uid: locality_uid)
+    @locality = Locality.create!(new_locality_params) if @locality.blank?
   end
 
   def new_locality_params
