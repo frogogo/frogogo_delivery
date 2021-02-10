@@ -30,7 +30,7 @@ class RU::RussianPostService < DeliveryService
     unless SUBDIVISIONS_WITH_FIXED_INTERVALS.include?(locality.subdivision.name)
       @intervals = delivery_service.request_intervals(response.first['postal-code'])
     end
-byebug
+
     delivery_points_attributes = response.map { |params| RU::PostOffice.new(params) }
       .select(&:valid?)
       .select { |post_office| post_office.settlement.downcase.in?(canonical_locality_names) }
