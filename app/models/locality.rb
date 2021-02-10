@@ -24,6 +24,7 @@ class Locality < ApplicationRecord
 
   validates :name, presence: true
 
+  before_validation :create_subdivision
   before_create :set_delivery_zone
 
   def needs_update?
@@ -47,5 +48,9 @@ class Locality < ApplicationRecord
     else
       self.delivery_zone = subdivision.delivery_zone
     end
+  end
+
+  def create_subdivision
+    self.subdivision = Subdivision.create!(name: data['region'])
   end
 end
