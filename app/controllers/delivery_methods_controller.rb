@@ -27,30 +27,30 @@ class DeliveryMethodsController < ApplicationController
   private
 
   def set_subdivision
-    @subdivision = Subdivision.find_or_create_by!(name: params[:subdivision])
+    @subdivision = Subdivision.find_or_create_by!(name: dadata_suggestion.region)
   end
 
   def set_locality
-    if params[:locality_uid].present?
-      @locality = @subdivision.localities.find_by(locality_uid: params[:locality_uid])
-      @locality = @subdivision.localities.create!(new_locality_params) if @locality.blank?
-    else
-      dadata_suggestion = DaDataService.instance.suggestion_from_locality_and_subdivision(
-        params[:locality],
-        params[:subdivision]
-      )
-      @locality = @subdivision.localities.find_by(locality_uid: dadata_suggestion.kladr_id)
-      if @locality.blank?
-        @locality = @subdivision.localities.create!(
-          dadata_suggestion.locality_attributes.merge(name: params[:locality])
-        )
-      end
-    end
+    locality_uid = params[:locality_uid] || dadata_suggestion.kladr_id
+
+    @locality = @subdivision.localities.find_by(locality_uid: locality_uid)
+    @locality = @subdivision.localities.create!(new_locality_params) if @locality.blank?
   end
 
   def new_locality_params
-    params
-      .permit(:longitude, :latitude, :locality_uid)
-      .merge(name: params[:locality])
+    dadata_suggestion.locality_attributes
+  end
+
+  def dadata_suggestion
+    dadata = DaDataService.instance
+
+    if params[:locality_uid].present?
+      dadata.suggestion_from_locality_uid(params[:locality_uid])
+    else
+      dadata.suggestion_from_locality_and_subdivision(
+        params[:locality],
+        params[:subdivision]
+      )
+    end
   end
 end
