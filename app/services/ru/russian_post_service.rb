@@ -50,7 +50,7 @@ class RU::RussianPostService < DeliveryService
       locality.data['city'],
       locality.data['settlement']
     ]
-      .reject(&:nil?)
+      .compact
       .map(&:downcase)
       .map { |name| name.gsub(*LETTER_TO_REPLACE) }
   end
