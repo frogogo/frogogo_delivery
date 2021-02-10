@@ -13,7 +13,7 @@ class DaDataSuggestion
 
   def locality_attributes
     {
-      name: @data['city'],
+      name: @data['settlement'] || @data['city'],
       latitude: @data['geo_lat'],
       locality_uid: kladr_id,
       longitude: @data['geo_lon'],
