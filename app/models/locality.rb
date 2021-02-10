@@ -51,6 +51,6 @@ class Locality < ApplicationRecord
   end
 
   def create_subdivision
-    self.subdivision = Subdivision.create!(name: data['region'])
+    self.subdivision = Subdivision.find_or_create_by!(name: data['region'])
   end
 end
