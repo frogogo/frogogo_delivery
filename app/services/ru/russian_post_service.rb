@@ -33,7 +33,7 @@ class RU::RussianPostService < DeliveryService
 
     delivery_points_attributes = response.map { |params| RU::PostOffice.new(params) }
       .select(&:valid?)
-      .select { |post_office| post_office.settlement.downcase == canonical_locality_name }
+      .select { |post_office| post_office.settlement.downcase.in?(canonical_locality_names) }
       .select { |post_office| post_office.region.downcase.include?(canonical_subdivision_name) }
       .map { |post_office| post_office.to_attributes(date_interval, @provider.id) }
 
@@ -44,8 +44,15 @@ class RU::RussianPostService < DeliveryService
     delivery_method.update!(date_interval: date_interval)
   end
 
-  def canonical_locality_name
-    locality.name.downcase.gsub(*LETTER_TO_REPLACE)
+  def canonical_locality_names
+    [
+      locality.name,
+      locality.data['city'],
+      locality.data['settlement']
+    ]
+      .compact
+      .map(&:downcase)
+      .map { |name| name.gsub(*LETTER_TO_REPLACE) }
   end
 
   def canonical_subdivision_name
