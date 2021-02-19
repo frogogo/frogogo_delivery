@@ -1,6 +1,5 @@
 class RU::RussianPostService < DeliveryService
   RUSSIAN_POST_NAME = 'RussianPostPickup'
-  POST_OFFICE_TYPES = %w[ГОПС СОПС]
   LETTER_TO_REPLACE = %w[ё е]
   SUBDIVISIONS_WITH_FIXED_INTERVALS = %w[Москва Московская]
   DEFAULT_DATE_INTERVAL = '2.00'
