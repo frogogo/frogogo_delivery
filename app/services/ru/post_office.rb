@@ -1,7 +1,6 @@
 class RU::PostOffice
+  LETTER_TO_REPLACE = %w[ё е]
   PICKUP_OFFICE_TYPES = %w[ГОПС СОПС]
-
-  attr_reader :region, :settlement
 
   def initialize(params)
     @address_source = params['address-source']
@@ -17,6 +16,14 @@ class RU::PostOffice
 
   def valid?
     !temporary_closed? && @settlement.present? && pickup_available?
+  end
+
+  def canonical_settlement
+    @settlement.downcase.gsub(*LETTER_TO_REPLACE)
+  end
+
+  def canonical_region
+    @region.downcase.gsub(*LETTER_TO_REPLACE)
   end
 
   def to_attributes(date_interval, provider_id)

@@ -32,8 +32,8 @@ class RU::RussianPostService < DeliveryService
 
     delivery_points_attributes = response.map { |params| RU::PostOffice.new(params) }
       .select(&:valid?)
-      .select { |post_office| post_office.settlement.downcase.in?(canonical_locality_names) }
-      .select { |post_office| post_office.region.downcase.include?(canonical_subdivision_name) }
+      .select { |post_office| post_office.canonical_settlement.in?(canonical_locality_names) }
+      .select { |post_office| post_office.canonical_region.include?(canonical_subdivision_name) }
       .map { |post_office| post_office.to_attributes(date_interval, @provider.id) }
 
     return if delivery_points_attributes.blank?
