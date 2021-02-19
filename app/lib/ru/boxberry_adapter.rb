@@ -2,11 +2,12 @@ class RU::BoxberryAdapter < DeliveryAdapter
   BASE_URI = 'https://api.boxberry.ru/json.php'
   COURIER_LIST_CITIES = 'CourierListCities'
   LIST_POINTS = 'ListPoints'
+  LETTER_TO_REPLACE = %w[ё е]
 
   def courier_localities_list(locality_name)
     @request_body = { method: COURIER_LIST_CITIES }
-
-    request_data.parsed_response.select { |locality| locality['City'] == locality_name }
+    city = locality_name.gsub(*LETTER_TO_REPLACE)
+    request_data.parsed_response.select { |locality| locality['City'] == city }
   end
 
   def pickup_delivery_info
