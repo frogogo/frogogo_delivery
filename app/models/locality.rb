@@ -2,23 +2,25 @@
 #
 # Table name: localities
 #
-#  id               :bigint           not null, primary key
-#  data             :jsonb
-#  latitude         :float
-#  local_code       :string
-#  locality_uid     :string
-#  longitude        :float
-#  name             :string           not null
-#  postal_code      :string
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  delivery_zone_id :bigint
-#  subdivision_id   :bigint           not null
+#  id                 :bigint           not null, primary key
+#  data               :jsonb
+#  latitude           :float
+#  local_code         :string
+#  locality_uid       :string
+#  longitude          :float
+#  name               :string           not null
+#  postal_code        :string
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  delivery_zone_id   :bigint
+#  parent_locality_id :bigint
+#  subdivision_id     :bigint           not null
 #
 
 class Locality < ApplicationRecord
   belongs_to :delivery_zone, optional: true
   belongs_to :subdivision
+  belongs_to :parent_locality, class_name: 'Locality', optional: true
 
   has_many :delivery_methods, as: :deliverable, dependent: :destroy
 
@@ -27,6 +29,8 @@ class Locality < ApplicationRecord
   before_validation :create_subdivision
   before_create :set_delivery_zone
 
+  after_create_commit :set_parent_locality
+
   def needs_update?
     return true if created_at == updated_at
 
@@ -34,6 +38,16 @@ class Locality < ApplicationRecord
   end
 
   private
+
+  # пос Электроизолятор, г Раменское -> г Раменское
+  def set_parent_locality
+    return if data['city_kladr_id'].blank?
+    return if data['kladr_id'] == data['city_kladr_id']
+    return if Locality.find_by(locality_uid: data['city_kladr_id'])
+
+    suggestion = DaDataService.instance.suggestion_from_locality_uid(data['city_kladr_id'])
+    update_attribute(:parent_locality, Locality.create!(suggestion.locality_attributes))
+  end
 
   def set_delivery_zone
     # Поиск зоны доставки по городу
