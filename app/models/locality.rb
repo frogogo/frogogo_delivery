@@ -23,6 +23,10 @@ class Locality < ApplicationRecord
   belongs_to :parent_locality, class_name: 'Locality', optional: true
 
   has_many :delivery_methods, as: :deliverable, dependent: :destroy
+  has_many :child_localities,
+           class_name: 'Locality',
+           foreign_key: 'parent_locality_id',
+           dependent: :destroy
 
   validates :name, presence: true
 
