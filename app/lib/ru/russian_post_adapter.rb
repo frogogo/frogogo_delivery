@@ -2,7 +2,7 @@ class RU::RussianPostAdapter < DeliveryAdapter
   POST_OFFICE_URI = 'https://otpravka-api.pochta.ru/postoffice/1.0/nearby'
   INTERVALS_URI = 'https://tariff.pochta.ru/delivery/v1/calculate?json'
   HEADERS = { 'Content-Type' => 'application/json; charset=UTF-8' }
-  QUERY = { 'filter-by-office-type' => 'true', 'filter' => 'ALL', 'top' => '500' }
+  QUERY = { 'filter-by-office-type' => 'true', 'filter' => 'ALL', 'top' => '1000' }
   PARCEL_TYPE = '23030'
   SENDER_CODE = '140961'
 
