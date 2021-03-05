@@ -60,23 +60,11 @@ module Dateable
     end
   end
 
-  # TODO: Remove after holidays end
   def default_time_intervals(date)
     if I18n.t(:avaliable_days_for_delivery).keys.include?(deliverable_name)
-      if date.between?(START_DAY, END_DAY)
-        I18n.t("#{deliverable_name}.#{date}", scope: %i[holiday_time_intervals])
-      else
-        I18n.t(
-          "#{deliverable_name}.#{Date::DAYS_INTO_WEEK.invert[date.wday]}",
-          scope: %i[time_intervals]
-        )
-      end
+      I18n.t("#{deliverable_name}.#{Date::DAYS_INTO_WEEK.invert[date.wday]}", scope: %i[time_intervals])
     else
-      if date.between?(START_DAY, END_DAY)
-        I18n.t(date, scope: %i[holiday_time_intervals])
-      else
-        I18n.t(:default, scope: %i[time_intervals])
-      end
+      I18n.t(:default, scope: %i[time_intervals])
     end
   end
 
