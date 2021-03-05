@@ -48,6 +48,8 @@ module Dateable
       end
     end
 
+    delivery_date -= 1.day if courier?
+
     delivery_date
   end
 
