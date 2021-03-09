@@ -34,6 +34,7 @@ class RU::BoxberryService < DeliveryService
   def fetch_pickup_points
     return if DeliveryMethod.where(deliverable: locality, method: :pickup).blank?
     return if delivery_service.city_code.blank?
+    return if @excluded_localities&.include?(locality.name)
 
     @response = delivery_service.pickup_delivery_info
 
