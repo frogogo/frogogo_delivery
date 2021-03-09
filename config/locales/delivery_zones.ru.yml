@@ -289,7 +289,7 @@ ru:
             delivery_zone: 5
         Саха /Якутия/:
           Якутск:
-          delivery_zone: 5
+            delivery_zone: 5
     regions:
       Адыгея:
         delivery_zone: 4
