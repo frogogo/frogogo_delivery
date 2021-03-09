@@ -25,6 +25,16 @@ DeliveryZone.create!(
   zone: 5
 )
 DeliveryZone.create!(
+  courier_fee: 899, pickup_fee: 799,
+  free_delivery_gold_threshold: 5000, free_delivery_threshold: 5500,
+  zone: 6
+)
+DeliveryZone.create!(
+  courier_fee: 999, pickup_fee: 899,
+  free_delivery_gold_threshold: 6000, free_delivery_threshold: 6500,
+  zone: 7
+)
+DeliveryZone.create!(
   courier_fee: 7, pickup_fee: 7, post_fee: 7,
   free_delivery_gold_threshold: 100, free_delivery_threshold: 150,
   zone: :default
