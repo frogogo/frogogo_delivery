@@ -14,7 +14,7 @@ class DaDataService
   end
 
   def suggestion_from_locality_and_subdivision(locality, subdivision)
-    data = HTTParty.post(
+    HTTParty.post(
       SUGGESTIONS_URL,
       headers: default_headers,
       body: {
@@ -25,20 +25,16 @@ class DaDataService
         restrict_value: false
       }.to_json
     ).parsed_response.dig('suggestions', 0, 'data')
-
-    DaDataSuggestion.new(data)
   end
 
   def suggestion_from_locality_uid(locality_uid)
-    data = HTTParty.post(
+    HTTParty.post(
       FIND_BY_KLADR_URL,
       headers: default_headers,
       body: {
         query: locality_uid
       }.to_json
     ).parsed_response.dig('suggestions', 0, 'data')
-
-    DaDataSuggestion.new(data)
   end
 
   private
