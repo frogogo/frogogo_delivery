@@ -26,11 +26,15 @@ class DeliveryMethodsController < ApplicationController
   private
 
   def set_locality
-    locality_uid = params[:locality_uid] || dadata_suggestion.kladr_id
+    locality_uid = params[:locality_uid] || locality_params.kladr_id
 
     @locality = Locality.find_by(locality_uid: locality_uid)
-    @locality = Locality.create!(dadata_suggestion.locality_attributes) if @locality.blank?
+    @locality = Locality.create!(locality_params.locality_attributes) if @locality.blank?
     @locality = @locality.parent_locality if @locality.parent_locality.present?
+  end
+
+  def locality_params
+    @locality_params ||= DaDataSuggestion.new(dadata_suggestion)
   end
 
   def dadata_suggestion
