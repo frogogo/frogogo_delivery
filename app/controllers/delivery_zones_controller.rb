@@ -12,6 +12,8 @@ class DeliveryZonesController < ApplicationController
   private
 
   def set_locality
+    return nil if dadata_suggestion.nil?
+
     locality_uid = params[:locality_uid] || locality_suggestion.kladr_id
 
     @locality = Locality.find_by(locality_uid: locality_uid)
