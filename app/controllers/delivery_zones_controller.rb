@@ -24,7 +24,7 @@ class DeliveryZonesController < ApplicationController
   def dadata_suggestion
     dadata = DaDataService.instance
 
-    @dadata_suggestion ||= if params[:locality_uid].present?
+    @dadata_suggestion ||= if request_version >= 2
                              dadata.suggestion_from_locality_uid(params[:locality_uid])
                            else
                              dadata.suggestion_from_locality_and_subdivision(
