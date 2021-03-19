@@ -29,6 +29,7 @@ class DeliveryPoint < ApplicationRecord
 
   validates :address, presence: true
   validates :latitude, :longitude, presence: true
+  validates :latitude, uniqueness: { scope: :longitude }
 
   delegate :courier?, to: :delivery_method
   delegate :deliverable, to: :delivery_method
