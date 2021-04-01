@@ -1,4 +1,4 @@
-json.cache! delivery_point do
+json.cache! delivery_point, expires_in: 10.minutes do
   json.extract!(
     delivery_point,
     :address,
