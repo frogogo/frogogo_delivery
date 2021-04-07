@@ -65,6 +65,7 @@ Locality.create!(
 # Create providers
 Provider.create!(code: 'russian_post', name: 'RussianPostPickup')
 Provider.create!(code: 'boxberry', name: 'Boxberry')
+Provider.create!(code: 'five_post', name: 'FivePost')
 # Provider.create!(name: 'Turkey Post')
 
 # Create delivery methods
