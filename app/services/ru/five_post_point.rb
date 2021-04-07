@@ -29,7 +29,7 @@ class RU::FivePostPoint
   end
 
   def name
-    "Постамат Пяторочки #{@short_address}"
+    "Постамат Пятёрочки #{@short_address}"
   end
 
   def working_hours
