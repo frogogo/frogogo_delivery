@@ -45,7 +45,7 @@ class RU::FivePostPoint
   end
 
   def date_interval
-    return nil if @date_interval.nil?
+    return nil if @date_interval.blank?
 
     @date_interval['sl']
   end
