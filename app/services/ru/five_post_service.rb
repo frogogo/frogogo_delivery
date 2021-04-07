@@ -21,7 +21,7 @@ class RU::FivePostService < DeliveryService
     return unless super
 
     @response = delivery_service.pickup_ponit_list
-byebug
+
     delivery_points_attributes = response.map { |params| RU::FivePostPoint.new(params) }
       .select { |five_post| five_post.canonical_city_name == locality.name.downcase }
       .select { |five_post| five_post.canonical_region_name == @subdivision_name.downcase }
