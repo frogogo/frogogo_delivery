@@ -14,7 +14,7 @@ class RU::FivePostAdapter < DeliveryAdapter
   end
 
   def make_post_request(page)
-    HTTParty.post(
+    @make_post_request ||= HTTParty.post(
       POINTS_URI,
       headers: {
         'Content-Type' => 'application/json; charset=utf-8',
