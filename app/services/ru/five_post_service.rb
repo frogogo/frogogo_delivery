@@ -8,6 +8,7 @@ class RU::FivePostService < DeliveryService
     @provider = Provider.find_by(name: FIVE_POST_NAME)
     @subdivision_name = locality.subdivision.name
     @delivery_method = delivery_method
+    @locality_fias_code = locality.data['city_fias_id']
   end
 
   def fetch_delivery_methods
@@ -23,8 +24,7 @@ class RU::FivePostService < DeliveryService
     @response = delivery_service.pickup_ponit_list
 
     delivery_points_attributes = response.map { |params| RU::FivePostPoint.new(params) }
-      .select { |five_post| five_post.canonical_city_name == locality.name.downcase }
-      .select { |five_post| five_post.canonical_region_name == @subdivision_name.downcase }
+      .select { |five_post| five_post.locality_fias_code == @locality_fias_code }
       .map { |five_post| five_post.to_attributes(@provider.id) }
 
     return if delivery_points_attributes.blank?

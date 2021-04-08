@@ -1,6 +1,4 @@
 class RU::FivePostPoint
-  WORDS_TO_REMOVE = %w[город область край республика автономный округ г]
-
   def initialize(params)
     @full_address = params['fullAddress']
     @latitude = params['address']['lat']
@@ -11,6 +9,7 @@ class RU::FivePostPoint
     @working_hours = params['workHours']
     @date_interval = params['deliverySL']&.first
     @short_address = params['shortAddress']
+    @fias_code = params['localityFiasCode']
   end
 
   def to_attributes(provider_id)
@@ -36,12 +35,8 @@ class RU::FivePostPoint
     "C #{@working_hours.first['opensAt']} до #{@working_hours.first['closesAt']}"
   end
 
-  def canonical_region_name
-    @region.split.delete_if { |word| WORDS_TO_REMOVE.include?(word.downcase) }.join(' ').downcase
-  end
-
-  def canonical_city_name
-    @city.split.delete_if { |word| WORDS_TO_REMOVE.include?(word.downcase) }.join(' ').downcase
+  def locality_fias_code
+    @fias_code
   end
 
   def date_interval
