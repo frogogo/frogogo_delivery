@@ -14,13 +14,13 @@ class RU::FivePostAdapter < DeliveryAdapter
   end
 
   def make_post_request(page)
-    @make_post_request ||= HTTParty.post(
+    HTTParty.post(
       POINTS_URI,
       headers: {
         'Content-Type' => 'application/json; charset=utf-8',
         'Authorization' => "Bearer #{jwt_token}"
       },
-      body: { 'pageSize' => 100, 'pageNumber' => page }.to_json
+      body: { 'pageSize' => 1000, 'pageNumber' => page }.to_json
     ).parsed_response
   end
 

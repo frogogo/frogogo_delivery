@@ -21,9 +21,7 @@ class RU::FivePostService < DeliveryService
   def fetch_pickup_points(delivery_method)
     return unless super
 
-    @response = delivery_service.pickup_point_list
-
-    delivery_points_attributes = response.map { |params| RU::FivePostPoint.new(params) }
+    delivery_points_attributes = pickup_points.map { |params| RU::FivePostPoint.new(params) }
       .select { |five_post| five_post.locality_fias_code == @locality_fias_code }
       .map { |five_post| five_post.to_attributes(@provider.id) }
 
@@ -31,5 +29,9 @@ class RU::FivePostService < DeliveryService
 
     delivery_method.delivery_points
       .insert_all(delivery_points_attributes)
+  end
+
+  def pickup_points
+    @pickup_points ||= delivery_service.pickup_point_list
   end
 end
