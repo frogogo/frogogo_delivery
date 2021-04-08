@@ -4,8 +4,6 @@ class RU::FivePostPoint
     @latitude = params['address']['lat']
     @longitude = params['address']['lng']
     @postal_code = params['address']['zipCode']
-    @region = params['address']['region']
-    @city = params['address']['city']
     @working_hours = params['workHours']
     @date_interval = params['deliverySL']&.first
     @short_address = params['shortAddress']
