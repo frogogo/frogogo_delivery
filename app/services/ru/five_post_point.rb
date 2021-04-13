@@ -8,6 +8,7 @@ class RU::FivePostPoint
     @date_interval = params['deliverySL']&.first
     @short_address = params['shortAddress']
     @fias_code = params['localityFiasCode']
+    @point_id = params['id']
   end
 
   def to_attributes(provider_id)
@@ -38,8 +39,13 @@ class RU::FivePostPoint
   end
 
   def date_interval
-    return nil if @date_interval.blank?
+    return @date_interval['sl'] if @date_interval.present?
 
-    @date_interval['sl']
+    csv = CSV.read('lib/data/five_post_intervals.csv', headers: true)
+    days = csv.find { |row| row['id'] == @point_id }
+
+    return nil if days.blank?
+
+    days.to_hash['days']
   end
 end
