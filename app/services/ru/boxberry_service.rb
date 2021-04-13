@@ -16,7 +16,6 @@ class RU::BoxberryService < DeliveryService
       scope: %i[excluded_deliverables boxberry pickup subdivisions], default: {}
     )[:localities]
     @courier_locality = delivery_service.courier_localities_list(locality.name)
-    @delivery_method = delivery_method
   end
 
   def fetch_delivery_methods
