@@ -23,7 +23,7 @@ class RU::FivePostService < DeliveryService
 
     pickup_points = RU::FivePostAdapter.new.pickup_point_list
 
-    delivery_points_attributes = pickup_points.map { |params| RU::FivePostPoints.new(params) }
+    delivery_points_attributes = pickup_points.map { |params| RU::FivePostPoint.new(params) }
       .select { |five_post| five_post.locality_fias_code == @locality_fias_code }
       .map { |five_post| five_post.to_attributes(@provider.id) }
 
