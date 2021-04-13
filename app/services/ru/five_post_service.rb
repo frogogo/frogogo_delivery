@@ -4,10 +4,9 @@ class RU::FivePostService < DeliveryService
   def initialize(locality)
     super
 
-    @delivery_service = RU::FivePostAdapter.new(locality)
+    @delivery_service = RU::FivePostAdapter.new
     @provider = Provider.find_by(name: FIVE_POST_NAME)
     @subdivision_name = locality.subdivision.name
-    @delivery_method = delivery_method
     @locality_fias_code = locality.data['city_fias_id']
   end
 
