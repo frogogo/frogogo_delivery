@@ -1,5 +1,5 @@
 class DeliveryService
-  def initialize(locality, delivery_method: nil)
+  def initialize(locality)
     raise ArgumentError if locality.class != Locality
 
     @locality = locality

@@ -5,7 +5,7 @@ class RU::BoxberryService < DeliveryService
   EXCLUDED_DELIVERY_ZONE = 7
   DEFAULT_DATE_INTERVAL = '2.00'
 
-  def initialize(locality, delivery_method: nil)
+  def initialize(locality)
     super
 
     @delivery_service = RU::BoxberryAdapter.new(locality)
@@ -31,7 +31,7 @@ class RU::BoxberryService < DeliveryService
     create_courier_delivery_method
   end
 
-  def fetch_pickup_points
+  def fetch_pickup_points(delivery_method)
     return if DeliveryMethod.where(deliverable: locality, method: :pickup).blank?
     return if delivery_service.city_code.blank?
     return if @excluded_localities&.include?(locality.name)
@@ -40,7 +40,7 @@ class RU::BoxberryService < DeliveryService
 
     return if @response.first['Address'].blank?
 
-    create_points
+    create_points(delivery_method)
   end
 
   private
@@ -68,8 +68,8 @@ class RU::BoxberryService < DeliveryService
     )
   end
 
-  def create_points
-    @delivery_method.update!(date_interval: response.first['DeliveryPeriod'])
+  def create_points(delivery_method)
+    delivery_method.update!(date_interval: response.first['DeliveryPeriod'])
 
     delivery_points_attributes = response.map { |params| boxberry_point_attributes(params) }
       .reject { |point| point['Code'].in?(I18n.t('excluded_points.boxberry')) }
