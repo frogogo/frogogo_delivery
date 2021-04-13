@@ -1,16 +1,24 @@
-class RU::FivePostAdapter < DeliveryAdapter
+class RU::FivePostAdapter
   POINTS_URI = 'https://api-omni.x5.ru/api/v1/pickuppoints/query'
   JWT_TOKEN_URI = 'https://api-omni.x5.ru/jwt-generate-claims/rs256/1'
 
   def pickup_point_list
     page_number = make_post_request(0)['totalPages']
 
-    points = []
-    page_number.times do |index|
-      points << make_post_request(index)['content']
-    end
+    @pickup_point_list ||= begin
+      points = []
+      page_number.times do |index|
+        points << make_post_request(index)['content']
+      end
 
-    points.flatten!
+      points.flatten!
+    end
+  end
+
+  def clear_points
+    return if @pickup_point_list.blank?
+
+    @pickup_point_list = nil
   end
 
   def make_post_request(page)
