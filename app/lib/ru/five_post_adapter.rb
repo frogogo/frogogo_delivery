@@ -4,15 +4,8 @@ class RU::FivePostAdapter
 
   def pickup_point_list
     page_number = make_post_request(0)['totalPages']
-
-    @pickup_point_list ||= begin
-      points = []
-      page_number.times do |index|
-        points << make_post_request(index)['content']
-      end
-
-      points.flatten!
-    end
+    @pickup_point_list ||= Array.new(page_number) { |index| make_post_request(index)['content'] }
+      .flatten!
   end
 
   def clear_points
