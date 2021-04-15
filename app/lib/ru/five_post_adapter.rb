@@ -3,8 +3,8 @@ class RU::FivePostAdapter
   JWT_TOKEN_URI = 'https://api-omni.x5.ru/jwt-generate-claims/rs256/1'
 
   def pickup_point_list
-    page_number = make_post_request(0)['totalPages']
-    @pickup_point_list ||= Array.new(page_number) { |index| make_post_request(index)['content'] }
+    clear_points
+    @pickup_point_list ||= Array.new(page_number) { |index| points_per_page(index)['content'] }
       .flatten!
   end
 
@@ -14,7 +14,7 @@ class RU::FivePostAdapter
     @pickup_point_list = nil
   end
 
-  def make_post_request(page)
+  def points_per_page(page)
     HTTParty.post(
       POINTS_URI,
       headers: {
@@ -26,6 +26,10 @@ class RU::FivePostAdapter
   end
 
   private
+
+  def page_number
+    points_per_page(0)['totalPages']
+  end
 
   def jwt_token
     response = HTTParty.post(
