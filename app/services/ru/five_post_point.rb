@@ -1,4 +1,7 @@
 class RU::FivePostPoint
+  CHECKOUT = 'TOBACCO'
+  PARCEL_TERMINAL = 'POSTAMAT'
+
   def initialize(params)
     @full_address = params['fullAddress']
     @latitude = params['address']['lat']
@@ -9,6 +12,7 @@ class RU::FivePostPoint
     @short_address = params['shortAddress']
     @fias_code = params['localityFiasCode']
     @point_id = params['id']
+    @type = params['type']
   end
 
   def to_attributes(provider_id)
@@ -27,7 +31,9 @@ class RU::FivePostPoint
   end
 
   def name
-    "Постамат Пятёрочки #{@short_address}"
+    return "Касса супермаркета «Пятёрочка», #{@short_address}" if @type == CHECKOUT
+
+    "Постамат в супермаркете «Пятёрочка», #{@short_address}"
   end
 
   def working_hours

@@ -3,7 +3,6 @@ class RU::FivePostAdapter
   JWT_TOKEN_URI = 'https://api-omni.x5.ru/jwt-generate-claims/rs256/1'
 
   def pickup_point_list
-    clear_points
     @pickup_point_list ||= Array.new(page_number) { |index| points_per_page(index)['content'] }
       .flatten!
   end
