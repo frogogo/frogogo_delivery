@@ -45,13 +45,8 @@ class RU::FivePostPoint
   end
 
   def date_interval
-    return @date_interval['sl'] if @date_interval.present?
+    return nil if @date_interval.blank?
 
-    csv = CSV.read('lib/data/five_post_intervals.csv', headers: true)
-    days = csv.find { |row| row['id'] == @point_id }
-
-    return nil if days.blank?
-
-    days.to_hash['days']
+    @date_interval['sl']
   end
 end
