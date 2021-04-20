@@ -2,6 +2,13 @@ module Dateable
   extend ActiveSupport::Concern
 
   DIGIT_REGEXP = /\d+/
+  # Date => days count
+  HOLIDAYS = {
+    Date.parse('20210502') => 2,
+    Date.parse('20210503') => 1,
+    Date.parse('20210509') => 2,
+    Date.parse('20210510') => 1
+  }
 
   def date_interval
     self[:date_interval].scan(DIGIT_REGEXP).max
@@ -49,6 +56,9 @@ module Dateable
         delivery_date += 1.day
       end
     end
+
+    # TODO: Remove after holidays end
+    delivery_date += HOLIDAYS.fetch(delivery_date, 0).days if courier?
 
     delivery_date
   end
