@@ -35,6 +35,7 @@ class RU::FivePostAdapter
       JWT_TOKEN_URI,
       headers: { 'Content-Type' => 'application/x-www-form-urlencoded' },
       query: { 'apikey' => api_key },
+      # Default values are required by 5post API
       body: { 'subject' => 'OpenAPI', 'audience' => 'A122019!' }
     )
 
