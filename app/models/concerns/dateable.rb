@@ -3,12 +3,7 @@ module Dateable
 
   DIGIT_REGEXP = /\d+/
   # Date => days count
-  HOLIDAYS = {
-    Date.parse('20210501') => 2,
-    Date.parse('20210502') => 1,
-    Date.parse('20210508') => 2,
-    Date.parse('20210509') => 1
-  }
+  HOLIDAYS = { Date.parse('20210614') => 1 }
 
   def date_interval
     self[:date_interval].scan(DIGIT_REGEXP).max
@@ -41,13 +36,13 @@ module Dateable
 
     days_count.times do
       if delivery_date.friday?
-        if [6, 7].include?(I18n.t(:avaliable_days_for_delivery)[deliverable_name])
+        if [6, 7].include?(I18n.t(:avaliable_days_for_delivery)[subdivision_name])
           delivery_date += 1.day
         else
           delivery_date = delivery_date.next_weekday
         end
       elsif delivery_date.saturday?
-        if I18n.t(:avaliable_days_for_delivery)[deliverable_name] == 7
+        if I18n.t(:avaliable_days_for_delivery)[subdivision_name] == 7
           delivery_date += 1.day
         else
           delivery_date = delivery_date.next_weekday
@@ -58,35 +53,37 @@ module Dateable
     end
 
     # TODO: Remove after holidays end
-    delivery_date += HOLIDAYS.fetch(delivery_date, 0).days if courier?
+    delivery_date += HOLIDAYS.fetch(delivery_date, 0).days if excluded_on_holidays?
 
     delivery_date
   end
 
-  def deliverable_name
-    case deliverable.class.name
-    when 'Locality'
-      deliverable.subdivision.name.to_sym
-    when 'Subdivision'
-      deliverable.name.to_sym
-    end
+  def subdivision_name
+    deliverable.is_a?(Locality) ? deliverable.subdivision.name.to_sym : deliverable.name.to_sym
   end
 
   def default_time_intervals(date)
-    if I18n.t(:avaliable_days_for_delivery).keys.include?(deliverable_name)
-      I18n.t("#{deliverable_name}.#{Date::DAYS_INTO_WEEK.invert[date.wday]}", scope: %i[time_intervals])
+    if I18n.t(:avaliable_days_for_delivery).keys.include?(subdivision_name)
+      I18n.t("#{subdivision_name}.#{Date::DAYS_INTO_WEEK.invert[date.wday]}", scope: %i[time_intervals])
     else
       I18n.t(:default, scope: %i[time_intervals])
     end
   end
 
   def override_days_count?
-    return if deliverable_name == (:Москва || :Московская)
+    return if subdivision_name == (:Москва || :Московская)
 
-    courier? || I18n.t(:hack, scope: %i[custom_date_intervals boxberry]).include?(deliverable_name)
+    courier? || I18n.t(:hack, scope: %i[custom_date_intervals boxberry]).include?(subdivision_name)
   end
 
   def time_after_delivery_date_will_change
     Time.current.middle_of_day + 2.hours # 14:00
+  end
+
+  def excluded_on_holidays?
+    return unless courier? && deliverable.is_a?(Locality)
+
+    I18n.t('excluded_deliverables.boxberry.courier.subdivisions')
+      .include?(deliverable.subdivision.name)
   end
 end
