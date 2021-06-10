@@ -64,6 +64,10 @@ module Dateable
 
   def default_time_intervals(date)
     if I18n.t(:avaliable_days_for_delivery).keys.include?(subdivision_name)
+      if date == Date.parse('20210614')
+        return I18n.t("#{subdivision_name}.sunday", scope: %i[time_intervals])
+      end
+
       I18n.t("#{subdivision_name}.#{Date::DAYS_INTO_WEEK.invert[date.wday]}", scope: %i[time_intervals])
     else
       I18n.t(:default, scope: %i[time_intervals])
