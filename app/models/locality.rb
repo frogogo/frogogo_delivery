@@ -50,7 +50,10 @@ class Locality < ApplicationRecord
     return if Locality.find_by(locality_uid: data['city_kladr_id'])
 
     suggestion = DaDataService.instance.suggestion_from_locality_uid(data['city_kladr_id'])
-    update_attribute(:parent_locality, Locality.create!(suggestion.locality_attributes))
+    update_attribute(
+      :parent_locality,
+      Locality.create!(DaDataSuggestion.new(suggestion).locality_attributes)
+    )
   end
 
   def set_delivery_zone
