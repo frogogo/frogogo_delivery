@@ -73,7 +73,7 @@ class RU::BoxberryService < DeliveryService
     delivery_points_attributes = response.map { |params| boxberry_point_attributes(params) }
       .reject { |point| point['Code'].in?(I18n.t('excluded_points.boxberry')) }
 
-    @delivery_method.delivery_points.insert_all(delivery_points_attributes)
+    delivery_method.delivery_points.insert_all(delivery_points_attributes)
   end
 
   def boxberry_point_attributes(boxberry_point)
