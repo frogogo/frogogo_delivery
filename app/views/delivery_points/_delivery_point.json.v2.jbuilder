@@ -8,6 +8,7 @@ json.cache! delivery_point, expires_in: 10.minutes do
     :latitude,
     :longitude,
     :name,
+    :payment_methods,
     :phone_number,
     :uuid,
     :working_hours
