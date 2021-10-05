@@ -90,8 +90,16 @@ class RU::BoxberryService < DeliveryService
       phone_number: boxberry_point['Phone'],
       provider_id: provider.id,
       updated_at: Time.current,
-      working_hours: boxberry_point['WorkShedule']
+      working_hours: boxberry_point['WorkShedule'],
+      payment_methods: payment_methods(boxberry_point['Acquiring'])
     }
+  end
+
+  def payment_methods(string)
+    methods = %w[cash]
+    methods << 'card' if string.downcase == 'yes'
+
+    methods
   end
 
   def format_string(string)
