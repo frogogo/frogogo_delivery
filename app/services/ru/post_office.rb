@@ -35,6 +35,7 @@ class RU::PostOffice
       latitude: @latitude,
       longitude: @longitude,
       name: name,
+      payment_methods: %w[cash card],
       provider_id: provider_id,
       updated_at: Time.current,
       working_hours: @working_hours.to_s
