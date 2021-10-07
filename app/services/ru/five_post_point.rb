@@ -13,6 +13,8 @@ class RU::FivePostPoint
     @fias_code = params['localityFiasCode']
     @point_id = params['id']
     @type = params['type']
+    # Казань г —> Казань
+    @city = params['address']['city'].split().first
   end
 
   def to_attributes(provider_id)
@@ -26,7 +28,8 @@ class RU::FivePostPoint
       name: name,
       provider_id: provider_id,
       updated_at: Time.current,
-      working_hours: working_hours
+      working_hours: working_hours,
+      locality_name: @city
     }
   end
 
