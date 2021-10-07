@@ -7,12 +7,6 @@ class RU::FivePostAdapter
       .flatten!
   end
 
-  def clear_points
-    return if @pickup_point_list.blank?
-
-    @pickup_point_list = nil
-  end
-
   def points_per_page(page)
     HTTParty.post(
       POINTS_URI,
