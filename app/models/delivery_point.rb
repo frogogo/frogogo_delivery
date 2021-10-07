@@ -9,6 +9,7 @@
 #  directions         :string
 #  inactive           :boolean          default(FALSE)
 #  latitude           :decimal(10, 6)
+#  locality_name      :string
 #  longitude          :decimal(10, 6)
 #  name               :string
 #  payment_methods    :string           default([]), is an Array
