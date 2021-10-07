@@ -95,9 +95,9 @@ class RU::BoxberryService < DeliveryService
     }
   end
 
-  def payment_methods(string)
+  def payment_methods(card_payment)
     methods = %w[cash]
-    methods << 'card' if string.downcase == 'yes'
+    methods << 'card' if card_payment.downcase == 'yes'
 
     methods
   end
