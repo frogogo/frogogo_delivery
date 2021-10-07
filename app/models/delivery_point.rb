@@ -17,7 +17,7 @@
 #  working_hours      :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  delivery_method_id :bigint           not null
+#  delivery_method_id :bigint
 #  provider_id        :bigint           not null
 #
 
@@ -25,7 +25,7 @@ class DeliveryPoint < ApplicationRecord
   include Activatable
   include Dateable
 
-  belongs_to :delivery_method, touch: true
+  belongs_to :delivery_method, touch: true, optional: true
   belongs_to :provider, touch: true
 
   validates :address, presence: true
