@@ -11,6 +11,7 @@
 #  latitude           :decimal(10, 6)
 #  longitude          :decimal(10, 6)
 #  name               :string
+#  payment_methods    :string           default([]), is an Array
 #  phone_number       :string
 #  uuid               :uuid             not null
 #  working_hours      :string
