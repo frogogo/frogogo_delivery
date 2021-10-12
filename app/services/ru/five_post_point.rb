@@ -14,7 +14,8 @@ class RU::FivePostPoint
     @point_id = params['id']
     @type = params['type']
     # Казань г —> Казань
-    @city = params['address']['city'].split().first
+    @city = params['address']['city'].split.first
+    @payment_methods = payment_methods(params)
   end
 
   def to_attributes(provider_id)
@@ -26,11 +27,20 @@ class RU::FivePostPoint
       latitude: @latitude,
       longitude: @longitude,
       name: name,
+      payment_methods: @payment_methods,
       provider_id: provider_id,
       updated_at: Time.current,
       working_hours: working_hours,
       locality_name: @city
     }
+  end
+
+  def payment_methods(hash_params)
+    methods = []
+    methods << 'cash' if hash_params['cashAllowed'] == true
+    methods << 'card' if hash_params['cardAllowed'] == true
+
+    methods
   end
 
   def name
