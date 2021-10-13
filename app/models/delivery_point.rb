@@ -35,4 +35,7 @@ class DeliveryPoint < ApplicationRecord
 
   delegate :courier?, to: :delivery_method
   delegate :deliverable, to: :delivery_method
+
+  scope :ordered, -> { includes(:provider).order(provider_id: :asc, date_interval: :asc) }
+  scope :without_five_post, -> { where.not(provider: Provider.find_by(name: 'FivePost')) }
 end
