@@ -11,15 +11,6 @@ class RU::FivePostService
     )
   end
 
-  def assign_delivery_points_to_delivery_method(delivery_method)
-    five_post_points = DeliveryPoint
-      .joins(:provider)
-      .where(providers: { name: 'FivePost' })
-      .where('lower(locality_name) = ?', delivery_method.deliverable.name.downcase)
-
-    delivery_method.delivery_points << five_post_points
-  end
-
   def fetch_pickup_points
     delivery_points_attributes = @api
       .pickup_points

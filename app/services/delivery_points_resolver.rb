@@ -23,7 +23,6 @@ class DeliveryPointsResolver
     when :ru
       RU::BoxberryService.new(@locality).fetch_pickup_points(@delivery_method)
       RU::RussianPostService.new(@locality).fetch_pickup_points(@delivery_method)
-      RU::FivePostService.new.assign_delivery_points_to_delivery_method(@delivery_method)
 
       @delivery_method.touch
       @delivery_method.delivery_points.active
