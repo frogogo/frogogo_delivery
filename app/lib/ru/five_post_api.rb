@@ -2,10 +2,14 @@ class RU::FivePostAPI
   POINTS_URI = 'https://api-omni.x5.ru/api/v1/pickuppoints/query'
   JWT_TOKEN_URI = 'https://api-omni.x5.ru/jwt-generate-claims/rs256/1'
 
+  def initialize
+    @provider = Provider.find_by!(name: 'FivePost')
+  end
+
   def pickup_points
     @pickup_points ||= Array(0..total_pages)
       .flat_map { |page| points_for_page(page)['content'] }
-      .map { |params| RU::FivePostPoint.new(params) }
+      .map { |params| RU::FivePostPoint.new(params, @provider) }
   end
 
   private

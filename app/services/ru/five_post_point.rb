@@ -2,7 +2,7 @@ class RU::FivePostPoint
   CHECKOUT = 'TOBACCO'
   PARCEL_TERMINAL = 'POSTAMAT'
 
-  def initialize(params)
+  def initialize(params, provider)
     @full_address = params['fullAddress']
     @latitude = params['address']['lat']
     @longitude = params['address']['lng']
@@ -16,22 +16,23 @@ class RU::FivePostPoint
     # Казань г —> Казань
     @city = params['address']['city'].split.first
     @payment_methods = payment_methods(params)
+    @provider = provider
   end
 
-  def to_attributes(provider_id)
+  def to_attributes
     {
       address: @full_address,
       code: @postal_code,
       created_at: Time.current,
       date_interval: date_interval,
       latitude: @latitude,
+      locality_name: @city,
       longitude: @longitude,
       name: name,
       payment_methods: @payment_methods,
-      provider_id: provider_id,
+      provider_id: @provider.id,
       updated_at: Time.current,
-      working_hours: working_hours,
-      locality_name: @city
+      working_hours: working_hours
     }
   end
 
@@ -53,13 +54,19 @@ class RU::FivePostPoint
     "C #{@working_hours.first['opensAt']} до #{@working_hours.first['closesAt']}"
   end
 
-  def locality_fias_code
-    @fias_code
-  end
-
   def date_interval
     return nil if @date_interval.blank?
 
     @date_interval['sl']
+  end
+
+  def locality
+    # Find locality by settlement_fias_id
+    locality = Locality.find_by('data @> ?', { settlement_fias_id: @fias_code }.to_json)
+
+    return locality unless locality.blank?
+
+    # Find locality by city_fias_id
+    Locality.find_by('data @> ?', { city_fias_id: @fias_code }.to_json)
   end
 end
