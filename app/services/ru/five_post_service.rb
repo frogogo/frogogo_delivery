@@ -1,9 +1,7 @@
 class RU::FivePostService
-  FIVE_POST_NAME = 'FivePost'
-
   def initialize
     @api = RU::FivePostAPI.new
-    @provider = Provider.find_by(name: FIVE_POST_NAME)
+    @provider = Provider.find_by!(name: 'FivePost')
   end
 
   def fetch_delivery_methods(locality)
