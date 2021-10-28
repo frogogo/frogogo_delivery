@@ -25,8 +25,6 @@ class RU::FivePostService
       .pickup_points
       .map { |five_post| five_post.to_attributes(@provider.id) }
 
-    return if delivery_points_attributes.blank?
-
-    DeliveryPoint.insert_all(delivery_points_attributes)
+    DeliveryPoint.insert_all!(delivery_points_attributes)
   end
 end
