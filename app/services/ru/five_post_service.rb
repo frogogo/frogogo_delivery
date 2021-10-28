@@ -21,9 +21,8 @@ class RU::FivePostService
   end
 
   def fetch_pickup_points
-    pickup_points = @api.pickup_points
-
-    delivery_points_attributes = pickup_points.map { |params| RU::FivePostPoint.new(params) }
+    delivery_points_attributes = @api
+      .pickup_points
       .map { |five_post| five_post.to_attributes(@provider.id) }
 
     return if delivery_points_attributes.blank?

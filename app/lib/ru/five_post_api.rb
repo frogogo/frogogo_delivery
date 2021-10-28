@@ -5,7 +5,10 @@ class RU::FivePostAPI
   def pickup_points
     @pickup_points ||= Array(0..total_pages)
       .flat_map { |page| points_for_page(page)['content'] }
+      .map { |params| RU::FivePostPoint.new(params) }
   end
+
+  private
 
   def points_for_page(page)
     HTTParty.post(
@@ -17,8 +20,6 @@ class RU::FivePostAPI
       body: { 'pageSize' => 1000, 'pageNumber' => page }.to_json
     ).parsed_response
   end
-
-  private
 
   def total_pages
     points_for_page(0)['totalPages']
