@@ -13,7 +13,7 @@ class RU::FivePostPoint
     @fias_code = params['localityFiasCode']
     @point_id = params['id']
     @type = params['type']
-    # Казань г —> Казань
+    # FIXME: Казань г —> Казань
     @city = params['address']['city'].split.first
     @payment_methods = payment_methods(params)
     @provider = provider
@@ -60,6 +60,7 @@ class RU::FivePostPoint
     @date_interval['sl']
   end
 
+  # TODO: достать правильный locality с учётом parent_locality
   def locality
     # Find locality by settlement_fias_id
     locality = Locality.find_by('data @> ?', { settlement_fias_id: @fias_code }.to_json)
@@ -68,5 +69,9 @@ class RU::FivePostPoint
 
     # Find locality by city_fias_id
     Locality.find_by('data @> ?', { city_fias_id: @fias_code }.to_json)
+  end
+
+  # TODO: способ доставки с учётом locality
+  def delivery_method
   end
 end
