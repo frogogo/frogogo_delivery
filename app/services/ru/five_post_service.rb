@@ -25,6 +25,6 @@ class RU::FivePostService
       .pickup_points
       .map { |five_post| five_post.to_attributes(@provider.id) }
 
-    DeliveryPoint.insert_all!(delivery_points_attributes)
+    delivery_points = DeliveryPoint.upsert_all(delivery_points_attributes)
   end
 end
