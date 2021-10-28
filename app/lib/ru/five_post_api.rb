@@ -4,10 +4,10 @@ class RU::FivePostAPI
 
   def pickup_points
     @pickup_points ||= Array(0..total_pages)
-      .flat_map { |page| points_per_page(page)['content'] }
+      .flat_map { |page| points_for_page(page)['content'] }
   end
 
-  def points_per_page(page)
+  def points_for_page(page)
     HTTParty.post(
       POINTS_URI,
       headers: {
@@ -21,7 +21,7 @@ class RU::FivePostAPI
   private
 
   def total_pages
-    points_per_page(0)['totalPages']
+    points_for_page(0)['totalPages']
   end
 
   def jwt_token
