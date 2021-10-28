@@ -2,7 +2,7 @@ class RU::FivePostService
   FIVE_POST_NAME = 'FivePost'
 
   def initialize
-    @delivery_service = RU::FivePostAdapter.new
+    @api = RU::FivePostAPI.new
     @provider = Provider.find_by(name: FIVE_POST_NAME)
   end
 
@@ -23,7 +23,7 @@ class RU::FivePostService
   end
 
   def fetch_pickup_points
-    pickup_points = @delivery_service.pickup_point_list
+    pickup_points = @api.pickup_point_list
 
     delivery_points_attributes = pickup_points.map { |params| RU::FivePostPoint.new(params) }
       .map { |five_post| five_post.to_attributes(@provider.id) }
