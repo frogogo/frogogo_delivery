@@ -13,8 +13,6 @@ class RU::FivePostPoint
     @fias_code = params['localityFiasCode']
     @point_id = params['id']
     @type = params['type']
-    # FIXME: Казань г —> Казань
-    @city = params['address']['city'].split.first
     @payment_methods = payment_methods(params)
     @provider = provider
   end
@@ -26,7 +24,6 @@ class RU::FivePostPoint
       created_at: Time.current,
       date_interval: date_interval,
       latitude: @latitude,
-      locality_name: @city,
       longitude: @longitude,
       name: name,
       payment_methods: @payment_methods,
