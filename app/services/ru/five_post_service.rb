@@ -15,6 +15,8 @@ class RU::FivePostService
       .pickup_points
       .map(&:to_attributes)
 
-    DeliveryPoint.upsert_all(delivery_points_attributes)
+    DeliveryPoint.upsert_all(
+      delivery_points_attributes.uniq { |point| point.values_at(:latitude, :longitude) }
+    )
   end
 end
