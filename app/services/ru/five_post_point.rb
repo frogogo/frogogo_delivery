@@ -29,7 +29,8 @@ class RU::FivePostPoint
       payment_methods: @payment_methods,
       provider_id: @provider.id,
       updated_at: Time.current,
-      working_hours: working_hours
+      working_hours: working_hours,
+      delivery_method: delivery_method
     }
   end
 
@@ -57,18 +58,30 @@ class RU::FivePostPoint
     @date_interval['sl']
   end
 
-  # TODO: достать правильный locality с учётом parent_locality
-  def locality
-    # Find locality by settlement_fias_id
-    locality = Locality.find_by('data @> ?', { settlement_fias_id: @fias_code }.to_json)
-
-    return locality unless locality.blank?
-
-    # Find locality by city_fias_id
-    Locality.find_by('data @> ?', { city_fias_id: @fias_code }.to_json)
+  def delivery_method
+    DeliveryMethod.create_or_find_by(
+      method: :pickup,
+      deliverable: locality
+    )
   end
 
-  # TODO: способ доставки с учётом locality
-  def delivery_method
+  def locality
+    locality =
+      Locality.find_by('data @> ?', { settlement_fias_id: @fias_code }.to_json) ||
+      Locality.find_by('data @> ?', { city_fias_id: @fias_code }.to_json)
+
+    return locality unless locality.blank?
+    return nil if dadata_suggestion.nil?
+
+    locality = Locality.create!(dadata_suggestion.locality_attributes) if locality.blank?
+    locality = locality.parent_locality if locality.parent_locality.present?
+
+    locality
+  end
+
+  def dadata_suggestion
+    dadata = DaDataService.instance
+    dadata_suggestion ||= dadata.suggestion_from_locality_uid(@fias_code)
+    DaDataSuggestion.new(dadata_suggestion) if dadata_suggestion.present?
   end
 end
