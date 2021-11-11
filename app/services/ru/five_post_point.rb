@@ -30,7 +30,7 @@ class RU::FivePostPoint
       provider_id: @provider.id,
       updated_at: Time.current,
       working_hours: working_hours,
-      delivery_method: delivery_method
+      delivery_method_id: delivery_method.id
     }
   end
 

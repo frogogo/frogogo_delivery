@@ -19,7 +19,6 @@ class DeliveryMethodsResolver
     when :ru
       RU::BoxberryService.new(@locality).fetch_delivery_methods
       RU::RussianPostService.new(@locality).fetch_delivery_methods
-      RU::FivePostService.new.fetch_delivery_methods(@locality)
 
       @locality.touch
       @locality.delivery_methods.active
