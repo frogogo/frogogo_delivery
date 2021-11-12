@@ -73,6 +73,7 @@ class RU::FivePostPoint
     return locality unless locality.blank?
     return nil if dadata_suggestion.nil?
 
+    locality = Locality.find_by(locality_uid: dadata_suggestion.kladr_id)
     locality = Locality.create!(dadata_suggestion.locality_attributes) if locality.blank?
     locality = locality.parent_locality if locality.parent_locality.present?
 
