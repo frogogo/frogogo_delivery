@@ -190,7 +190,7 @@ DEPENDENCIES
   bullet (~> 6.1)
   byebug
   hiredis (~> 0.6)
-  httparty (~> 0.18)
+  httparty (~> 0.20.0)
   jbuilder (~> 2.7)
   pg (>= 0.18, < 2.0)
   puma (~> 4.1)
