@@ -5,7 +5,6 @@
 #  id                 :bigint           not null, primary key
 #  data               :jsonb
 #  latitude           :float
-#  local_code         :string
 #  locality_uid       :string
 #  longitude          :float
 #  name               :string           not null

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_10_111412) do
+ActiveRecord::Schema.define(version: 2021_12_10_215735) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -67,7 +67,6 @@ ActiveRecord::Schema.define(version: 2021_11_10_111412) do
   create_table "localities", force: :cascade do |t|
     t.bigint "subdivision_id", null: false
     t.string "name", null: false
-    t.string "local_code"
     t.string "postal_code"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -78,7 +77,6 @@ ActiveRecord::Schema.define(version: 2021_11_10_111412) do
     t.jsonb "data"
     t.bigint "parent_locality_id"
     t.index ["delivery_zone_id"], name: "index_localities_on_delivery_zone_id"
-    t.index ["local_code", "subdivision_id"], name: "index_localities_on_local_code_and_subdivision_id", unique: true
     t.index ["locality_uid", "subdivision_id"], name: "index_localities_on_locality_uid_and_subdivision_id", unique: true
     t.index ["parent_locality_id"], name: "index_localities_on_parent_locality_id"
     t.index ["postal_code"], name: "index_localities_on_postal_code", unique: true
