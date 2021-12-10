@@ -8,7 +8,6 @@
 #  locality_uid       :string
 #  longitude          :float
 #  name               :string           not null
-#  postal_code        :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  delivery_zone_id   :bigint

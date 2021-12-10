@@ -49,11 +49,10 @@ moscow = Subdivision.create!(
 )
 
 # Create localities
-# Locality.create!(name: 'İstanbul', postal_code: '34000', subdivision: tr_default_sub)
-# Locality.create!(name: 'Ljubljana', postal_code: '1000', subdivision: ljubljana)
+# Locality.create!(name: 'İstanbul', subdivision: tr_default_sub)
+# Locality.create!(name: 'Ljubljana', subdivision: ljubljana)
 # Locality.create!(
 #   name: 'Москва',
-#   postal_code: '101000',
 #   delivery_zone: DeliveryZone.find_by(zone: 1),
 #   subdivision: moscow
 # )
