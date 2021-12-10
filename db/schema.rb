@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_10_215838) do
+ActiveRecord::Schema.define(version: 2021_12_10_215945) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -94,13 +94,11 @@ ActiveRecord::Schema.define(version: 2021_12_10_215838) do
   end
 
   create_table "subdivisions", force: :cascade do |t|
-    t.string "iso_code"
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "delivery_zone_id"
     t.index ["delivery_zone_id"], name: "index_subdivisions_on_delivery_zone_id"
-    t.index ["iso_code"], name: "index_subdivisions_on_iso_code", unique: true
   end
 
   add_foreign_key "delivery_points", "delivery_methods"
