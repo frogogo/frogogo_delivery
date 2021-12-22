@@ -11,7 +11,7 @@ module Dateable
   }
 
   def date_interval
-    self[:date_interval].scan(DIGIT_REGEXP).max
+    self[:date_interval]&.scan(DIGIT_REGEXP)&.max
   end
 
   def estimate_delivery_date
@@ -58,7 +58,6 @@ module Dateable
     end
 
     delivery_date += HOLIDAYS.fetch(delivery_date, 0).days
-
     delivery_date
   end
 

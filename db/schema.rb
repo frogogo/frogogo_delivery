@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_04_095704) do
+ActiveRecord::Schema.define(version: 2021_11_10_111412) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(version: 2021_10_04_095704) do
   end
 
   create_table "delivery_points", force: :cascade do |t|
-    t.bigint "delivery_method_id", null: false
+    t.bigint "delivery_method_id"
     t.string "address", null: false
     t.string "code"
     t.string "directions"
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 2021_10_04_095704) do
     t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.bigint "provider_id", null: false
     t.string "payment_methods", default: [], array: true
+    t.string "locality_name"
     t.index ["delivery_method_id"], name: "index_delivery_points_on_delivery_method_id"
     t.index ["latitude", "longitude"], name: "index_delivery_points_on_latitude_and_longitude", unique: true
     t.index ["provider_id"], name: "index_delivery_points_on_provider_id"
@@ -78,7 +79,7 @@ ActiveRecord::Schema.define(version: 2021_10_04_095704) do
     t.bigint "parent_locality_id"
     t.index ["delivery_zone_id"], name: "index_localities_on_delivery_zone_id"
     t.index ["local_code", "subdivision_id"], name: "index_localities_on_local_code_and_subdivision_id", unique: true
-    t.index ["name", "subdivision_id"], name: "index_localities_on_name_and_subdivision_id", unique: true
+    t.index ["locality_uid", "subdivision_id"], name: "index_localities_on_locality_uid_and_subdivision_id", unique: true
     t.index ["parent_locality_id"], name: "index_localities_on_parent_locality_id"
     t.index ["postal_code"], name: "index_localities_on_postal_code", unique: true
     t.index ["subdivision_id"], name: "index_localities_on_subdivision_id"
