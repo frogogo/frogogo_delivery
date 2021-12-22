@@ -4,10 +4,10 @@ module Dateable
   DIGIT_REGEXP = /\d+/
   # Date => days count
   HOLIDAYS = {
-    Date.parse('20211104') => 0,
-    Date.parse('20211105') => 1,
-    Date.parse('20211106') => 0,
-    Date.parse('20211107') => 0
+    Date.parse('2021-12-30') => 3,
+    Date.parse('2021-12-31') => 2,
+    Date.parse('2021-01-01') => 1,
+    Date.parse('2021-01-05') => 1
   }
 
   def date_interval
