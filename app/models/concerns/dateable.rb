@@ -6,8 +6,8 @@ module Dateable
   HOLIDAYS = {
     Date.parse('2021-12-30') => 3,
     Date.parse('2021-12-31') => 2,
-    Date.parse('2021-01-01') => 1,
-    Date.parse('2021-01-05') => 1
+    Date.parse('2022-01-01') => 1,
+    Date.parse('2022-01-05') => 1
   }
 
   def date_interval
@@ -72,10 +72,14 @@ module Dateable
         return I18n.t("#{subdivision_name}.sunday", scope: %i[time_intervals])
       end
 
-      I18n.t(
-        "#{subdivision_name}.#{Date::DAYS_INTO_WEEK.invert[date.wday]}",
-        scope: %i[time_intervals]
-      )
+      if date.in?(HOLIDAYS.keys)
+        I18n.t("#{subdivision_name}.#{date}", scope: %i[holiday_time_intervals])
+      else
+        I18n.t(
+          "#{subdivision_name}.#{Date::DAYS_INTO_WEEK.invert[date.wday]}",
+          scope: %i[time_intervals]
+        )
+      end
     else
       I18n.t(:default, scope: %i[time_intervals])
     end
