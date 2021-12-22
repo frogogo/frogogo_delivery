@@ -58,7 +58,6 @@ module Dateable
     end
 
     delivery_date += HOLIDAYS.fetch(delivery_date, 0).days
-
     delivery_date
   end
 
