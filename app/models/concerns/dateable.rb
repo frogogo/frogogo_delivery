@@ -81,11 +81,11 @@ module Dateable
           )
       end
     else
-      if date.in?(CUSTOM_TIME_INTERVALS)
-        I18n.t(date, scope: %i[holiday_time_intervals])
-      else
+      # if date.in?(CUSTOM_TIME_INTERVALS)
+      #   I18n.t(date, scope: %i[holiday_time_intervals])
+      # else
         I18n.t(:default, scope: %i[time_intervals])
-      end
+      # end
     end
   end
 
