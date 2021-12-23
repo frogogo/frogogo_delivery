@@ -9,6 +9,9 @@ module Dateable
     Date.parse('2022-01-03') => 1,
     Date.parse('2022-01-07') => 1
   }
+  CUSTOM_TIME_INTERVALS = [
+    Date.parse('2021-12-31')
+  ]
 
   def date_interval
     self[:date_interval]&.scan(DIGIT_REGEXP)&.max
@@ -65,18 +68,24 @@ module Dateable
     deliverable.is_a?(Locality) ? deliverable.subdivision.name.to_sym : deliverable.name.to_sym
   end
 
+  # TODO: Remove after holidays end
   def default_time_intervals(date)
     if I18n.t(:avaliable_days_for_delivery).keys.include?(subdivision_name)
-      if date.in?(HOLIDAYS.keys)
-        return I18n.t("#{subdivision_name}.sunday", scope: %i[time_intervals])
+      if date.in?(CUSTOM_TIME_INTERVALS)
+        # I18n.t("#{subdivision_name}.sunday", scope: %i[time_intervals])
+        I18n.t("#{subdivision_name}.#{date}", scope: %i[holiday_time_intervals])
+      else
+        I18n.t(
+          "#{subdivision_name}.#{Date::DAYS_INTO_WEEK.invert[date.wday]}",
+          scope: %i[time_intervals]
+          )
       end
-
-      I18n.t(
-        "#{subdivision_name}.#{Date::DAYS_INTO_WEEK.invert[date.wday]}",
-        scope: %i[time_intervals]
-      )
     else
-      I18n.t(:default, scope: %i[time_intervals])
+      if date.in?(CUSTOM_TIME_INTERVALS)
+        I18n.t(date, scope: %i[holiday_time_intervals])
+      else
+        I18n.t(:default, scope: %i[time_intervals])
+      end
     end
   end
 
