@@ -1,18 +1,10 @@
 tr_default_sub:
-  iso_code: 00
-  local_code: 00
   name: Default
   delivery_zone: turkey_delivery_zone
 istanbul:
-  iso_code: TR-34
-  local_code: 34
   name: İstanbul
 ljubljana:
-  iso_code: SI-061
-  local_code: 61
   name: Ljubljana
 moscow:
-  iso_code: RU-MOW
-  local_code: 45
   name: Москва
   delivery_zone: delivery_zone1

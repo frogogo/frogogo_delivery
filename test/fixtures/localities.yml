@@ -1,20 +1,14 @@
 istanbul:
   name: İstanbul
-  local_code: 212
-  postal_code: 34000
   subdivision: istanbul
   locality_uid: 00000000
   latitude: 41.011218
   longitude: 28.978169
 ljubljana:
   name: Ljubljana
-  local_code: 3861
-  postal_code: 1000
   subdivision: ljubljana
 moscow:
   name: Москва
-  local_code: 45000000
-  postal_code: 101000
   delivery_zone: delivery_zone1
   subdivision: moscow
   locality_uid: 7700000000000

@@ -41,22 +41,18 @@ DeliveryZone.create!(
 )
 
 # Create subdivisions
-# istanbul = Subdivision.create!(iso_code: 'TR-34', local_code: '34', name: 'İstanbul')
+# istanbul = Subdivision.create!(name: 'İstanbul')
 
 moscow = Subdivision.create!(
-  iso_code: 'RU-MOW',
-  local_code: '45',
   name: 'Москва',
   delivery_zone: DeliveryZone.find_by(zone: 1)
 )
 
 # Create localities
-# Locality.create!(name: 'İstanbul', local_code: '212', postal_code: '34000', subdivision: tr_default_sub)
-# Locality.create!(name: 'Ljubljana', local_code: '3861', postal_code: '1000', subdivision: ljubljana)
+# Locality.create!(name: 'İstanbul', subdivision: tr_default_sub)
+# Locality.create!(name: 'Ljubljana', subdivision: ljubljana)
 # Locality.create!(
 #   name: 'Москва',
-#   local_code: '45000000',
-#   postal_code: '101000',
 #   delivery_zone: DeliveryZone.find_by(zone: 1),
 #   subdivision: moscow
 # )
