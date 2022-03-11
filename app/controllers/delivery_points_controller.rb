@@ -8,7 +8,12 @@ class DeliveryPointsController < ApplicationController
     if request_version < 3
       @delivery_points = @delivery_points.ordered.without_five_post
     else
-      @delivery_points = @delivery_points.ordered
+      # TODO: Рязань
+      if @delivery_method.deliverable.locality_uid == '6200000100000'
+        @delivery_points = @delivery_points.ordered
+      else
+        @delivery_points = @delivery_points.ordered.without_five_post
+      end
     end
   end
 
