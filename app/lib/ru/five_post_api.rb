@@ -6,6 +6,7 @@ class RU::FivePostAPI
     @provider = Provider.find_by!(name: 'FivePost')
   end
 
+  # TODO: in batches
   def pickup_points
     @pickup_points ||= Array(0..total_pages)
       .flat_map { |page| points_for_page(page)['content'] }
