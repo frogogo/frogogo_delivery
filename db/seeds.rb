@@ -41,25 +41,15 @@ DeliveryZone.create!(
 )
 
 # Create subdivisions
-# istanbul = Subdivision.create!(name: 'İstanbul')
-
-moscow = Subdivision.create!(
-  name: 'Москва',
-  delivery_zone: DeliveryZone.find_by(zone: 1)
-)
-
-# Create localities
-# Locality.create!(name: 'İstanbul', subdivision: tr_default_sub)
-# Locality.create!(name: 'Ljubljana', subdivision: ljubljana)
-# Locality.create!(
+# moscow = Subdivision.create!(
 #   name: 'Москва',
-#   delivery_zone: DeliveryZone.find_by(zone: 1),
-#   subdivision: moscow
+#   delivery_zone: DeliveryZone.find_by(zone: 1)
 # )
 
-dadata = DaDataService.instance
-dadata_suggestion = DaDataSuggestion.new(dadata.suggestion_from_locality_uid('7700000000000'))
-Locality.create!(dadata_suggestion.locality_attributes)
+# Create localities
+# dadata = DaDataService.instance
+# dadata_suggestion = DaDataSuggestion.new(dadata.suggestion_from_locality_uid('7700000000000'))
+# Locality.create!(dadata_suggestion.locality_attributes)
 
 # Create providers
 Provider.create!(code: 'russian_post', name: 'RussianPostPickup')
