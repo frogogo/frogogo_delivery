@@ -7,7 +7,11 @@ module Dateable
     Date.parse('2022-01-01') => 3,
     Date.parse('2022-01-02') => 2,
     Date.parse('2022-01-03') => 1,
-    Date.parse('2022-01-07') => 1
+    Date.parse('2022-01-07') => 1,
+    Date.parse('2022-05-01') => 1,
+    Date.parse('2022-05-02') => 1,
+    Date.parse('2022-05-08') => 1,
+    Date.parse('2022-05-09') => 1
   }
   CUSTOM_TIME_INTERVALS = [
     Date.parse('2021-12-31')
